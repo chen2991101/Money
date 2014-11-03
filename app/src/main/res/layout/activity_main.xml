@@ -1,0 +1,43 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/fl_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
+    <View
+        android:background="@color/lineColor"
+        android:layout_width="match_parent"
+        android:layout_height="1px" />
+
+    <RadioGroup
+        android:id="@+id/rg_button"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:background="@android:color/white"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            style="@style/main_radio"
+            android:id="@+id/rb_jz"
+            android:drawableTop="@drawable/selector_mainactivity_record"
+            android:text="记账" />
+
+        <RadioButton
+            style="@style/main_radio"
+            android:id="@+id/rb_jl"
+            android:drawableTop="@drawable/selector_mainactivity_list"
+            android:text="记录" />
+
+        <RadioButton
+            style="@style/main_radio"
+            android:id="@+id/rb_mine"
+            android:drawableTop="@drawable/selector_mainactivity_count"
+            android:text="我的" />
+    </RadioGroup>
+</LinearLayout>
