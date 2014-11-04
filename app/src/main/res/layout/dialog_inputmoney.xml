@@ -1,6 +1,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
+    android:minHeight="100dp"
+    android:minWidth="250dp"
+    android:padding="10dp"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <TextView
@@ -10,13 +15,20 @@
         android:layout_height="wrap_content" />
 
     <EditText
-        android:inputType="number"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:padding="5dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_editor_border"
+        android:inputType="number" />
 
     <Button
+        android:layout_marginTop="10dp"
+        android:gravity="center"
         android:text="确认"
+        android:textColor="@color/white"
         android:background="@drawable/selector_button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="@dimen/buttonHeight" />
+
 </LinearLayout>

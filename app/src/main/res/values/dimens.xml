@@ -6,4 +6,6 @@
     <dimen name="headHeight">48dp</dimen>
     <!--标题问题的字体大小-->
     <dimen name="headTextSize">20sp</dimen>
+    <!--button的高度-->
+    <dimen name="buttonHeight">40dp</dimen>
 </resources>

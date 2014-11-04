@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ShareActionProvider;
@@ -14,6 +16,7 @@ import com.hao.money.fragment.Main_JL_Fragment;
 import com.hao.money.fragment.Main_JZ_Fragment;
 import com.hao.money.fragment.Main_mine_Fragment;
 import com.hao.money.R;
+import com.hao.money.util.Prompt;
 
 import java.util.List;
 
@@ -48,6 +51,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         float money = info.getFloat("sumMoney", -1);//获取保存的数据
         if (money == -1) {
             Log.e("chen", "没有数据");
+            inputMoney();//初始化身上的钱
         }
     }
 
@@ -55,6 +59,8 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
      * 第一次进入程序后让用户输入初始化的金额
      */
     private void inputMoney() {
+        View view = getLayoutInflater().inflate(R.layout.dialog_inputmoney, null);
+        Prompt.showDialog(this, view);
     }
 
     @Override
