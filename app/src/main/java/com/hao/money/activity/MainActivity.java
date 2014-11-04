@@ -1,4 +1,4 @@
-package com.hao.money;
+package com.hao.money.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -6,12 +6,18 @@ import android.support.v4.app.FragmentActivity;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.hao.money.fragment.BaseFragment;
+import com.hao.money.fragment.Main_JL_Fragment;
+import com.hao.money.fragment.Main_JZ_Fragment;
+import com.hao.money.fragment.Main_mine_Fragment;
+import com.hao.money.R;
+
 import java.util.List;
 
 /**
  * 主页的activity
  */
-public class Activity_Main extends FragmentActivity implements RadioGroup.OnCheckedChangeListener {
+public class MainActivity extends FragmentActivity implements RadioGroup.OnCheckedChangeListener {
     private RadioGroup rg_button;//首页的按钮组
     private android.support.v4.app.FragmentManager fm;//framgnet的管理器
 
@@ -50,13 +56,13 @@ public class Activity_Main extends FragmentActivity implements RadioGroup.OnChec
             BaseFragment fragment = null;
             switch (checkedId) {
                 case R.id.rb_jz:
-                    fragment = new Fragment_main_jz();
+                    fragment = new Main_JZ_Fragment();
                     break;
                 case R.id.rb_jl:
-                    fragment = new Fragment_main_jl();
+                    fragment = new Main_JL_Fragment();
                     break;
                 case R.id.rb_mine:
-                    fragment = new Fragment_main_mine();
+                    fragment = new Main_mine_Fragment();
                     break;
             }
             fragment.setClickId(checkedId);

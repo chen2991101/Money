@@ -1,4 +1,4 @@
-package com.hao.money;
+package com.hao.money.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -6,13 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.hao.money.R;
 import com.hao.money.util.Util;
 
 /**
  * 首页统计的fragment
  * Created by hao on 2014/11/2.
  */
-public class Fragment_main_mine extends BaseFragment {
+public class Main_mine_Fragment extends BaseFragment {
     private View view;
 
     @Override
