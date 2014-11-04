@@ -1,10 +1,13 @@
 package com.hao.money.activity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ShareActionProvider;
 
 import com.hao.money.fragment.BaseFragment;
 import com.hao.money.fragment.Main_JL_Fragment;
@@ -25,15 +28,33 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        init();
+    }
 
+    /**
+     * 初始化方法
+     */
+    private void init() {
         fm = getSupportFragmentManager();
 
         rg_button = (RadioGroup) findViewById(R.id.rg_button);
         rg_button.setOnCheckedChangeListener(this);
 
         //设置记账为选中
-        RadioButton rb = (RadioButton) findViewById(R.id.rb_jz);
+        RadioButton rb = (RadioButton) findViewById(R.id.rb_mine);
         rb.setChecked(true);
+
+        SharedPreferences info = getSharedPreferences("info", 0);
+        float money = info.getFloat("sumMoney", -1);//获取保存的数据
+        if (money == -1) {
+            Log.e("chen", "没有数据");
+        }
+    }
+
+    /**
+     * 第一次进入程序后让用户输入初始化的金额
+     */
+    private void inputMoney() {
     }
 
     @Override

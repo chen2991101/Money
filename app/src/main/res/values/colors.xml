@@ -4,9 +4,12 @@
     <color name="white">#ffffff</color>
     <!--分割线的颜色-->
     <color name="lineColor">#D9D9D9</color>
-
     <!--蓝色字体-->
     <color name="font_blur">#41BEE1</color>
     <!--灰色字体-->
     <color name="font_gray">#727171</color>
+    <!--按钮平时的颜色-->
+    <color name="buttonNormal">#7AD1EB</color>
+    <!--按钮点击的颜色-->
+    <color name="buttonPress">#56b7ec</color>
 </resources>

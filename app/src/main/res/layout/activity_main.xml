@@ -24,6 +24,12 @@
 
         <RadioButton
             style="@style/main_radio"
+            android:id="@+id/rb_mine"
+            android:drawableTop="@drawable/selector_mainactivity_count"
+            android:text="我的" />
+
+        <RadioButton
+            style="@style/main_radio"
             android:id="@+id/rb_jz"
             android:drawableTop="@drawable/selector_mainactivity_record"
             android:text="记账" />
@@ -34,10 +40,5 @@
             android:drawableTop="@drawable/selector_mainactivity_list"
             android:text="记录" />
 
-        <RadioButton
-            style="@style/main_radio"
-            android:id="@+id/rb_mine"
-            android:drawableTop="@drawable/selector_mainactivity_count"
-            android:text="我的" />
     </RadioGroup>
 </LinearLayout>
