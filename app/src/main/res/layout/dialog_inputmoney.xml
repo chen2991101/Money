@@ -17,7 +17,7 @@
     <EditText
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:padding="5dp"
+        android:padding="@dimen/edittextPadding"
         android:layout_height="wrap_content"
         android:background="@drawable/shape_editor_border"
         android:inputType="number" />
