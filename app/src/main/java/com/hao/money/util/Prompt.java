@@ -46,7 +46,7 @@ public class Prompt {
      * @param context
      * @param str
      */
-    public static void showTost(Context context, String str) {
+    public static void showToast(Context context, String str) {
         Toast.makeText(context, str,
                 android.widget.Toast.LENGTH_SHORT).show();
     }

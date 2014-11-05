@@ -1,10 +1,12 @@
 package com.hao.money.activity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -116,7 +118,33 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
             Prompt.closeDialog();
             main_mine_Fragment.refreashMoney(TextUtils.isEmpty(str) ? 0 : Float.parseFloat(str));//刷新我的金额
         } else {
-            Prompt.showTost(this, "请正确输入金额");
+            Prompt.showToast(this, "请正确输入金额");
+        }
+    }
+
+
+    /**
+     * 两次返回键退出应用
+     */
+    private long exitTime;
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                if (keyCode == KeyEvent.KEYCODE_BACK
+                        && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    if ((System.currentTimeMillis() - exitTime) > 2000) {
+                        Prompt.showToast(this, "再按一次返回键退出");
+                        exitTime = System.currentTimeMillis();
+                    } else {
+                        finish();
+                        System.exit(0);
+                    }
+                    return true;
+                }
+                return super.onKeyDown(keyCode, event);
+            default:
+                return super.onKeyDown(keyCode, event);
         }
     }
 }
