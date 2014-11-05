@@ -6,16 +6,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.ShareActionProvider;
 
+import com.hao.money.R;
 import com.hao.money.fragment.BaseFragment;
 import com.hao.money.fragment.Main_JL_Fragment;
 import com.hao.money.fragment.Main_JZ_Fragment;
 import com.hao.money.fragment.Main_mine_Fragment;
-import com.hao.money.R;
 import com.hao.money.util.Prompt;
 
 import java.util.List;
