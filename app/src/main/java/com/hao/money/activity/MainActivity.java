@@ -33,6 +33,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
     private Button bt_initMoney;
     private Main_mine_Fragment main_mine_Fragment;
     private float money;
+    private final String SUMMONEY = "sumMoney";//保存在xml文件中我的身价
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +51,8 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         rg_button = (RadioGroup) findViewById(R.id.rg_button);
         rg_button.setOnCheckedChangeListener(this);
 
-
         SharedPreferences info = getSharedPreferences("info", 0);
-        float m = info.getFloat("sumMoney", -1);//获取保存的数据
+        float m = info.getFloat(SUMMONEY, -1);//获取保存的数据
         if (m == -1) {
             initMoney();//初始化身上的钱
         }
@@ -115,8 +115,16 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         String str = et_initMoney.getText().toString();//用户输入的钱数
         if (TextUtils.isEmpty(str) || str.matches("^(([1-9]\\d{0,9})|0)(\\.\\d{1,2})?$")) {
             KeyboardUtil.closeKeyboard(this, et_initMoney);//关闭软键盘
+
+            float money = TextUtils.isEmpty(str) ? 0 : Float.parseFloat(str);//用户输入的金额
+
+            //把用户输入的金额写入到xml文件中
+            SharedPreferences info = getSharedPreferences("info", 0);
+            SharedPreferences.Editor editor = info.edit();
+            editor.putFloat(SUMMONEY, money).commit();
+
             Prompt.closeDialog();
-            main_mine_Fragment.refreashMoney(TextUtils.isEmpty(str) ? 0 : Float.parseFloat(str));//刷新我的金额
+            main_mine_Fragment.refreashMoney(money);//刷新我的金额
         } else {
             Prompt.showToast(this, "请正确输入金额");
         }
