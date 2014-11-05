@@ -27,6 +27,6 @@ public class Main_JZ_Fragment extends BaseFragment {
      * 初始化
      */
     private void init() {
-        Util.getInstance().setTitle("记账", view);//设置标题
+        Util.setTitle("记账", view);//设置标题
     }
 }

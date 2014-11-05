@@ -27,6 +27,6 @@ public class Main_mine_Fragment extends BaseFragment {
      * 初始化
      */
     private void init() {
-        Util.getInstance().setTitle("我的", view);//设置标题
+        Util.setTitle("我的", view);//设置标题
     }
 }

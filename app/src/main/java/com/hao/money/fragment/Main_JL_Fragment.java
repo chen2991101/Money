@@ -27,7 +27,7 @@ public class Main_JL_Fragment extends BaseFragment {
      * 初始化
      */
     private void init() {
-        
-        Util.getInstance().setTitle("记录", view);//设置标题
+
+        Util.setTitle("记录", view);//设置标题
     }
 }
