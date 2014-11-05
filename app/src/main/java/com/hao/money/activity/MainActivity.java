@@ -1,14 +1,11 @@
 package com.hao.money.activity;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -32,6 +29,8 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
     private android.support.v4.app.FragmentManager fm;//framgnet的管理器
     private EditText et_initMoney;
     private Button bt_initMoney;
+    private Main_mine_Fragment main_mine_Fragment;
+    private float money;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,15 +48,18 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         rg_button = (RadioGroup) findViewById(R.id.rg_button);
         rg_button.setOnCheckedChangeListener(this);
 
+
+        SharedPreferences info = getSharedPreferences("info", 0);
+        float m = info.getFloat("sumMoney", -1);//获取保存的数据
+        if (m == -1) {
+            initMoney();//初始化身上的钱
+        }
+        money = m == -1 ? 0 : m;//获取我当前的金额
+
         //设置记账为选中
         RadioButton rb = (RadioButton) findViewById(R.id.rb_mine);
         rb.setChecked(true);
 
-        SharedPreferences info = getSharedPreferences("info", 0);
-        float money = info.getFloat("sumMoney", -1);//获取保存的数据
-        if (money == -1) {
-            initMoney();//初始化身上的钱
-        }
     }
 
     /**
@@ -97,7 +99,8 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
                     fragment = new Main_JL_Fragment();
                     break;
                 case R.id.rb_mine:
-                    fragment = new Main_mine_Fragment();
+                    main_mine_Fragment = new Main_mine_Fragment(money);
+                    fragment = main_mine_Fragment;
                     break;
             }
             fragment.setClickId(checkedId);
@@ -111,6 +114,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         if (TextUtils.isEmpty(str) || str.matches("^(([1-9]\\d{0,9})|0)(\\.\\d{1,2})?$")) {
             KeyboardUtil.closeKeyboard(this, et_initMoney);//关闭软键盘
             Prompt.closeDialog();
+            main_mine_Fragment.refreashMoney(TextUtils.isEmpty(str) ? 0 : Float.parseFloat(str));//刷新我的金额
         } else {
             Prompt.showTost(this, "请正确输入金额");
         }

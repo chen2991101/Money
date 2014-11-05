@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.hao.money.R;
 import com.hao.money.util.Util;
@@ -15,10 +16,16 @@ import com.hao.money.util.Util;
  */
 public class Main_mine_Fragment extends BaseFragment {
     private View view;
+    private TextView tv_myMoney;
+    private float money;//金额
+
+    public Main_mine_Fragment(float money) {
+        this.money = money;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_main_tj, null);
+        view = inflater.inflate(R.layout.fragment_main_mine, null);
         init();
         return view;
     }
@@ -28,5 +35,16 @@ public class Main_mine_Fragment extends BaseFragment {
      */
     private void init() {
         Util.setTitle("我的", view);//设置标题
+        tv_myMoney = (TextView) view.findViewById(R.id.tv_myMoney);//我的金额
+        tv_myMoney.setText(money + "");//设置我的身价
+    }
+
+    /**
+     * 刷新我的金额
+     *
+     * @param money 金额
+     */
+    public void refreashMoney(float money) {
+        tv_myMoney.setText(money + "");
     }
 }
