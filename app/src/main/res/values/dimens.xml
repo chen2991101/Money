@@ -8,6 +8,6 @@
     <dimen name="headTextSize">20sp</dimen>
     <!--button的高度-->
     <dimen name="buttonHeight">40dp</dimen>
-    <!--edittext的padding数-->
-    <dimen name="edittextPadding">5dp</dimen>
+    <!--edittext的高度-->
+    <dimen name="editHeight">35dp</dimen>
 </resources>

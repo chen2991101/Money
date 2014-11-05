@@ -1,0 +1,35 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:minHeight="100dp"
+    android:minWidth="250dp"
+    android:padding="10dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:gravity="center"
+        android:text="请输入目前的身价"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/et_initMoney"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/editHeight"
+        android:singleLine="true"
+        android:background="@drawable/shape_editor_border"
+        android:inputType="numberDecimal" />
+
+    <Button
+        android:id="@+id/bt_initMoney"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="确认"
+        android:textColor="@color/white"
+        android:background="@drawable/selector_button"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/buttonHeight" />
+
+</LinearLayout>

@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.hao.money.R;
 
@@ -20,10 +21,33 @@ public class Prompt {
      *
      * @param context
      * @param view
+     * @param cancelable
      */
-    public static void showDialog(Context context, View view) {
+    public static void showDialog(Context context, View view, boolean cancelable) {
         dialog = new Dialog(context, R.style.loading_dialog);// 创建自定义样式dialog
         dialog.setContentView(view);
+        dialog.setCancelable(cancelable);
         dialog.show();
+    }
+
+    /**
+     * 关闭对话框
+     */
+    public static void closeDialog() {
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
+    }
+
+
+    /**
+     * 显示提示框
+     *
+     * @param context
+     * @param str
+     */
+    public static void showTost(Context context, String str) {
+        Toast.makeText(context, str,
+                android.widget.Toast.LENGTH_SHORT).show();
     }
 }
