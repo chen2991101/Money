@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.hao.money.R;
 import com.hao.money.util.Util;
@@ -29,5 +30,6 @@ public class Main_JL_Fragment extends BaseFragment {
     private void init() {
 
         Util.setTitle("记录", view);//设置标题
+
     }
 }

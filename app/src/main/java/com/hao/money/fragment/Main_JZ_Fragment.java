@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.hao.money.R;
 import com.hao.money.util.Util;
@@ -15,6 +16,7 @@ import com.hao.money.util.Util;
  */
 public class Main_JZ_Fragment extends BaseFragment {
     private View view;
+    private TextView tv_date;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -28,5 +30,8 @@ public class Main_JZ_Fragment extends BaseFragment {
      */
     private void init() {
         Util.setTitle("记账", view);//设置标题
+
+        tv_date = (TextView) view.findViewById(R.id.tv_date);//显示的日期
+        tv_date.setText("2014-11-12 14:35");
     }
 }
