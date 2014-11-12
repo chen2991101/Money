@@ -3,13 +3,16 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <include layout="@layout/include_head" />
+    <include
+        android:id="@+id/il_head"
+        layout="@layout/include_head" />
 
     <TableLayout
-        android:layout_centerInParent="true"
+        android:layout_below="@id/il_head"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
         android:layout_width="250dp"
         android:layout_height="wrap_content">
-
 
         <TableRow>
 
@@ -84,6 +87,19 @@
                 android:inputType="text"
                 android:layout_weight="2"
                 android:layout_height="wrap_content" />
+        </TableRow>
+
+        <TableRow android:layout_marginTop="5dp">
+
+            <Button
+                android:id="@+id/bt_config"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                style="@style/button"
+                android:text="确认" />
         </TableRow>
     </TableLayout>
 </RelativeLayout>

@@ -7,14 +7,16 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.hao.money.R;
+import com.hao.money.util.Prompt;
 import com.hao.money.util.Util;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
@@ -24,6 +26,9 @@ import java.util.Calendar;
 public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListener {
     private View view;
     private EditText et_money, et_time, et_date;
+    private Button bt_config;
+    private Calendar calendar;//日期
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");//时间转换器
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -37,6 +42,9 @@ public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListen
      */
     private void init() {
         Util.setTitle("记账", view);//设置标题
+
+        calendar = Calendar.getInstance();//初始化日期
+
         et_money = (EditText) view.findViewById(R.id.et_money);//记账的金额
 
         et_date = (EditText) view.findViewById(R.id.et_date);//显示的日期
@@ -45,6 +53,21 @@ public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListen
         et_time = (EditText) view.findViewById(R.id.et_time);//时间选择
         et_time.setOnClickListener(this);
 
+        bt_config = (Button) view.findViewById(R.id.bt_config);
+        bt_config.setOnClickListener(this);
+
+        initDateTime();//初始化日期和时间
+    }
+
+    /**
+     * 初始化日期和时间
+     */
+    private void initDateTime() {
+        String dateTime = dateFormat.format(calendar.getTime());//格式化时间
+        String[] timeArray = dateTime.split(" ");//把日期和时间分开
+
+        et_date.setText(timeArray[0]);//设置日期
+        et_time.setText(timeArray[1]);//设置时间
     }
 
     @Override
@@ -56,19 +79,32 @@ public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListen
             case R.id.et_time:
                 selectTime();//选择时间
                 break;
+            case R.id.bt_config:
+                config();
+                break;
         }
 
+    }
+
+    /**
+     * 点击确认
+     */
+    private void config() {
+        initDateTime();
+        Prompt.showToast(getActivity(), "你好");
     }
 
     /**
      * 选择时间
      */
     private void selectTime() {
-        Calendar calendar = Calendar.getInstance();
         TimePickerDialog dialog = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
-                et_time.setText(hourOfDay + ":" + minute);
+                //设置时间
+                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                calendar.set(Calendar.MINUTE, minute);
+                et_time.setText(hourOfDay + ":" + formatNumber(minute + ""));
             }
         },
                 calendar.get(Calendar.HOUR_OF_DAY),
@@ -82,12 +118,12 @@ public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListen
      * 选择日期
      */
     private void selectDate() {
-        Calendar calendar = Calendar.getInstance();
         DatePickerDialog dialog = new DatePickerDialog(getActivity(),
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                        et_date.setText(year + "-" + month + "-" + day);
+                        calendar.set(year, month, day);//设置新的日期
+                        et_date.setText(year + "-" + formatNumber(month + 1 + "") + "-" + day);
                     }
                 },
                 calendar.get(Calendar.YEAR),
@@ -95,5 +131,18 @@ public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListen
                 calendar.get(Calendar.DAY_OF_MONTH)
         );
         dialog.show();
+    }
+
+    /**
+     * 位数不够的话前面补0
+     *
+     * @param str
+     * @return
+     */
+    private String formatNumber(String str) {
+        if (str.length() == 1) {
+            return "0" + str;
+        }
+        return str;
     }
 }
