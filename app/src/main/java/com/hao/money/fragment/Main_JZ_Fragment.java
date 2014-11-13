@@ -2,6 +2,9 @@ package com.hao.money.fragment;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -13,6 +16,7 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 
 import com.hao.money.R;
+import com.hao.money.dao.DatabaseHelper;
 import com.hao.money.util.Prompt;
 import com.hao.money.util.Util;
 
@@ -106,6 +110,14 @@ public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListen
     private void config() {
         initDateTime();
         Prompt.showToast(getActivity(), "你好");
+        DatabaseHelper helper = new DatabaseHelper(getActivity());
+        SQLiteDatabase database = helper.getWritableDatabase();
+        ContentValues content = new ContentValues();
+        content.put("name", "生活费");
+        content.put("count", 0);
+        database.insert("tb_history", null, content);
+        database.close();
+        helper.close();
     }
 
     /**

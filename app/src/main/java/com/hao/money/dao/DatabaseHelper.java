@@ -20,7 +20,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         //创建用途历史表
-        String sql = "CREATE TABLE `tb_history` (`id`  int(11) NULL AUTO_INCREMENT ,`name`  varchar(225) NULL ,`count`  int(11) NULL ,PRIMARY KEY (`id`));";
+        String sql = "CREATE TABLE tb_history (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR, count INTEGER)";
         db.execSQL(sql);
     }
 
