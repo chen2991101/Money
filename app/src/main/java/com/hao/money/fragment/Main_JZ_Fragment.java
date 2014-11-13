@@ -26,7 +26,7 @@ import java.util.Calendar;
 public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListener {
     private View view;
     private EditText et_money, et_time, et_date;
-    private Button bt_config;
+    private Button bt_config, bt_history;
     private Calendar calendar;//日期
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");//时间转换器
 
@@ -56,6 +56,10 @@ public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListen
         bt_config = (Button) view.findViewById(R.id.bt_config);
         bt_config.setOnClickListener(this);
 
+        //选择用途历史按钮
+        bt_history = (Button) view.findViewById(R.id.bt_history);
+        bt_history.setOnClickListener(this);
+
         initDateTime();//初始化日期和时间
     }
 
@@ -82,8 +86,18 @@ public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListen
             case R.id.bt_config:
                 config();
                 break;
+            case R.id.bt_history:
+                selectHistory();//选择历史用途
+                break;
         }
 
+    }
+
+    /**
+     * 选择历史按钮
+     */
+    private void selectHistory() {
+        Prompt.showToast(getActivity(), "选择历史按钮");
     }
 
     /**
@@ -104,7 +118,7 @@ public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListen
                 //设置时间
                 calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 calendar.set(Calendar.MINUTE, minute);
-                et_time.setText(hourOfDay + ":" + formatNumber(minute + ""));
+                et_time.setText(formatNumber(hourOfDay) + ":" + formatNumber(minute));
             }
         },
                 calendar.get(Calendar.HOUR_OF_DAY),
@@ -123,7 +137,7 @@ public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListen
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                         calendar.set(year, month, day);//设置新的日期
-                        et_date.setText(year + "-" + formatNumber(month + 1 + "") + "-" + day);
+                        et_date.setText(year + "-" + formatNumber(month + 1) + "-" + formatNumber(day));
                     }
                 },
                 calendar.get(Calendar.YEAR),
@@ -133,13 +147,15 @@ public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListen
         dialog.show();
     }
 
+
     /**
      * 位数不够的话前面补0
      *
-     * @param str
+     * @param number 需要格式化的数字
      * @return
      */
-    private String formatNumber(String str) {
+    private String formatNumber(int number) {
+        String str = number + "";
         if (str.length() == 1) {
             return "0" + str;
         }
