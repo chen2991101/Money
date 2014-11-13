@@ -35,7 +35,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
     private Button bt_initMoney;
     private Main_mine_Fragment main_mine_Fragment;
     private float money;
-    private final String SUMMONEY = "sumMoney";//保存在xml文件中我的身价
+    private static final String SUMMONEY = "sumMoney";//保存在xml文件中我的身价
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +102,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
                 case R.id.rb_jl:
                     fragment = new Main_JL_Fragment();
                     break;
-                case R.id.rb_mine:
+                default:
                     main_mine_Fragment = new Main_mine_Fragment(money);
                     fragment = main_mine_Fragment;
                     break;
@@ -148,7 +148,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
                         exitTime = System.currentTimeMillis();
                     } else {
                         finish();
-                        System.exit(0);
+                        android.os.Process.killProcess(android.os.Process.myPid());
                     }
                     return true;
                 }
