@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,9 @@ import android.widget.TimePicker;
 
 import com.hao.money.R;
 import com.hao.money.dao.DatabaseHelper;
+import com.hao.money.dao.HistoryDao;
 import com.hao.money.util.Prompt;
+import com.hao.money.util.TestUtil;
 import com.hao.money.util.Util;
 
 import java.text.SimpleDateFormat;
@@ -29,7 +32,7 @@ import java.util.Calendar;
  */
 public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListener {
     private View view;
-    private EditText et_money, et_time, et_date;
+    private EditText et_money, et_time, et_date, et_remark;
     private Button bt_config, bt_history;
     private Calendar calendar;//日期
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");//时间转换器
@@ -50,6 +53,7 @@ public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListen
         calendar = Calendar.getInstance();//初始化日期
 
         et_money = (EditText) view.findViewById(R.id.et_money);//记账的金额
+        et_remark = (EditText) view.findViewById(R.id.et_remark);//用途
 
         et_date = (EditText) view.findViewById(R.id.et_date);//显示的日期
         et_date.setOnClickListener(this);
@@ -108,16 +112,22 @@ public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListen
      * 点击确认
      */
     private void config() {
-        initDateTime();
-        Prompt.showToast(getActivity(), "你好");
-        DatabaseHelper helper = new DatabaseHelper(getActivity());
-        SQLiteDatabase database = helper.getWritableDatabase();
-        ContentValues content = new ContentValues();
-        content.put("name", "生活费");
-        content.put("count", 0);
-        database.insert("tb_history", null, content);
-        database.close();
-        helper.close();
+        String money = et_money.getText().toString().trim();//输入的金额
+        String remark = et_remark.getText().toString().trim();//备注
+
+        //验证金额
+        if (TextUtils.isEmpty(money) && !TestUtil.testMoney(money)) {
+            Prompt.showToast(getActivity(), "请输入正确的金额");
+            return;
+        }
+
+        if (TextUtils.isEmpty(remark)) {
+            Prompt.showToast(getActivity(), "请输入用途");
+            return;
+        }
+
+        HistoryDao.add(getActivity(), remark);
+
     }
 
     /**

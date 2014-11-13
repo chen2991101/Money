@@ -1,7 +1,5 @@
 package com.hao.money.activity;
 
-import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 
 import com.hao.money.R;
 import com.hao.money.fragment.BaseFragment;
@@ -21,6 +18,7 @@ import com.hao.money.fragment.Main_JL_Fragment;
 import com.hao.money.fragment.Main_JZ_Fragment;
 import com.hao.money.fragment.Main_mine_Fragment;
 import com.hao.money.util.KeyboardUtil;
+import com.hao.money.util.TestUtil;
 import com.hao.money.util.Prompt;
 
 import java.util.List;
@@ -115,7 +113,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
     @Override
     public void onClick(View v) {
         String str = et_initMoney.getText().toString();//用户输入的钱数
-        if (TextUtils.isEmpty(str) || str.matches("^(([1-9]\\d{0,9})|0)(\\.\\d{1,2})?$")) {
+        if (TextUtils.isEmpty(str) || TestUtil.testMoney(str)) {
             KeyboardUtil.closeKeyboard(this, et_initMoney);//关闭软键盘
 
             float money = TextUtils.isEmpty(str) ? 0 : Float.parseFloat(str);//用户输入的金额
