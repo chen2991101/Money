@@ -3,6 +3,7 @@ package com.hao.money.fragment;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 
 import com.hao.money.R;
+import com.hao.money.activity.SelectHistoryActivity;
 import com.hao.money.dao.DatabaseHelper;
 import com.hao.money.dao.HistoryDao;
 import com.hao.money.util.Prompt;
@@ -95,19 +97,10 @@ public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListen
                 config();
                 break;
             case R.id.bt_history:
-                selectHistory();//选择历史用途
+                startActivityForResult(new Intent(getActivity(), SelectHistoryActivity.class), 1);//跳转到历史记录
                 break;
         }
 
-    }
-
-    /**
-     * 选择历史按钮(跳转到选择历史记录的页面)
-     */
-    private void selectHistory() {
-
-        Prompt.showToast(getActivity(), "选择历史按钮");
-        
     }
 
     /**

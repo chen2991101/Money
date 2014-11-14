@@ -15,6 +15,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!--选择历史用途-->
+        <activity
+            android:name=".activity.SelectHistoryActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

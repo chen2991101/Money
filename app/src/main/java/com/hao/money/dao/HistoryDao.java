@@ -5,6 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * 用途历史的dao
  * Created by hao on 2014/11/13.
@@ -25,7 +29,7 @@ public class HistoryDao {
         if (getCountByName(context, remark) == 0) {
             //如果还没有这个历史就添加
             content.put("name", remark);
-            content.put("count", 0);
+            content.put("count", 1);
             database.insert(tableName, null, content);
         } else {
             //如果有直接修改次数
@@ -54,6 +58,33 @@ public class HistoryDao {
         database.close();
         helper.close();
         return count;
+    }
+
+
+    /**
+     * 根据使用的次数倒序查询所有的历史记录
+     *
+     * @param context
+     * @return
+     */
+    public static JSONArray findAllOrderByCount(Context context) {
+        JSONArray array = new JSONArray();//需要返回的jaonArray
+        DatabaseHelper helper = new DatabaseHelper(context);
+        SQLiteDatabase database = helper.getReadableDatabase();
+        Cursor cursor = database.query(tableName, new String[]{"*"}, null, null, null, null, "count desc");
+        while (cursor.moveToNext()) {
+            JSONObject obj = new JSONObject();
+            try {
+                obj.put("name", cursor.getString(cursor.getColumnIndex("name")));//设置名称
+                obj.put("count", cursor.getString(cursor.getColumnIndex("count")));//设置使用次数
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            array.put(obj);
+        }
+        database.close();
+        helper.close();
+        return array;
     }
 
 }
