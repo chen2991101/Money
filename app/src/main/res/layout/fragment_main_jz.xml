@@ -1,113 +1,121 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/white">
 
     <include
         android:id="@+id/il_head"
         layout="@layout/include_head" />
 
-    <TableLayout
-        android:layout_below="@id/il_head"
+    <LinearLayout
         android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true"
-        android:layout_width="250dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="@dimen/jz_width"
         android:layout_height="wrap_content">
 
-        <TableRow>
+        <TextView
+            android:text="日期："
+            android:gravity="right"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" />
 
-            <TextView
-                android:text="日期："
-                android:gravity="right"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content" />
+        <EditText
+            android:id="@+id/et_date"
+            android:focusable="false"
+            android:singleLine="true"
+            android:background="@drawable/shape_editor_border"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
-            <EditText
-                android:id="@+id/et_date"
-                android:focusable="false"
-                android:singleLine="true"
-                android:background="@drawable/shape_editor_border"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content" />
-        </TableRow>
 
-        <TableRow android:layout_marginTop="5dp">
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="@dimen/jz_width"
+        android:layout_height="wrap_content">
 
-            <TextView
-                android:text="时间："
-                android:gravity="right"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content" />
+        <TextView
+            android:text="时间："
+            android:gravity="right"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" />
 
-            <EditText
-                android:id="@+id/et_time"
-                android:focusable="false"
-                android:singleLine="true"
-                android:background="@drawable/shape_editor_border"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content" />
-        </TableRow>
+        <EditText
+            android:id="@+id/et_time"
+            android:focusable="false"
+            android:singleLine="true"
+            android:background="@drawable/shape_editor_border"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
-        <TableRow android:layout_marginTop="5dp">
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="@dimen/jz_width"
+        android:layout_height="wrap_content">
 
-            <TextView
-                android:text="金额："
-                android:gravity="right"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content" />
+        <TextView
+            android:text="金额："
+            android:gravity="right"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" />
 
-            <EditText
-                android:id="@+id/et_money"
-                android:singleLine="true"
-                android:background="@drawable/shape_editor_border"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:inputType="numberDecimal"
-                android:layout_height="wrap_content" />
-        </TableRow>
+        <EditText
+            android:id="@+id/et_money"
+            android:singleLine="true"
+            android:background="@drawable/shape_editor_border"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:inputType="numberDecimal"
+            android:layout_height="wrap_content" />
 
-        <TableRow android:layout_marginTop="5dp">
+    </LinearLayout>
 
-            <TextView
-                android:text="用途："
-                android:gravity="right"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content" />
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="@dimen/jz_width"
+        android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/et_remark"
-                android:singleLine="true"
-                android:background="@drawable/shape_editor_border"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:inputType="text"
-                android:layout_height="wrap_content" />
+        <TextView
+            android:text="用途："
+            android:gravity="right"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" />
 
-            <Button
-                android:id="@+id/bt_history"
-                android:layout_gravity="center_vertical"
-                android:text="历史"
-                android:paddingRight="5dp"
-                android:paddingLeft="5dp"
-                android:textColor="@color/white"
-                android:layout_height="match_parent"
-                android:background="@drawable/selector_button"
-                android:layout_width="wrap_content" />
-        </TableRow>
+        <EditText
+            android:id="@+id/et_remark"
+            android:singleLine="true"
+            android:background="@drawable/shape_editor_border"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:inputType="text"
+            android:layout_height="wrap_content" />
 
-        <TableRow android:layout_marginTop="5dp">
+        <Button
+            android:id="@+id/bt_history"
+            android:text="历史"
+            android:paddingRight="5dp"
+            android:paddingLeft="5dp"
+            android:textColor="@color/white"
+            android:layout_height="match_parent"
+            android:background="@drawable/selector_button"
+            android:layout_width="wrap_content" />
 
-            <Button
-                android:id="@+id/bt_config"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                style="@style/button"
-                android:text="确认" />
-        </TableRow>
-    </TableLayout>
-</RelativeLayout>
+    </LinearLayout>
+
+    <Button
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/bt_config"
+        android:layout_width="230dp"
+        android:layout_height="@dimen/buttonHeight"
+        style="@style/button"
+        android:text="确认" />
+
+</LinearLayout>

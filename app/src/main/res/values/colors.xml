@@ -9,7 +9,7 @@
     <!--灰色字体-->
     <color name="font_gray">#727171</color>
     <!--按钮平时的颜色-->
-    <color name="buttonNormal">#7AD1EB</color>
+    <color name="buttonNormal">#56b7ec</color>
     <!--按钮点击的颜色-->
-    <color name="buttonPress">#56b7ec</color>
+    <color name="buttonPress">#7AD1EB</color>
 </resources>

@@ -10,4 +10,7 @@
     <dimen name="buttonHeight">40dp</dimen>
     <!--edittext的高度-->
     <dimen name="editHeight">35dp</dimen>
+
+    <!--记账的表格的宽度-->
+    <dimen name="jz_width">250dp</dimen>
 </resources>
