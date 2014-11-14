@@ -102,10 +102,12 @@ public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListen
     }
 
     /**
-     * 选择历史按钮
+     * 选择历史按钮(跳转到选择历史记录的页面)
      */
     private void selectHistory() {
+
         Prompt.showToast(getActivity(), "选择历史按钮");
+        
     }
 
     /**
