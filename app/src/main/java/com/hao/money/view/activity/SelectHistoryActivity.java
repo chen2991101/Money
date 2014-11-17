@@ -1,37 +1,19 @@
-package com.hao.money.activity;
+package com.hao.money.view.activity;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 
 import com.hao.money.R;
 import com.hao.money.dao.HistoryDao;
-import com.hao.money.fragment.BaseFragment;
-import com.hao.money.fragment.Main_JL_Fragment;
-import com.hao.money.fragment.Main_JZ_Fragment;
-import com.hao.money.fragment.Main_mine_Fragment;
-import com.hao.money.util.KeyboardUtil;
-import com.hao.money.util.Prompt;
-import com.hao.money.util.TestUtil;
 import com.hao.money.util.Util;
 
 import org.json.JSONArray;
-
-import java.util.List;
 
 /**
  * 选择历史用途的activity

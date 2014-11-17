@@ -1,4 +1,4 @@
-package com.hao.money.fragment;
+package com.hao.money.view.fragment;
 
 import android.support.v4.app.Fragment;
 

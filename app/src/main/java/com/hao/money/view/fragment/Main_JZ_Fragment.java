@@ -1,11 +1,8 @@
-package com.hao.money.fragment;
+package com.hao.money.view.fragment;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -18,8 +15,7 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 
 import com.hao.money.R;
-import com.hao.money.activity.SelectHistoryActivity;
-import com.hao.money.dao.DatabaseHelper;
+import com.hao.money.view.activity.SelectHistoryActivity;
 import com.hao.money.dao.HistoryDao;
 import com.hao.money.util.Prompt;
 import com.hao.money.util.TestUtil;
