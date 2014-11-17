@@ -1,5 +1,6 @@
 package com.hao.money.view.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -30,6 +31,7 @@ import java.util.zip.Inflater;
  * 首页记账的fragment
  * Created by hao on 2014/11/2.
  */
+@SuppressLint("ValidFragment")
 public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListener {
     private View view;
     private EditText et_money, et_time, et_date, et_remark;
