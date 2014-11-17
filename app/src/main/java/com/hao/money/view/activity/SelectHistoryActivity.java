@@ -44,7 +44,8 @@ public class SelectHistoryActivity extends Activity {
             @Override
             public void run() {
                 super.run();
-                array = HistoryDao.findAllOrderByCount(SelectHistoryActivity.this);//获取需要展示的数据
+                HistoryDao historyDao = new HistoryDao();
+                array = historyDao.findAllOrderByCount(SelectHistoryActivity.this);//获取需要展示的数据
                 handler.sendEmptyMessage(1);
             }
         }.start();

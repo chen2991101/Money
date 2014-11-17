@@ -13,7 +13,7 @@ import org.json.JSONObject;
  * 用途历史的dao
  * Created by hao on 2014/11/13.
  */
-public class HistoryDao {
+public class HistoryDao extends BaseDao {
 
     private static final String tableName = "tb_history";
 
@@ -22,11 +22,10 @@ public class HistoryDao {
      *
      * @param remark
      */
-    public static void add(Context context, String remark) {
-        DatabaseHelper helper = new DatabaseHelper(context);
-        SQLiteDatabase database = helper.getWritableDatabase();
+    public void add(Context context, String remark) {
+        open(context);
         ContentValues content = new ContentValues();
-        if (getCountByName(context, remark) == 0) {
+        if (count(remark) == 0) {
             //如果还没有这个历史就添加
             content.put("name", remark);
             content.put("count", 1);
@@ -35,8 +34,7 @@ public class HistoryDao {
             //如果有直接修改次数
             database.execSQL("update " + tableName + " set count=count+1 where name='" + remark + "'");
         }
-        database.close();
-        helper.close();
+        close();
     }
 
 
@@ -46,17 +44,26 @@ public class HistoryDao {
      * @param context
      * @param name
      */
-    public static int getCountByName(Context context, String name) {
-        DatabaseHelper helper = new DatabaseHelper(context);
-        SQLiteDatabase database = helper.getReadableDatabase();
+    public int getCountByName(Context context, String name) {
+        open(context);
+        int count = count(name);
+        close();
+        return count;
+    }
+
+    /**
+     * 根据名字获取使用的次数
+     *
+     * @param name
+     * @return
+     */
+    private int count(String name) {
         int count = 0;
         Cursor cursor = database.query(tableName, new String[]{"count(id)"}, "name=?", new String[]{name}, null, null, null);
         if (cursor.getCount() == 1) {
             cursor.moveToNext();
             count = cursor.getInt(0);
         }
-        database.close();
-        helper.close();
         return count;
     }
 
@@ -67,10 +74,9 @@ public class HistoryDao {
      * @param context
      * @return
      */
-    public static JSONArray findAllOrderByCount(Context context) {
+    public JSONArray findAllOrderByCount(Context context) {
         JSONArray array = new JSONArray();//需要返回的jaonArray
-        DatabaseHelper helper = new DatabaseHelper(context);
-        SQLiteDatabase database = helper.getReadableDatabase();
+        open(context);
         Cursor cursor = database.query(tableName, new String[]{"*"}, null, null, null, null, "count desc");
         while (cursor.moveToNext()) {
             JSONObject obj = new JSONObject();
@@ -82,9 +88,7 @@ public class HistoryDao {
             }
             array.put(obj);
         }
-        database.close();
-        helper.close();
+        close();
         return array;
     }
-
 }

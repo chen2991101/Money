@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 
 import com.hao.money.R;
+import com.hao.money.service.MainService;
 import com.hao.money.view.activity.SelectHistoryActivity;
 import com.hao.money.dao.HistoryDao;
 import com.hao.money.util.Prompt;
@@ -35,6 +36,11 @@ public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListen
     private Button bt_config, bt_history;
     private Calendar calendar;//日期
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");//时间转换器
+    private MainService mainService;
+
+    public Main_JZ_Fragment(MainService mainService) {
+        this.mainService = mainService;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -91,34 +97,12 @@ public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListen
                 selectTime();//选择时间
                 break;
             case R.id.bt_config:
-                config();
+                mainService.jz(et_date, et_time, et_money, et_remark);//记账
                 break;
             case R.id.bt_history:
                 startActivityForResult(new Intent(getActivity(), SelectHistoryActivity.class), 1);//跳转到历史记录
                 break;
         }
-
-    }
-
-    /**
-     * 点击确认
-     */
-    private void config() {
-        String money = et_money.getText().toString().trim();//输入的金额
-        String remark = et_remark.getText().toString().trim();//备注
-
-        //验证金额
-        if (TextUtils.isEmpty(money) && !TestUtil.testMoney(money)) {
-            Prompt.showToast(getActivity(), "请输入正确的金额");
-            return;
-        }
-
-        if (TextUtils.isEmpty(remark)) {
-            Prompt.showToast(getActivity(), "请输入用途");
-            return;
-        }
-
-        HistoryDao.add(getActivity(), remark);
 
     }
 

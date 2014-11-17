@@ -13,6 +13,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.hao.money.R;
+import com.hao.money.service.MainService;
 import com.hao.money.view.fragment.BaseFragment;
 import com.hao.money.view.fragment.Main_JL_Fragment;
 import com.hao.money.view.fragment.Main_JZ_Fragment;
@@ -34,6 +35,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
     private Main_mine_Fragment main_mine_Fragment;
     private float money;
     private static final String SUMMONEY = "sumMoney";//保存在xml文件中我的身价
+    private MainService mainService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
      * 初始化方法
      */
     private void init() {
+        mainService = new MainService(this);//新建service类
         fm = getSupportFragmentManager();
 
         rg_button = (RadioGroup) findViewById(R.id.rg_button);
@@ -95,7 +98,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
             BaseFragment fragment = null;
             switch (checkedId) {
                 case R.id.rb_jz:
-                    fragment = new Main_JZ_Fragment();
+                    fragment = new Main_JZ_Fragment(mainService);
                     break;
                 case R.id.rb_jl:
                     fragment = new Main_JL_Fragment();
