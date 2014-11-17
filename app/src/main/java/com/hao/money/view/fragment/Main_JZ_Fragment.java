@@ -13,7 +13,6 @@ import android.widget.RadioGroup;
 
 import com.hao.money.R;
 import com.hao.money.service.JzService;
-import com.hao.money.util.Prompt;
 import com.hao.money.util.Util;
 import com.hao.money.view.activity.SelectHistoryActivity;
 
@@ -107,5 +106,4 @@ public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListen
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         type = checkedId == R.id.rb_out;
     }
-
 }

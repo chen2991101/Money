@@ -14,7 +14,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.hao.money.R;
-import com.hao.money.util.KeyboardUtil;
 import com.hao.money.util.Prompt;
 import com.hao.money.util.TestUtil;
 import com.hao.money.view.fragment.BaseFragment;

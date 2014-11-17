@@ -60,7 +60,7 @@ public class HistoryDao extends BaseDao {
      */
     private int count(String name, boolean type) {
         int count = 0;
-        Cursor cursor = database.query(tableName, new String[]{"count(id)"}, "name=? and type=?", new String[]{name, type + ""}, null, null, null);
+        Cursor cursor = database.query(tableName, new String[]{"count(id)"}, "name=? and type=?", new String[]{name, type ? "1" : "0"}, null, null, null);
         if (cursor.getCount() == 1) {
             cursor.moveToNext();
             count = cursor.getInt(0);
@@ -91,5 +91,18 @@ public class HistoryDao extends BaseDao {
         }
         close();
         return array;
+    }
+
+
+    /**
+     * 根据id删除历史记录
+     *
+     * @param context
+     * @param id
+     */
+    public void deleteById(Context context, String id) {
+        open(context);
+        database.delete(tableName, "id=?", new String[]{id});
+        close();
     }
 }
