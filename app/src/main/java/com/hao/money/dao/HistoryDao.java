@@ -22,10 +22,10 @@ public class HistoryDao extends BaseDao {
      *
      * @param remark
      */
-    public void add(Context context, String remark) {
+    public void add(Context context, String remark, boolean isSelect) {
         open(context);
         ContentValues content = new ContentValues();
-        if (count(remark) == 0) {
+        if (!isSelect && count(remark) == 0) {
             //如果还没有这个历史就添加
             content.put("name", remark);
             content.put("count", 1);

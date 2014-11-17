@@ -1,5 +1,6 @@
 package com.hao.money.view.activity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -36,6 +37,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
     private float money;
     private static final String SUMMONEY = "sumMoney";//保存在xml文件中我的身价
     private MainService mainService;
+    private Main_JZ_Fragment main_JZ_Fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +100,8 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
             BaseFragment fragment = null;
             switch (checkedId) {
                 case R.id.rb_jz:
-                    fragment = new Main_JZ_Fragment(mainService);
+                    main_JZ_Fragment = new Main_JZ_Fragment(mainService);
+                    fragment = main_JZ_Fragment;
                     break;
                 case R.id.rb_jl:
                     fragment = new Main_JL_Fragment();
@@ -156,6 +159,15 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
                 return super.onKeyDown(keyCode, event);
             default:
                 return super.onKeyDown(keyCode, event);
+        }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 1) {
+            main_JZ_Fragment.setRemark(data.getStringExtra("remark"));//选择历史后填充到统计的输入框中
         }
     }
 }

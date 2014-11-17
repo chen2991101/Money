@@ -35,8 +35,8 @@ public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListen
     private EditText et_money, et_time, et_date, et_remark;
     private Button bt_config, bt_history;
     private Calendar calendar;//日期
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");//时间转换器
     private MainService mainService;
+    private boolean isSelect = false;//用户是否是选择的
 
     public Main_JZ_Fragment(MainService mainService) {
         this.mainService = mainService;
@@ -73,90 +73,35 @@ public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListen
         bt_history = (Button) view.findViewById(R.id.bt_history);
         bt_history.setOnClickListener(this);
 
-        initDateTime();//初始化日期和时间
-    }
-
-    /**
-     * 初始化日期和时间
-     */
-    private void initDateTime() {
-        String dateTime = dateFormat.format(calendar.getTime());//格式化时间
-        String[] timeArray = dateTime.split(" ");//把日期和时间分开
-
-        et_date.setText(timeArray[0]);//设置日期
-        et_time.setText(timeArray[1]);//设置时间
+        mainService.initDateTime(calendar, et_date, et_time);//初始化日期和时间
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.et_date:
-                selectDate();//选择日期
+                mainService.selectDate(calendar, et_date);//选择日期
                 break;
             case R.id.et_time:
-                selectTime();//选择时间
+                mainService.selectDate(calendar, et_time);//选择时间
                 break;
             case R.id.bt_config:
-                mainService.jz(et_date, et_time, et_money, et_remark);//记账
+                mainService.jz(et_date, et_time, et_money, et_remark, isSelect);//记账
+                isSelect = false;
                 break;
             case R.id.bt_history:
                 startActivityForResult(new Intent(getActivity(), SelectHistoryActivity.class), 1);//跳转到历史记录
                 break;
         }
-
     }
 
     /**
-     * 选择时间
-     */
-    private void selectTime() {
-        TimePickerDialog dialog = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
-                //设置时间
-                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                calendar.set(Calendar.MINUTE, minute);
-                et_time.setText(formatNumber(hourOfDay) + ":" + formatNumber(minute));
-            }
-        },
-                calendar.get(Calendar.HOUR_OF_DAY),
-                calendar.get(Calendar.MINUTE),
-                true
-        );
-        dialog.show();
-    }
-
-    /**
-     * 选择日期
-     */
-    private void selectDate() {
-        DatePickerDialog dialog = new DatePickerDialog(getActivity(),
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                        calendar.set(year, month, day);//设置新的日期
-                        et_date.setText(year + "-" + formatNumber(month + 1) + "-" + formatNumber(day));
-                    }
-                },
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH)
-        );
-        dialog.show();
-    }
-
-
-    /**
-     * 位数不够的话前面补0
+     * 选择历史了后设置备注
      *
-     * @param number 需要格式化的数字
-     * @return
+     * @param remark
      */
-    private String formatNumber(int number) {
-        String str = number + "";
-        if (str.length() == 1) {
-            return "0" + str;
-        }
-        return str;
+    public void setRemark(String remark) {
+        et_remark.setText(remark);
+        isSelect = true;
     }
 }
