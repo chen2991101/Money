@@ -9,9 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 
 import com.hao.money.R;
 import com.hao.money.service.JzService;
+import com.hao.money.util.Prompt;
 import com.hao.money.util.Util;
 import com.hao.money.view.activity.SelectHistoryActivity;
 
@@ -22,13 +24,14 @@ import java.util.Calendar;
  * Created by hao on 2014/11/2.
  */
 @SuppressLint("ValidFragment")
-public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListener {
+public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
     private View view;
     private EditText et_money, et_time, et_date, et_remark;
     private Button bt_config, bt_history;
     private Calendar calendar;//日期
-    private boolean isSelect = false;//用户是否是选择的
+    private boolean isSelect = false, isOut = true;
     private JzService jzService;
+    private RadioGroup rb_type;//消费的类型
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -62,6 +65,10 @@ public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListen
         bt_history = (Button) view.findViewById(R.id.bt_history);
         bt_history.setOnClickListener(this);
 
+        //消费的类型
+        rb_type = (RadioGroup) view.findViewById(R.id.rb_type);
+        rb_type.setOnCheckedChangeListener(this);
+
         jzService.initDateTime(calendar, et_date, et_time);//初始化日期和时间
     }
 
@@ -93,4 +100,11 @@ public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListen
         et_remark.setText(remark);
         isSelect = true;
     }
+
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+        isOut = checkedId == R.id.rb_out;
+        Prompt.showToast(getActivity(), isOut + "");
+    }
+
 }

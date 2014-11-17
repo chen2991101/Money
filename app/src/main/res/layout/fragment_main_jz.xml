@@ -60,6 +60,55 @@
         android:layout_height="wrap_content">
 
         <TextView
+            android:text="类型："
+            android:gravity="right|center_vertical"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content" />
+
+        <RadioGroup
+            android:id="@+id/rb_type"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/rb_out"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="支出"
+                android:checked="true"
+                android:button="@null"
+                android:textColor="@drawable/selector_jz_type_textcolor"
+                android:background="@drawable/selector_jz_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <RadioButton
+                android:id="@+id/rb_in"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="收入"
+                android:button="@null"
+                android:background="@drawable/selector_jz_type"
+                android:textColor="@drawable/selector_jz_type_textcolor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="@dimen/jz_width"
+        android:layout_height="wrap_content">
+
+        <TextView
             android:text="金额："
             android:gravity="right"
             android:layout_height="wrap_content"
