@@ -38,7 +38,7 @@ public class JzService {
      * @param et_remark
      * @param isSelect
      */
-    public void jz(Calendar calendar, final EditText et_money, final EditText et_remark, final boolean isSelect) {
+    public void jz(Calendar calendar, final EditText et_money, final EditText et_remark, final boolean isSelect, final boolean type) {
         String money = et_money.getText().toString().trim();//输入的金额
         final String remark = et_remark.getText().toString().trim();//备注
         //验证金额
@@ -56,7 +56,7 @@ public class JzService {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                add(remark, isSelect, et_money, et_remark);
+                add(remark, isSelect, et_money, et_remark, type);
             }
         }, 0);
     }
@@ -69,9 +69,9 @@ public class JzService {
      * @param et_money
      * @param et_remark
      */
-    private void add(String remark, boolean isSelect, EditText et_money, EditText et_remark) {
+    private void add(String remark, boolean isSelect, EditText et_money, EditText et_remark, boolean type) {
         HistoryDao historyDao = new HistoryDao();
-        historyDao.add(activity, remark, isSelect);//保存到你是记录中
+        historyDao.add(activity, remark, isSelect, type);//保存到你是记录中
         //保存完毕后清空金额和用途
         et_money.setText("");
         et_remark.setText("");

@@ -38,19 +38,19 @@ public class SelectHistoryActivity extends Activity implements AdapterView.OnIte
         Util.setHead(this, "请选择历史");
         lv_list = (ListView) findViewById(R.id.lv_list);
         lv_list.setOnItemClickListener(this);
-        findData();//初始化查询数据
+        findData(getIntent().getBooleanExtra("type", false));//初始化查询数据
     }
 
     /**
      * 异步操作sqlite获取数据
      */
-    private void findData() {
+    private void findData(final boolean type) {
         new Thread() {
             @Override
             public void run() {
                 super.run();
                 HistoryDao historyDao = new HistoryDao();
-                array = historyDao.findAllOrderByCount(SelectHistoryActivity.this);//获取需要展示的数据
+                array = historyDao.findAllOrderByCount(SelectHistoryActivity.this,type);//获取需要展示的数据
                 handler.sendEmptyMessage(1);
             }
         }.start();

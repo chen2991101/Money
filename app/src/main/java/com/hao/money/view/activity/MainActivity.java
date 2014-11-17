@@ -117,7 +117,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
     public void onClick(View v) {
         String str = et_initMoney.getText().toString();//用户输入的钱数
         if (TextUtils.isEmpty(str) || TestUtil.testMoney(str)) {
-            KeyboardUtil.closeKeyboard(this);//关闭软键盘
+            //KeyboardUtil.closeKeyboard(this);//关闭软键盘
 
             float money = TextUtils.isEmpty(str) ? 0 : Float.parseFloat(str);//用户输入的金额
 

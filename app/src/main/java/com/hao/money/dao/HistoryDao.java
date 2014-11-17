@@ -22,13 +22,14 @@ public class HistoryDao extends BaseDao {
      *
      * @param remark
      */
-    public void add(Context context, String remark, boolean isSelect) {
+    public void add(Context context, String remark, boolean isSelect, boolean type) {
         open(context);
         ContentValues content = new ContentValues();
-        if (!isSelect && count(remark) == 0) {
+        if (!isSelect && count(remark, type) == 0) {
             //如果还没有这个历史就添加
             content.put("name", remark);
             content.put("count", 1);
+            content.put("type", type);
             database.insert(tableName, null, content);
         } else {
             //如果有直接修改次数
@@ -44,9 +45,9 @@ public class HistoryDao extends BaseDao {
      * @param context
      * @param name
      */
-    public int getCountByName(Context context, String name) {
+    public int getCountByName(Context context, String name, boolean type) {
         open(context);
-        int count = count(name);
+        int count = count(name, type);
         close();
         return count;
     }
@@ -57,9 +58,9 @@ public class HistoryDao extends BaseDao {
      * @param name
      * @return
      */
-    private int count(String name) {
+    private int count(String name, boolean type) {
         int count = 0;
-        Cursor cursor = database.query(tableName, new String[]{"count(id)"}, "name=?", new String[]{name}, null, null, null);
+        Cursor cursor = database.query(tableName, new String[]{"count(id)"}, "name=? and type=?", new String[]{name, type + ""}, null, null, null);
         if (cursor.getCount() == 1) {
             cursor.moveToNext();
             count = cursor.getInt(0);
@@ -74,10 +75,10 @@ public class HistoryDao extends BaseDao {
      * @param context
      * @return
      */
-    public JSONArray findAllOrderByCount(Context context) {
+    public JSONArray findAllOrderByCount(Context context, boolean type) {
         JSONArray array = new JSONArray();//需要返回的jaonArray
         open(context);
-        Cursor cursor = database.query(tableName, new String[]{"*"}, null, null, null, null, "count desc");
+        Cursor cursor = database.query(tableName, new String[]{"*"}, "type=?", new String[]{type ? "1" : "0"}, null, null, "count desc");
         while (cursor.moveToNext()) {
             JSONObject obj = new JSONObject();
             try {

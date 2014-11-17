@@ -29,7 +29,7 @@ public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListen
     private EditText et_money, et_time, et_date, et_remark;
     private Button bt_config, bt_history;
     private Calendar calendar;//日期
-    private boolean isSelect = false, isOut = true;
+    private boolean isSelect = false, type = true;//true为支出 false为收入
     private JzService jzService;
     private RadioGroup rb_type;//消费的类型
 
@@ -82,11 +82,13 @@ public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListen
                 jzService.selectDate(calendar, et_time);//选择时间
                 break;
             case R.id.bt_config:
-                jzService.jz(calendar, et_money, et_remark, isSelect);//记账
+                jzService.jz(calendar, et_money, et_remark, isSelect, type);//记账
                 isSelect = false;
                 break;
             case R.id.bt_history:
-                startActivityForResult(new Intent(getActivity(), SelectHistoryActivity.class), 1);//跳转到历史记录
+                Intent intent = new Intent(getActivity(), SelectHistoryActivity.class);
+                intent.putExtra("type", type);
+                startActivityForResult(intent, 1);//跳转到历史记录
                 break;
         }
     }
@@ -103,8 +105,7 @@ public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListen
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
-        isOut = checkedId == R.id.rb_out;
-        Prompt.showToast(getActivity(), isOut + "");
+        type = checkedId == R.id.rb_out;
     }
 
 }
