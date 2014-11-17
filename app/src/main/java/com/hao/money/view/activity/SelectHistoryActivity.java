@@ -4,12 +4,10 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import com.hao.money.R;
+import com.hao.money.adapter.SelectHistoryAdapter;
 import com.hao.money.dao.HistoryDao;
 import com.hao.money.util.Util;
 
@@ -53,39 +51,13 @@ public class SelectHistoryActivity extends Activity {
     }
 
     /**
-     * listview的数据集
-     */
-    private class Adapter extends BaseAdapter {
-        @Override
-        public int getCount() {
-            return array.length();
-        }
-
-        @Override
-        public Object getItem(int i) {
-            return array.optJSONObject(i);
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return i;
-        }
-
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            return null;
-        }
-
-    }
-
-    /**
      * 用来更新页面的handler
      */
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            lv_list.setAdapter(new Adapter());//设置数据集合
+            lv_list.setAdapter(new SelectHistoryAdapter(SelectHistoryActivity.this, array));//设置数据集合
         }
     };
 }
