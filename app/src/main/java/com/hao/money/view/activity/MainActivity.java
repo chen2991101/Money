@@ -14,14 +14,13 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.hao.money.R;
-import com.hao.money.service.MainService;
+import com.hao.money.util.KeyboardUtil;
+import com.hao.money.util.Prompt;
+import com.hao.money.util.TestUtil;
 import com.hao.money.view.fragment.BaseFragment;
 import com.hao.money.view.fragment.Main_JL_Fragment;
 import com.hao.money.view.fragment.Main_JZ_Fragment;
 import com.hao.money.view.fragment.Main_mine_Fragment;
-import com.hao.money.util.KeyboardUtil;
-import com.hao.money.util.TestUtil;
-import com.hao.money.util.Prompt;
 
 import java.util.List;
 
@@ -36,7 +35,6 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
     private Main_mine_Fragment main_mine_Fragment;
     private float money;
     private static final String SUMMONEY = "sumMoney";//保存在xml文件中我的身价
-    private MainService mainService;
     private Main_JZ_Fragment main_JZ_Fragment;
 
     @Override
@@ -50,7 +48,6 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
      * 初始化方法
      */
     private void init() {
-        mainService = new MainService(this);//新建service类
         fm = getSupportFragmentManager();
 
         rg_button = (RadioGroup) findViewById(R.id.rg_button);
@@ -100,7 +97,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
             BaseFragment fragment = null;
             switch (checkedId) {
                 case R.id.rb_jz:
-                    main_JZ_Fragment = new Main_JZ_Fragment(mainService);
+                    main_JZ_Fragment = new Main_JZ_Fragment();
                     fragment = main_JZ_Fragment;
                     break;
                 case R.id.rb_jl:
@@ -120,7 +117,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
     public void onClick(View v) {
         String str = et_initMoney.getText().toString();//用户输入的钱数
         if (TextUtils.isEmpty(str) || TestUtil.testMoney(str)) {
-            KeyboardUtil.closeKeyboard(this, et_initMoney);//关闭软键盘
+            KeyboardUtil.closeKeyboard(this);//关闭软键盘
 
             float money = TextUtils.isEmpty(str) ? 0 : Float.parseFloat(str);//用户输入的金额
 
@@ -129,7 +126,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
             SharedPreferences.Editor editor = info.edit();
             editor.putFloat(SUMMONEY, money).commit();
 
-            Prompt.closeDialog();
+            Prompt.hideDialog();
             main_mine_Fragment.refreashMoney(money);//刷新我的金额
         } else {
             Prompt.showToast(this, "请正确输入金额");

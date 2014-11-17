@@ -1,31 +1,21 @@
 package com.hao.money.view.fragment;
 
 import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TimePicker;
 
 import com.hao.money.R;
-import com.hao.money.service.MainService;
-import com.hao.money.view.activity.SelectHistoryActivity;
-import com.hao.money.dao.HistoryDao;
-import com.hao.money.util.Prompt;
-import com.hao.money.util.TestUtil;
+import com.hao.money.service.JzService;
 import com.hao.money.util.Util;
+import com.hao.money.view.activity.SelectHistoryActivity;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.zip.Inflater;
 
 /**
  * 首页记账的fragment
@@ -37,12 +27,8 @@ public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListen
     private EditText et_money, et_time, et_date, et_remark;
     private Button bt_config, bt_history;
     private Calendar calendar;//日期
-    private MainService mainService;
     private boolean isSelect = false;//用户是否是选择的
-
-    public Main_JZ_Fragment(MainService mainService) {
-        this.mainService = mainService;
-    }
+    private JzService jzService;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -55,6 +41,7 @@ public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListen
      * 初始化
      */
     private void init() {
+        jzService = new JzService(getActivity());
         Util.setTitle("记账", view);//设置标题
 
         calendar = Calendar.getInstance();//初始化日期
@@ -75,20 +62,20 @@ public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListen
         bt_history = (Button) view.findViewById(R.id.bt_history);
         bt_history.setOnClickListener(this);
 
-        mainService.initDateTime(calendar, et_date, et_time);//初始化日期和时间
+        jzService.initDateTime(calendar, et_date, et_time);//初始化日期和时间
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.et_date:
-                mainService.selectDate(calendar, et_date);//选择日期
+                jzService.selectDate(calendar, et_date);//选择日期
                 break;
             case R.id.et_time:
-                mainService.selectDate(calendar, et_time);//选择时间
+                jzService.selectDate(calendar, et_time);//选择时间
                 break;
             case R.id.bt_config:
-                mainService.jz(et_date, et_time, et_money, et_remark, isSelect);//记账
+                jzService.jz(calendar, et_money, et_remark, isSelect);//记账
                 isSelect = false;
                 break;
             case R.id.bt_history:

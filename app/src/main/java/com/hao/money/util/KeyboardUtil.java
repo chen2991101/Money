@@ -15,12 +15,11 @@ public class KeyboardUtil {
      * 关闭键盘
      *
      * @param activity
-     * @param editText
      */
-    public static void closeKeyboard(Activity activity, EditText editText) {
+    public static void closeKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         // imm.showSoftInput(et_initMoney, InputMethodManager.SHOW_FORCED);
-        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0); //强制隐藏键盘
+        imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0); //强制隐藏键盘
     }
 
     /**

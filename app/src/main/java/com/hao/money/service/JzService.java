@@ -3,12 +3,14 @@ package com.hao.money.service;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
 import com.hao.money.dao.HistoryDao;
+import com.hao.money.util.KeyboardUtil;
 import com.hao.money.util.Prompt;
 import com.hao.money.util.TestUtil;
 
@@ -16,28 +18,29 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
- * 主界面的service
- * Created by Administrator on 2014-11-17.
+ * 记账页面的service
+ * Created by hao on 2014/11/17.
  */
-public class MainService {
-
+public class JzService {
     private Activity activity;
 
-    public MainService(Activity activity) {
+    private Handler handler = new Handler();
+
+    public JzService(Activity activity) {
         this.activity = activity;
     }
 
     /**
      * 记账
      *
-     * @param et_date   日期
-     * @param et_time   时间
-     * @param et_money  金额
-     * @param et_remark 用途
+     * @param calendar
+     * @param et_money
+     * @param et_remark
+     * @param isSelect
      */
-    public void jz(EditText et_date, EditText et_time, EditText et_money, EditText et_remark, boolean isSelect) {
+    public void jz(Calendar calendar, final EditText et_money, final EditText et_remark, final boolean isSelect) {
         String money = et_money.getText().toString().trim();//输入的金额
-        String remark = et_remark.getText().toString().trim();//备注
+        final String remark = et_remark.getText().toString().trim();//备注
         //验证金额
         if (TextUtils.isEmpty(money) && !TestUtil.testMoney(money)) {
             Prompt.showToast(activity, "请输入正确的金额");
@@ -47,12 +50,37 @@ public class MainService {
             Prompt.showToast(activity, "请输入用途");
             return;
         }
-        HistoryDao historyDao = new HistoryDao();
-        historyDao.add(activity, remark, isSelect);
 
+        KeyboardUtil.closeKeyboard(activity);
+        Prompt.showLoad(activity, "正在保存数据");
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                add(remark, isSelect, et_money, et_remark);
+            }
+        }, 0);
+    }
+
+    /**
+     * 添加记录
+     *
+     * @param remark
+     * @param isSelect
+     * @param et_money
+     * @param et_remark
+     */
+    private void add(String remark, boolean isSelect, EditText et_money, EditText et_remark) {
+        HistoryDao historyDao = new HistoryDao();
+        historyDao.add(activity, remark, isSelect);//保存到你是记录中
         //保存完毕后清空金额和用途
         et_money.setText("");
         et_remark.setText("");
+        Prompt.hideDialog();
+    }
+
+
+    private void add() {
+
     }
 
     /**
