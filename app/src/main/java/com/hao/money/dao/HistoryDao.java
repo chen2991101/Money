@@ -82,6 +82,7 @@ public class HistoryDao extends BaseDao {
         while (cursor.moveToNext()) {
             JSONObject obj = new JSONObject();
             try {
+                obj.put("id", cursor.getString(cursor.getColumnIndex("id")));//id
                 obj.put("name", cursor.getString(cursor.getColumnIndex("name")));//设置名称
                 obj.put("count", cursor.getString(cursor.getColumnIndex("count")));//设置使用次数
             } catch (JSONException e) {
@@ -100,9 +101,10 @@ public class HistoryDao extends BaseDao {
      * @param context
      * @param id
      */
-    public void deleteById(Context context, String id) {
+    public int deleteById(Context context, String id) {
         open(context);
-        database.delete(tableName, "id=?", new String[]{id});
+        int i = database.delete(tableName, "id=?", new String[]{id});
         close();
+        return i;
     }
 }
