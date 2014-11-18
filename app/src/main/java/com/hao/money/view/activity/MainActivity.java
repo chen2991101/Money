@@ -33,8 +33,10 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
     private Button bt_initMoney;
     private Main_mine_Fragment main_mine_Fragment;
     private float money;
-    private static final String SUMMONEY = "sumMoney";//保存在xml文件中我的身价
+    public static final String SUMMONEY = "sumMoney";//保存在xml文件中我的身价
     private Main_JZ_Fragment main_JZ_Fragment;
+    public static boolean refreshMoeny = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +85,12 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         if (fragments != null && fragments.size() > 0) {
             for (Fragment fragment : fragments) {
                 if (checkedId == ((BaseFragment) fragment).getClickId()) {
+                    if (checkedId == R.id.rb_mine && refreshMoeny) {
+                        //如果添加了记录需要更新我的金额
+                        SharedPreferences info = getSharedPreferences("info", 0);
+                        main_mine_Fragment.refreashMoney(info.getFloat(SUMMONEY, 0));
+                        refreshMoeny = false;
+                    }
                     fm.beginTransaction().show(fragment).commit();
                     b = false;
                 } else {

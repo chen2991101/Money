@@ -85,7 +85,7 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView, View.OnCli
                 jzService.selectDate(calendar, getActivity());//选择时间
                 break;
             case R.id.bt_config:
-                jzService.jz(calendar);//记账
+                jzService.jz(calendar,isSelect,type,getActivity());//记账
                 isSelect = false;
                 break;
             case R.id.bt_history:
@@ -148,11 +148,8 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView, View.OnCli
 
     @Override
     public void addHistory(String remark) {
-        HistoryDao historyDao = new HistoryDao();
-        historyDao.add(getActivity(), remark, isSelect, type);//保存到你是记录中
         //保存完毕后清空金额和用途
         et_money.setText("");
         et_remark.setText("");
-        Prompt.hideDialog();
     }
 }
