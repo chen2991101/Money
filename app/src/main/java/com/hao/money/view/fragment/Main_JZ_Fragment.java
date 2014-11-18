@@ -36,6 +36,10 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView, View.OnCli
     private JzService jzService;
     private RadioGroup rb_type;//消费的类型
 
+    public JzService getJzService() {
+        return jzService;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_main_jz, null);
@@ -85,7 +89,7 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView, View.OnCli
                 jzService.selectDate(calendar, getActivity());//选择时间
                 break;
             case R.id.bt_config:
-                jzService.jz(calendar,isSelect,type,getActivity());//记账
+                jzService.jz(calendar, isSelect, type, getActivity());//记账
                 isSelect = false;
                 break;
             case R.id.bt_history:

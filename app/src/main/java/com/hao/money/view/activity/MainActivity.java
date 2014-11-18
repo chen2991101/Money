@@ -21,6 +21,7 @@ import com.hao.money.view.fragment.Main_JL_Fragment;
 import com.hao.money.view.fragment.Main_JZ_Fragment;
 import com.hao.money.view.fragment.Main_mine_Fragment;
 
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -85,12 +86,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         if (fragments != null && fragments.size() > 0) {
             for (Fragment fragment : fragments) {
                 if (checkedId == ((BaseFragment) fragment).getClickId()) {
-                    if (checkedId == R.id.rb_mine && refreshMoeny) {
-                        //如果添加了记录需要更新我的金额
-                        SharedPreferences info = getSharedPreferences("info", 0);
-                        main_mine_Fragment.refreashMoney(info.getFloat(SUMMONEY, 0));
-                        refreshMoeny = false;
-                    }
+                    resumeView(checkedId);//恢复显示fragment时的操作
                     fm.beginTransaction().show(fragment).commit();
                     b = false;
                 } else {
@@ -117,6 +113,22 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
             }
             fragment.setClickId(checkedId);
             fm.beginTransaction().add(R.id.fl_content, fragment).commit();
+        }
+    }
+
+    /**
+     * 恢复显示fragment时的操作
+     *
+     * @param checkedId 当前恢复的哪一个视图
+     */
+    public void resumeView(int checkedId) {
+        if (checkedId == R.id.rb_mine && refreshMoeny) {
+            //如果添加了记录需要更新我的金额
+            SharedPreferences info = getSharedPreferences("info", 0);
+            main_mine_Fragment.refreashMoney(info.getFloat(SUMMONEY, 0));
+            refreshMoeny = false;
+        } else if (checkedId == R.id.rb_jz) {
+            main_JZ_Fragment.getJzService().initDateTime(Calendar.getInstance());
         }
     }
 
