@@ -141,16 +141,4 @@ public class JzService {
         return str;
     }
 
-    /**
-     * 初始化日期和时间
-     */
-    public void initDateTime(Calendar calendar) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");//时间转换器
-        String dateTime = dateFormat.format(calendar.getTime());//格式化时间
-        String[] timeArray = dateTime.split(" ");//把日期和时间分开
-
-        ife.getDate().setText(timeArray[0]);//设置日期
-        ife.getTime().setText(timeArray[1]);//设置时间
-    }
-
 }

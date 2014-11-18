@@ -128,7 +128,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
             main_mine_Fragment.refreashMoney(info.getFloat(SUMMONEY, 0));
             refreshMoeny = false;
         } else if (checkedId == R.id.rb_jz) {
-            main_JZ_Fragment.getJzService().initDateTime(Calendar.getInstance());
+            main_JZ_Fragment.initDateTime(Calendar.getInstance());
         }
     }
 

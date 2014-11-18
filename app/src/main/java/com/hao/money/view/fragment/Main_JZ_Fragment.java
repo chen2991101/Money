@@ -20,6 +20,7 @@ import com.hao.money.util.Prompt;
 import com.hao.money.util.Util;
 import com.hao.money.view.activity.SelectHistoryActivity;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
@@ -35,10 +36,6 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView, View.OnCli
     private boolean isSelect = false, type = true;//true为支出 false为收入
     private JzService jzService;
     private RadioGroup rb_type;//消费的类型
-
-    public JzService getJzService() {
-        return jzService;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -76,7 +73,7 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView, View.OnCli
         rb_type = (RadioGroup) view.findViewById(R.id.rb_type);
         rb_type.setOnCheckedChangeListener(this);
 
-        jzService.initDateTime(calendar);//初始化日期和时间
+        initDateTime(calendar);//初始化日期和时间
     }
 
     @Override
@@ -155,5 +152,17 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView, View.OnCli
         //保存完毕后清空金额和用途
         et_money.setText("");
         et_remark.setText("");
+    }
+
+    /**
+     * 初始化日期和时间(因为mainactivity可能要调用，所以不抽取到service中)
+     */
+    public void initDateTime(Calendar calendar) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");//时间转换器
+        String dateTime = dateFormat.format(calendar.getTime());//格式化时间
+        String[] timeArray = dateTime.split(" ");//把日期和时间分开
+
+        et_date.setText(timeArray[0]);//设置日期
+        et_time.setText(timeArray[1]);//设置时间
     }
 }
