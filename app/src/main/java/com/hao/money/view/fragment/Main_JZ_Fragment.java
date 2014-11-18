@@ -12,7 +12,11 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 
 import com.hao.money.R;
+import com.hao.money.dao.HistoryDao;
 import com.hao.money.service.JzService;
+import com.hao.money.service.JzView;
+import com.hao.money.util.KeyboardUtil;
+import com.hao.money.util.Prompt;
 import com.hao.money.util.Util;
 import com.hao.money.view.activity.SelectHistoryActivity;
 
@@ -23,7 +27,7 @@ import java.util.Calendar;
  * Created by hao on 2014/11/2.
  */
 @SuppressLint("ValidFragment")
-public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
+public class Main_JZ_Fragment extends BaseFragment implements JzView, View.OnClickListener, RadioGroup.OnCheckedChangeListener {
     private View view;
     private EditText et_money, et_time, et_date, et_remark;
     private Button bt_config, bt_history;
@@ -43,7 +47,7 @@ public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListen
      * 初始化
      */
     private void init() {
-        jzService = new JzService(getActivity());
+        jzService = new JzService(this);
         Util.setTitle("记账", view);//设置标题
 
         calendar = Calendar.getInstance();//初始化日期
@@ -68,20 +72,20 @@ public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListen
         rb_type = (RadioGroup) view.findViewById(R.id.rb_type);
         rb_type.setOnCheckedChangeListener(this);
 
-        jzService.initDateTime(calendar, et_date, et_time);//初始化日期和时间
+        jzService.initDateTime(calendar);//初始化日期和时间
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.et_date:
-                jzService.selectDate(calendar, et_date);//选择日期
+                jzService.selectDate(calendar, getActivity());//选择日期
                 break;
             case R.id.et_time:
-                jzService.selectDate(calendar, et_time);//选择时间
+                jzService.selectDate(calendar, getActivity());//选择时间
                 break;
             case R.id.bt_config:
-                jzService.jz(calendar, et_money, et_remark, isSelect, type);//记账
+                jzService.jz(calendar);//记账
                 isSelect = false;
                 break;
             case R.id.bt_history:
@@ -105,5 +109,50 @@ public class Main_JZ_Fragment extends BaseFragment implements View.OnClickListen
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         type = checkedId == R.id.rb_out;
+    }
+
+    @Override
+    public void showToast(String text) {
+        Prompt.showToast(getActivity(), text);
+    }
+
+    @Override
+    public void showLoad(String text) {
+        Prompt.showLoad(getActivity(), text);
+    }
+
+    @Override
+    public void closeKeyboard() {
+        KeyboardUtil.closeKeyboard(getActivity());
+    }
+
+    @Override
+    public String getMoney() {
+        return et_money.getText().toString().trim();
+    }
+
+    @Override
+    public String getRemark() {
+        return et_remark.getText().toString().trim();
+    }
+
+    @Override
+    public EditText getDate() {
+        return et_date;
+    }
+
+    @Override
+    public EditText getTime() {
+        return et_time;
+    }
+
+    @Override
+    public void addHistory(String remark) {
+        HistoryDao historyDao = new HistoryDao();
+        historyDao.add(getActivity(), remark, isSelect, type);//保存到你是记录中
+        //保存完毕后清空金额和用途
+        et_money.setText("");
+        et_remark.setText("");
+        Prompt.hideDialog();
     }
 }

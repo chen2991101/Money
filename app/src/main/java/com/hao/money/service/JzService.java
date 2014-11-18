@@ -3,6 +3,7 @@ package com.hao.money.service;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.widget.DatePicker;
@@ -14,6 +15,7 @@ import com.hao.money.util.KeyboardUtil;
 import com.hao.money.util.Prompt;
 import com.hao.money.util.TestUtil;
 
+import java.net.ConnectException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -22,77 +24,50 @@ import java.util.Calendar;
  * Created by hao on 2014/11/17.
  */
 public class JzService {
-    private Activity activity;
-
     private Handler handler = new Handler();
+    private JzView ife;
 
-    public JzService(Activity activity) {
-        this.activity = activity;
+    public JzService(JzView ife) {
+        this.ife = ife;
     }
 
     /**
      * 记账
      *
      * @param calendar
-     * @param et_money
-     * @param et_remark
-     * @param isSelect
      */
-    public void jz(Calendar calendar, final EditText et_money, final EditText et_remark, final boolean isSelect, final boolean type) {
-        String money = et_money.getText().toString().trim();//输入的金额
-        final String remark = et_remark.getText().toString().trim();//备注
+    public void jz(Calendar calendar) {
+        String money = ife.getMoney();//输入的金额
+        final String remark = ife.getRemark();//备注
         //验证金额
         if (TextUtils.isEmpty(money) && !TestUtil.testMoney(money)) {
-            Prompt.showToast(activity, "请输入正确的金额");
+            ife.showToast("请输入正确的金额");
             return;
         }
         if (TextUtils.isEmpty(remark)) {
-            Prompt.showToast(activity, "请输入用途");
+            ife.showToast("请输入用途");
             return;
         }
-
-        KeyboardUtil.closeKeyboard(activity);
-        Prompt.showLoad(activity, "正在保存数据");
+        ife.closeKeyboard();
+        ife.showLoad("正在保存数据");
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                add(remark, isSelect, et_money, et_remark, type);
+                ife.addHistory(remark);
             }
         }, 0);
     }
 
     /**
-     * 添加记录
-     *
-     * @param remark
-     * @param isSelect
-     * @param et_money
-     * @param et_remark
-     */
-    private void add(String remark, boolean isSelect, EditText et_money, EditText et_remark, boolean type) {
-        HistoryDao historyDao = new HistoryDao();
-        historyDao.add(activity, remark, isSelect, type);//保存到你是记录中
-        //保存完毕后清空金额和用途
-        et_money.setText("");
-        et_remark.setText("");
-        Prompt.hideDialog();
-    }
-
-
-    private void add() {
-
-    }
-
-    /**
      * 选择日期
      */
-    public void selectDate(final Calendar calendar, final EditText et_date) {
-        DatePickerDialog dialog = new DatePickerDialog(activity,
+    public void selectDate(final Calendar calendar, Context context) {
+        DatePickerDialog dialog = new DatePickerDialog(context,
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                         calendar.set(year, month, day);//设置新的日期
-                        et_date.setText(year + "-" + formatNumber(month + 1) + "-" + formatNumber(day));
+                        ife.getDate().setText(year + "-" + formatNumber(month + 1) + "-" + formatNumber(day));
                     }
                 },
                 calendar.get(Calendar.YEAR),
@@ -105,14 +80,14 @@ public class JzService {
     /**
      * 选择时间
      */
-    private void selectTime(final Calendar calendar, final EditText et_time) {
-        TimePickerDialog dialog = new TimePickerDialog(activity, new TimePickerDialog.OnTimeSetListener() {
+    private void selectTime(final Calendar calendar, Context context) {
+        TimePickerDialog dialog = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
                 //设置时间
                 calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 calendar.set(Calendar.MINUTE, minute);
-                et_time.setText(formatNumber(hourOfDay) + ":" + formatNumber(minute));
+                ife.getTime().setText(formatNumber(hourOfDay) + ":" + formatNumber(minute));
             }
         },
                 calendar.get(Calendar.HOUR_OF_DAY),
@@ -139,13 +114,13 @@ public class JzService {
     /**
      * 初始化日期和时间
      */
-    public void initDateTime(Calendar calendar, EditText et_date, EditText et_time) {
+    public void initDateTime(Calendar calendar) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");//时间转换器
         String dateTime = dateFormat.format(calendar.getTime());//格式化时间
         String[] timeArray = dateTime.split(" ");//把日期和时间分开
 
-        et_date.setText(timeArray[0]);//设置日期
-        et_time.setText(timeArray[1]);//设置时间
+        ife.getDate().setText(timeArray[0]);//设置日期
+        ife.getTime().setText(timeArray[1]);//设置时间
     }
 
 }
