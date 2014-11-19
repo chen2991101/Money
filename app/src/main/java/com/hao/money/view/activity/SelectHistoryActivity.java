@@ -58,7 +58,6 @@ public class SelectHistoryActivity extends Activity implements SelectHistoryView
         lv_list.setAdapter(adapter);
     }
 
-
     @Background
     public void findData(boolean type, Activity activity) {
         service.findData(type, activity);
