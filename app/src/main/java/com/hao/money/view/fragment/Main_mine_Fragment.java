@@ -10,35 +10,31 @@ import android.widget.TextView;
 import com.hao.money.R;
 import com.hao.money.util.Util;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
+
 /**
  * 首页统计的fragment
  * Created by hao on 2014/11/2.
  */
 @SuppressLint("ValidFragment")
+@EFragment(R.layout.fragment_main_mine)
 public class Main_mine_Fragment extends BaseFragment {
-    private View view;
-    private TextView tv_myMoney;
+    @ViewById
+    TextView tv_myMoney, tv_title;
     private float money;//金额
 
-
-    public Main_mine_Fragment(float money) {
+    public void setMoney(float money) {
         this.money = money;
     }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_main_mine, null);
-        init();
-        return view;
-    }
-
 
     /**
      * 初始化
      */
-    private void init() {
-        Util.setTitle("我的", view);//设置标题
-        tv_myMoney = (TextView) view.findViewById(R.id.tv_myMoney);//我的金额
+    @AfterViews
+    public void init() {
+        tv_title.setText("我的");//设置标题
         tv_myMoney.setText(money + "");//设置我的身价
     }
 

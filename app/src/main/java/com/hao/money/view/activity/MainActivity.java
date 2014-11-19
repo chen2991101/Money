@@ -20,6 +20,7 @@ import com.hao.money.view.fragment.Main_JL_Fragment;
 import com.hao.money.view.fragment.Main_JZ_Fragment;
 import com.hao.money.view.fragment.Main_JZ_Fragment_;
 import com.hao.money.view.fragment.Main_mine_Fragment;
+import com.hao.money.view.fragment.Main_mine_Fragment_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.CheckedChange;
@@ -106,7 +107,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                         fragment = new Main_JL_Fragment();
                         break;
                     default:
-                        main_mine_Fragment = new Main_mine_Fragment(money);
+                        main_mine_Fragment = new Main_mine_Fragment_();
+                        main_mine_Fragment.setMoney(money);
                         fragment = main_mine_Fragment;
                         break;
                 }

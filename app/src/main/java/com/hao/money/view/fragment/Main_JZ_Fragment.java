@@ -172,6 +172,7 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView {
     @UiThread
     public void addSuccess() {
         //保存完毕后清空金额和用途
+        KeyboardUtil.closeKeyboard(getActivity());
         Prompt.showToast(getActivity(), "保存成功");
         et_money.setText("");
         et_remark.setText("");
