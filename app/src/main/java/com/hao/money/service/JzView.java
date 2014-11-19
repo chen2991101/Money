@@ -18,20 +18,6 @@ public interface JzView {
     void closeKeyboard();
 
     /**
-     * 获取金额
-     *
-     * @return
-     */
-    String getMoney();
-
-    /**
-     * 获取备注
-     *
-     * @return
-     */
-    String getRemark();
-
-    /**
      * 获取日期
      *
      * @return
@@ -46,10 +32,10 @@ public interface JzView {
     EditText getTime();
 
     /**
-     * 添加历史记录
+     * 持久化金额
      *
-     * @param remark
+     * @param money
      */
-    void addHistory(String remark);
+    void updateMoney(float money);
 
 }

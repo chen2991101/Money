@@ -10,17 +10,23 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.hao.money.R;
+import com.hao.money.dao.HistoryDao;
+import com.hao.money.dao.InfoDao;
+import com.hao.money.dao.Info_;
 import com.hao.money.service.JzService;
 import com.hao.money.service.JzView;
 import com.hao.money.util.KeyboardUtil;
 import com.hao.money.util.Prompt;
-import com.hao.money.view.activity.SelectHistoryActivity;
+import com.hao.money.view.activity.SelectHistoryActivity_;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.CheckedChange;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -40,6 +46,8 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView {
     Button bt_config, bt_history;
     @ViewById
     RadioButton rb_out, rb_in;
+    @Pref
+    Info_ info;
     private Calendar calendar;//日期
     private boolean isSelect = false, type = true;//true为支出 false为收入
     private JzService jzService;
@@ -67,11 +75,10 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView {
                 jzService.selectTime(calendar, getActivity());//选择时间
                 break;
             case R.id.bt_config:
-                jzService.jz(calendar, isSelect, type, getActivity());//记账
-                isSelect = false;
+                jz();
                 break;
             case R.id.bt_history:
-                Intent intent = new Intent(getActivity(), SelectHistoryActivity.class);
+                Intent intent = new Intent(getActivity(), SelectHistoryActivity_.class);
                 intent.putExtra("type", type);
                 startActivityForResult(intent, 1);//跳转到历史记录
                 break;
@@ -111,16 +118,6 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView {
     }
 
     @Override
-    public String getMoney() {
-        return et_money.getText().toString().trim();
-    }
-
-    @Override
-    public String getRemark() {
-        return et_remark.getText().toString().trim();
-    }
-
-    @Override
     public EditText getDate() {
         return et_date;
     }
@@ -130,12 +127,6 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView {
         return et_time;
     }
 
-    @Override
-    public void addHistory(String remark) {
-        //保存完毕后清空金额和用途
-        et_money.setText("");
-        et_remark.setText("");
-    }
 
     /**
      * 初始化日期和时间(因为mainactivity可能要调用，所以不抽取到service中)
@@ -147,5 +138,48 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView {
 
         et_date.setText(timeArray[0]);//设置日期
         et_time.setText(timeArray[1]);//设置时间
+    }
+
+
+    /**
+     * 记账的逻辑
+     */
+    public void jz() {
+        String money = et_money.getText().toString().trim();
+        String remark = et_remark.getText().toString().trim();
+        boolean b = jzService.valid(money, remark);
+        if (b) {
+            saveData(money, remark);
+            isSelect = false;
+        } else {
+            Prompt.hideDialog();
+        }
+    }
+
+    @Background
+    public void saveData(String money, String remark) {
+        HistoryDao historyDao = new HistoryDao();
+        historyDao.add(getActivity(), remark, isSelect, type);//保存到你是记录中
+        InfoDao infoDao = new InfoDao();
+        float m = Float.parseFloat(money);
+        long id = infoDao.add(getActivity(), type, m, remark, calendar.getTimeInMillis(), Calendar.getInstance().getTimeInMillis());
+        if (id != -1) {
+            addSuccess();
+            jzService.saveMoney(m, type, info.sumMoney().get());//更新持久化的金额
+        }
+    }
+
+    @UiThread
+    public void addSuccess() {
+        //保存完毕后清空金额和用途
+        Prompt.showToast(getActivity(), "保存成功");
+        et_money.setText("");
+        et_remark.setText("");
+        Prompt.hideDialog();
+    }
+
+    @Override
+    public void updateMoney(float money) {
+        info.sumMoney().put(money);
     }
 }

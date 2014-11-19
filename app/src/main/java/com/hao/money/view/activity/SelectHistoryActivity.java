@@ -17,42 +17,51 @@ import com.hao.money.service.SelectHistoryView;
 import com.hao.money.util.Prompt;
 import com.hao.money.util.Util;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.ItemClick;
+import org.androidannotations.annotations.UiThread;
+import org.androidannotations.annotations.ViewById;
 import org.json.JSONArray;
 
 /**
  * 选择历史用途的activity
  */
-public class SelectHistoryActivity extends Activity implements SelectHistoryView, AdapterView.OnItemClickListener {
-    private ListView lv_list;
+@EActivity(R.layout.activity_selecthistory)
+public class SelectHistoryActivity extends Activity implements SelectHistoryView {
+    @ViewById
+    ListView lv_list;
+    @Extra
+    boolean type;
     private SelectHistoryService service;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_selecthistory);
-        init();
-    }
 
     /**
      * 初始化方法
      */
-    private void init() {
+    @AfterViews
+    public void init() {
         Util.setHead(this, "请选择历史");
         service = new SelectHistoryService(this);
-        lv_list = (ListView) findViewById(R.id.lv_list);
-        lv_list.setOnItemClickListener(this);
-        service.findData(getIntent().getBooleanExtra("type", false), this);//获取历史数据
+        findData(type, this);//获取历史数据
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+    @ItemClick(R.id.lv_list)
+    public void itemClick(int i) {
         //选中后返回记账页面
         service.back(i, this);
     }
 
-    @Override
+    @UiThread
     public void setAdapter(SelectHistoryAdapter adapter) {
         lv_list.setAdapter(adapter);
+    }
+
+
+    @Background
+    public void findData(boolean type, Activity activity) {
+        service.findData(type, activity);
     }
 
 }

@@ -17,7 +17,7 @@
         </activity>
         <!--选择历史用途-->
         <activity
-            android:name=".view.activity.SelectHistoryActivity"
+            android:name=".view.activity.SelectHistoryActivity_"
             android:screenOrientation="portrait"></activity>
     </application>
 

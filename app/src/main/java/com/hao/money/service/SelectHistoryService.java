@@ -32,15 +32,10 @@ public class SelectHistoryService {
      * @param type
      */
     public void findData(final boolean type, final Activity activity) {
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                HistoryDao historyDao = new HistoryDao();
-                array = historyDao.findAllOrderByCount(activity, type);//获取需要展示的数据
-                adapter = new SelectHistoryAdapter(activity, array, SelectHistoryService.this);
-                ife.setAdapter(adapter);
-            }
-        }, 0);
+        HistoryDao historyDao = new HistoryDao();
+        array = historyDao.findAllOrderByCount(activity, type);//获取需要展示的数据
+        adapter = new SelectHistoryAdapter(activity, array, SelectHistoryService.this);
+        ife.setAdapter(adapter);
     }
 
     /**

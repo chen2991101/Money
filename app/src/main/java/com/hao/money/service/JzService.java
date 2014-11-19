@@ -1,25 +1,15 @@
 package com.hao.money.service;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.TimePicker;
 
-import com.hao.money.dao.HistoryDao;
-import com.hao.money.dao.InfoDao;
-import com.hao.money.util.KeyboardUtil;
-import com.hao.money.util.Prompt;
 import com.hao.money.util.TestUtil;
 import com.hao.money.view.activity.MainActivity;
 
-import java.net.ConnectException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
@@ -27,64 +17,43 @@ import java.util.Calendar;
  * Created by hao on 2014/11/17.
  */
 public class JzService {
-    private Handler handler = new Handler();
     private JzView ife;
 
     public JzService(JzView ife) {
         this.ife = ife;
     }
 
+
     /**
-     * 记账
+     * 验证数据
      *
-     * @param calendar
+     * @param money
+     * @param remark
+     * @return
      */
-    public void jz(final Calendar calendar, final boolean isSelect, final boolean type, final Activity activity) {
-        final String money = ife.getMoney();//输入的金额
-        final String remark = ife.getRemark();//备注
-        //验证金额
+    public boolean valid(String money, String remark) {
         if (TextUtils.isEmpty(money) && !TestUtil.testMoney(money)) {
             ife.showToast("请输入正确的金额");
-            return;
+            return false;
         }
         if (TextUtils.isEmpty(remark)) {
             ife.showToast("请输入用途");
-            return;
+            return false;
         }
-        ife.closeKeyboard();
-        ife.showLoad("正在保存数据");
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                HistoryDao historyDao = new HistoryDao();
-                historyDao.add(activity, remark, isSelect, type);//保存到你是记录中
-                ife.addHistory(remark);
-                InfoDao infoDao = new InfoDao();
-                float m = Float.parseFloat(money);
-                long id = infoDao.add(activity, type, m, remark, calendar.getTimeInMillis(), Calendar.getInstance().getTimeInMillis());
-                if (id != -1) {
-                    saveMoney(activity, m, type);//更新持久化的金额
-                    Prompt.showToast(activity, "添加成功");
-                }
-                Prompt.hideDialog();
-            }
-        }, 0);
+        return true;
     }
 
     /**
      * 计算持久化的金额
      */
-    private void saveMoney(Activity activity, float m, boolean type) {
-        SharedPreferences info = activity.getSharedPreferences("info", 0);
-        float oldMoney = info.getFloat(MainActivity.SUMMONEY, 0);
+    public void saveMoney(float m, boolean type, float oldMoney) {
         if (type) {
             //支出
             oldMoney -= m;
         } else {
             oldMoney += m;
         }
-        SharedPreferences.Editor editor = info.edit();
-        editor.putFloat(MainActivity.SUMMONEY, oldMoney).commit();
+        ife.updateMoney(oldMoney);
         MainActivity.refreshMoeny = true;
     }
 

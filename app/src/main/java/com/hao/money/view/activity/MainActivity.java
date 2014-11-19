@@ -44,7 +44,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private Button bt_initMoney;
     private Main_mine_Fragment main_mine_Fragment;
     private float money;
-    public static final String SUMMONEY = "sumMoney";//保存在xml文件中我的身价
     private Main_JZ_Fragment main_JZ_Fragment;
     public static boolean refreshMoeny = false;
 
