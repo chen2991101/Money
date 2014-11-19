@@ -110,7 +110,7 @@ public class JzService {
     /**
      * 选择时间
      */
-    private void selectTime(final Calendar calendar, Context context) {
+    public void selectTime(final Calendar calendar, Context context) {
         TimePickerDialog dialog = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
@@ -140,5 +140,4 @@ public class JzService {
         }
         return str;
     }
-
 }

@@ -16,7 +16,6 @@
         android:layout_height="1px" />
 
     <RadioGroup
-        android:id="@+id/rg_button"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:background="@android:color/white"

@@ -51,4 +51,5 @@ public interface JzView {
      * @param remark
      */
     void addHistory(String remark);
+
 }

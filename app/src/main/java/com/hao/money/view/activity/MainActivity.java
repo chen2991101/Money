@@ -1,25 +1,31 @@
 package com.hao.money.view.activity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 
 import com.hao.money.R;
+import com.hao.money.dao.Info_;
 import com.hao.money.util.Prompt;
 import com.hao.money.util.TestUtil;
 import com.hao.money.view.fragment.BaseFragment;
 import com.hao.money.view.fragment.Main_JL_Fragment;
 import com.hao.money.view.fragment.Main_JZ_Fragment;
+import com.hao.money.view.fragment.Main_JZ_Fragment_;
 import com.hao.money.view.fragment.Main_mine_Fragment;
+
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.CheckedChange;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import java.util.Calendar;
 import java.util.List;
@@ -27,8 +33,12 @@ import java.util.List;
 /**
  * 主页的activity
  */
-public class MainActivity extends FragmentActivity implements RadioGroup.OnCheckedChangeListener, View.OnClickListener {
-    private RadioGroup rg_button;//首页的按钮组
+@EActivity(R.layout.activity_main)
+public class MainActivity extends FragmentActivity implements View.OnClickListener {
+    @ViewById
+    RadioButton rb_mine, rb_jz, rb_jl;
+    @Pref
+    public Info_ info;
     private android.support.v4.app.FragmentManager fm;//framgnet的管理器
     private EditText et_initMoney;
     private Button bt_initMoney;
@@ -38,25 +48,13 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
     private Main_JZ_Fragment main_JZ_Fragment;
     public static boolean refreshMoeny = false;
 
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        init();
-    }
-
     /**
      * 初始化方法
      */
-    private void init() {
+    @AfterViews
+    public void init() {
         fm = getSupportFragmentManager();
-
-        rg_button = (RadioGroup) findViewById(R.id.rg_button);
-        rg_button.setOnCheckedChangeListener(this);
-
-        SharedPreferences info = getSharedPreferences("info", 0);
-        float m = info.getFloat(SUMMONEY, -1);//获取保存的数据
+        float m = info.sumMoney().get();
         if (m == -1) {
             initMoney();//初始化身上的钱
         }
@@ -79,40 +77,43 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
         Prompt.showDialog(this, view, false);
     }
 
-    @Override
-    public void onCheckedChanged(RadioGroup group, int checkedId) {
-        List<Fragment> fragments = fm.getFragments();//获取所有的fragment
-        boolean b = true;
-        if (fragments != null && fragments.size() > 0) {
-            for (Fragment fragment : fragments) {
-                if (checkedId == ((BaseFragment) fragment).getClickId()) {
-                    resumeView(checkedId);//恢复显示fragment时的操作
-                    fm.beginTransaction().show(fragment).commit();
-                    b = false;
-                } else {
-                    fm.beginTransaction().hide(fragment).commit();
+    @CheckedChange({R.id.rb_mine, R.id.rb_jz, R.id.rb_jl})
+    public void checkedChanged(CompoundButton button, boolean isChecked) {
+        if (isChecked) {
+            int checkedId = button.getId();
+            List<Fragment> fragments = fm.getFragments();//获取所有的fragment
+            boolean b = true;
+            if (fragments != null && fragments.size() > 0) {
+                for (Fragment fragment : fragments) {
+                    if (checkedId == ((BaseFragment) fragment).getClickId()) {
+                        resumeView(checkedId);//恢复显示fragment时的操作
+                        fm.beginTransaction().show(fragment).commit();
+                        b = false;
+                    } else {
+                        fm.beginTransaction().hide(fragment).commit();
+                    }
                 }
             }
-        }
 
-        //添加对应的fragment
-        if (b) {
-            BaseFragment fragment = null;
-            switch (checkedId) {
-                case R.id.rb_jz:
-                    main_JZ_Fragment = new Main_JZ_Fragment();
-                    fragment = main_JZ_Fragment;
-                    break;
-                case R.id.rb_jl:
-                    fragment = new Main_JL_Fragment();
-                    break;
-                default:
-                    main_mine_Fragment = new Main_mine_Fragment(money);
-                    fragment = main_mine_Fragment;
-                    break;
+            //添加对应的fragment
+            if (b) {
+                BaseFragment fragment = null;
+                switch (checkedId) {
+                    case R.id.rb_jz:
+                        main_JZ_Fragment = new Main_JZ_Fragment_();
+                        fragment = main_JZ_Fragment;
+                        break;
+                    case R.id.rb_jl:
+                        fragment = new Main_JL_Fragment();
+                        break;
+                    default:
+                        main_mine_Fragment = new Main_mine_Fragment(money);
+                        fragment = main_mine_Fragment;
+                        break;
+                }
+                fragment.setClickId(checkedId);
+                fm.beginTransaction().add(R.id.fl_content, fragment).commit();
             }
-            fragment.setClickId(checkedId);
-            fm.beginTransaction().add(R.id.fl_content, fragment).commit();
         }
     }
 
@@ -124,8 +125,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
     public void resumeView(int checkedId) {
         if (checkedId == R.id.rb_mine && refreshMoeny) {
             //如果添加了记录需要更新我的金额
-            SharedPreferences info = getSharedPreferences("info", 0);
-            main_mine_Fragment.refreashMoney(info.getFloat(SUMMONEY, 0));
+            main_mine_Fragment.refreashMoney(info.sumMoney().get());
             refreshMoeny = false;
         } else if (checkedId == R.id.rb_jz) {
             main_JZ_Fragment.initDateTime(Calendar.getInstance());
@@ -141,9 +141,7 @@ public class MainActivity extends FragmentActivity implements RadioGroup.OnCheck
             float money = TextUtils.isEmpty(str) ? 0 : Float.parseFloat(str);//用户输入的金额
 
             //把用户输入的金额写入到xml文件中
-            SharedPreferences info = getSharedPreferences("info", 0);
-            SharedPreferences.Editor editor = info.edit();
-            editor.putFloat(SUMMONEY, money).commit();
+            info.sumMoney().put(money);
 
             Prompt.hideDialog();
             main_mine_Fragment.refreashMoney(money);//刷新我的金额
