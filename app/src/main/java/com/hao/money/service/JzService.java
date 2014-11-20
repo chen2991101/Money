@@ -15,6 +15,7 @@ import com.hao.money.util.TestUtil;
 import com.hao.money.view.activity.MainActivity;
 
 import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 import org.androidannotations.annotations.sharedpreferences.Pref;
@@ -29,6 +30,8 @@ import java.util.Calendar;
 public class JzService {
     @RootContext
     Context context;
+    @Bean
+    InfoDao infoDao;
     private JzView ife;
     @Pref
     Info_ info;
@@ -139,9 +142,8 @@ public class JzService {
     public void saveData(String money, String remark, boolean isSelect, boolean type, Calendar calendar) {
         HistoryDao historyDao = new HistoryDao();
         historyDao.add(context, remark, isSelect, type);//保存到你是记录中
-        InfoDao infoDao = new InfoDao();
         float m = Float.parseFloat(money);
-        long id = infoDao.add(context, type, m, remark, calendar.getTimeInMillis(), Calendar.getInstance().getTimeInMillis());
+        long id = infoDao.add(type, m, remark, calendar.getTimeInMillis(), Calendar.getInstance().getTimeInMillis());
         if (id != -1) {
             ife.sucessMethod();
             saveMoney(m, type, info.sumMoney().get());//更新持久化的金额

@@ -14,11 +14,11 @@ import org.json.JSONArray;
  */
 public abstract class MyAdapter extends BaseAdapter {
     protected JSONArray array;
-    protected Activity activity;
+    protected Context context;
 
-    public MyAdapter(Activity activity, JSONArray array) {
+    public MyAdapter(Context context, JSONArray array) {
         this.array = array;
-        this.activity = activity;
+        this.context = context;
     }
 
     @Override

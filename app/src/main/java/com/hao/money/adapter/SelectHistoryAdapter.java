@@ -1,8 +1,9 @@
 package com.hao.money.adapter;
 
-import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -21,8 +22,8 @@ import org.json.JSONObject;
 public class SelectHistoryAdapter extends MyAdapter {
     private SelectHistoryService service;
 
-    public SelectHistoryAdapter(Activity activity, JSONArray array, SelectHistoryService service) {
-        super(activity, array);
+    public SelectHistoryAdapter(Context context, JSONArray array, SelectHistoryService service) {
+        super(context, array);
         this.service = service;
     }
 
@@ -31,7 +32,7 @@ public class SelectHistoryAdapter extends MyAdapter {
         HoldView hold;
         if (view == null) {
             hold = new HoldView();
-            view = activity.getLayoutInflater().inflate(R.layout.activity_selecthistory_item, null);
+            view = LayoutInflater.from(context).inflate(R.layout.activity_selecthistory_item, null);
             hold.tv_name = (TextView) view.findViewById(R.id.tv_name);//名称
             hold.tv_count = (TextView) view.findViewById(R.id.tv_count);//次数
             hold.bt_delete = (Button) view.findViewById(R.id.bt_delete);//删除按钮
@@ -61,13 +62,13 @@ public class SelectHistoryAdapter extends MyAdapter {
 
         @Override
         public void onClick(View v) {
-            new AlertDialog.Builder(activity).setTitle("确认删除吗？")
+            new AlertDialog.Builder(context).setTitle("确认删除吗？")
                     .setIcon(android.R.drawable.ic_dialog_info)
                     .setPositiveButton("确定", new DialogInterface.OnClickListener() {
 
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            service.deleteHistory(i, activity);//删除历史
+                            service.deleteHistory(i, context);//删除历史
                         }
                     })
                     .setNegativeButton("返回", new DialogInterface.OnClickListener() {
