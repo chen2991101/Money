@@ -47,8 +47,6 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView {
     Button bt_config, bt_history;
     @ViewById
     RadioButton rb_out, rb_in;
-    @Pref
-    Info_ info;
     @Bean
     JzService jzService;
     private Calendar calendar;//日期
@@ -142,28 +140,16 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView {
         String remark = et_remark.getText().toString().trim();
         boolean b = jzService.valid(money, remark);
         if (b) {
-            saveData(money, remark);
+            jzService.saveData(money, remark, isSelect, type, calendar);
             isSelect = false;
         } else {
             Prompt.hideDialog();
         }
     }
 
-    @Background
-    public void saveData(String money, String remark) {
-        HistoryDao historyDao = new HistoryDao();
-        historyDao.add(getActivity(), remark, isSelect, type);//保存到你是记录中
-        InfoDao infoDao = new InfoDao();
-        float m = Float.parseFloat(money);
-        long id = infoDao.add(getActivity(), type, m, remark, calendar.getTimeInMillis(), Calendar.getInstance().getTimeInMillis());
-        if (id != -1) {
-            addSuccess();
-            jzService.saveMoney(m, type, info.sumMoney().get());//更新持久化的金额
-        }
-    }
-
+    @Override
     @UiThread
-    public void addSuccess() {
+    public void sucessMethod() {
         //保存完毕后清空金额和用途
         KeyboardUtil.closeKeyboard(getActivity());
         Prompt.showToast(getActivity(), "保存成功");
@@ -172,8 +158,4 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView {
         Prompt.hideDialog();
     }
 
-    @Override
-    public void updateMoney(float money) {
-        info.sumMoney().put(money);
-    }
 }

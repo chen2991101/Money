@@ -28,10 +28,8 @@ public interface JzView {
     EditText getTime();
 
     /**
-     * 持久化金额
-     *
-     * @param money
+     * 保存成功的操作
      */
-    void updateMoney(float money);
+    void sucessMethod();
 
 }
