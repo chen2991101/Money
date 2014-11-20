@@ -7,8 +7,13 @@ import android.text.TextUtils;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
+import com.hao.money.util.Prompt;
 import com.hao.money.util.TestUtil;
 import com.hao.money.view.activity.MainActivity;
+
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.RootContext;
 
 import java.util.Calendar;
 
@@ -16,13 +21,15 @@ import java.util.Calendar;
  * 记账页面的service
  * Created by hao on 2014/11/17.
  */
+@EBean
 public class JzService {
+    @RootContext
+    Context context;
     private JzView ife;
 
-    public JzService(JzView ife) {
+    public void setIfe(JzView ife) {
         this.ife = ife;
     }
-
 
     /**
      * 验证数据
@@ -33,11 +40,11 @@ public class JzService {
      */
     public boolean valid(String money, String remark) {
         if (TextUtils.isEmpty(money) && !TestUtil.testMoney(money)) {
-            ife.showToast("请输入正确的金额");
+            Prompt.showToast(context, "请输入正确的金额");
             return false;
         }
         if (TextUtils.isEmpty(remark)) {
-            ife.showToast("请输入用途");
+            Prompt.showToast(context, "请输入用途");
             return false;
         }
         return true;

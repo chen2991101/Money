@@ -21,6 +21,7 @@ import com.hao.money.view.activity.SelectHistoryActivity_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.CheckedChange;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
@@ -48,17 +49,19 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView {
     RadioButton rb_out, rb_in;
     @Pref
     Info_ info;
+    @Bean
+    JzService jzService;
     private Calendar calendar;//日期
     private boolean isSelect = false, type = true;//true为支出 false为收入
-    private JzService jzService;
+
 
     /**
      * 初始化
      */
     @AfterViews
     public void init() {
-        jzService = new JzService(this);
         tv_title.setText("记账");
+        jzService.setIfe(this);
 
         calendar = Calendar.getInstance();//初始化日期
 
@@ -100,16 +103,6 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView {
         if (isSelect) {
             type = button.getId() == R.id.rb_out;
         }
-    }
-
-    @Override
-    public void showToast(String text) {
-        Prompt.showToast(getActivity(), text);
-    }
-
-    @Override
-    public void showLoad(String text) {
-        Prompt.showLoad(getActivity(), text);
     }
 
     @Override

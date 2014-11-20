@@ -8,10 +8,6 @@ import android.widget.EditText;
  */
 public interface JzView {
 
-    void showToast(String text);
-
-    void showLoad(String text);
-
     /**
      * 关闭键盘
      */
