@@ -126,6 +126,15 @@ public class JzService {
     }
 
 
+    /**
+     * 记账
+     *
+     * @param money
+     * @param remark
+     * @param isSelect
+     * @param type
+     * @param calendar
+     */
     @Background
     public void saveData(String money, String remark, boolean isSelect, boolean type, Calendar calendar) {
         HistoryDao historyDao = new HistoryDao();

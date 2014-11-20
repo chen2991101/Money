@@ -3,26 +3,25 @@ package com.hao.money.service;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
-import android.widget.Adapter;
-import android.widget.ListView;
 
 import com.hao.money.adapter.SelectHistoryAdapter;
 import com.hao.money.dao.HistoryDao;
 
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.EBean;
 import org.json.JSONArray;
 
 /**
  * 选择历史的service
  * Created by hao on 2014/11/17.
  */
+@EBean
 public class SelectHistoryService {
-    private Handler handler = new Handler();
     private JSONArray array;
     private SelectHistoryView ife;
     private SelectHistoryAdapter adapter;
 
-    public SelectHistoryService(SelectHistoryView ife) {
+    public void setIfe(SelectHistoryView ife) {
         this.ife = ife;
     }
 
@@ -31,6 +30,7 @@ public class SelectHistoryService {
      *
      * @param type
      */
+    @Background
     public void findData(final boolean type, final Activity activity) {
         HistoryDao historyDao = new HistoryDao();
         array = historyDao.findAllOrderByCount(activity, type);//获取需要展示的数据
