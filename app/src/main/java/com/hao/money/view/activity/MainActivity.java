@@ -17,6 +17,7 @@ import com.hao.money.util.Prompt;
 import com.hao.money.util.TestUtil;
 import com.hao.money.view.fragment.BaseFragment;
 import com.hao.money.view.fragment.Main_JL_Fragment;
+import com.hao.money.view.fragment.Main_JL_Fragment_;
 import com.hao.money.view.fragment.Main_JZ_Fragment;
 import com.hao.money.view.fragment.Main_JZ_Fragment_;
 import com.hao.money.view.fragment.Main_mine_Fragment;
@@ -104,7 +105,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                         fragment = main_JZ_Fragment;
                         break;
                     case R.id.rb_jl:
-                        fragment = new Main_JL_Fragment();
+                        fragment = new Main_JL_Fragment_();
                         break;
                     default:
                         main_mine_Fragment = new Main_mine_Fragment_();

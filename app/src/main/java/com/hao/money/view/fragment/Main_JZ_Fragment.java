@@ -10,9 +10,6 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.hao.money.R;
-import com.hao.money.dao.HistoryDao;
-import com.hao.money.dao.InfoDao;
-import com.hao.money.dao.Info_;
 import com.hao.money.service.JzService;
 import com.hao.money.service.JzView;
 import com.hao.money.util.KeyboardUtil;
@@ -20,14 +17,12 @@ import com.hao.money.util.Prompt;
 import com.hao.money.view.activity.SelectHistoryActivity_;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.CheckedChange;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
-import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
