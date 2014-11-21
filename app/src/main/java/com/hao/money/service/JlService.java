@@ -6,6 +6,7 @@ import android.widget.Adapter;
 import com.hao.money.adapter.JlAdapter;
 import com.hao.money.dao.InfoDao;
 
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
@@ -27,10 +28,6 @@ public class JlService {
     private JSONArray array;
     private JlView ife;
 
-    public JlView getIfe() {
-        return ife;
-    }
-
     public void setIfe(JlView ife) {
         this.ife = ife;
     }
@@ -39,6 +36,7 @@ public class JlService {
         JSONObject pager = infoDao.findPage(pageNo, pageSize);
         array = pager.optJSONArray("list");
         adapter.refresh(array);
+        ife.cancelLoading();
     }
 
     public void setAdapter() {

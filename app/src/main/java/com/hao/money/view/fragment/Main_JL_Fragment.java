@@ -1,6 +1,7 @@
 package com.hao.money.view.fragment;
 
 import android.app.Service;
+import android.os.Handler;
 import android.widget.TextView;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -13,6 +14,7 @@ import com.hao.money.service.JlView;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 /**
@@ -43,7 +45,6 @@ public class Main_JL_Fragment extends BaseFragment implements JlView, PullToRefr
     @Override
     public void onPullDownToRefresh(PullToRefreshBase refreshView) {
         service.findPage(1);
-        lv_list.onRefreshComplete();
     }
 
     @Override
@@ -54,5 +55,15 @@ public class Main_JL_Fragment extends BaseFragment implements JlView, PullToRefr
     @Override
     public void setAdapter(JlAdapter adapter) {
         lv_list.setAdapter(adapter);
+    }
+
+
+    /**
+     * 取消加载状态
+     */
+    @Override
+    @UiThread
+    public void cancelLoading() {
+        lv_list.onRefreshComplete();
     }
 }

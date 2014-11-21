@@ -11,4 +11,9 @@ import com.hao.money.adapter.JlAdapter;
 public interface JlView {
     //设置适配器
     void setAdapter(JlAdapter adapter);
+
+    /**
+     * 取消记载状态
+     */
+    void cancelLoading();
 }

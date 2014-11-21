@@ -46,7 +46,7 @@ public class JlAdapter extends MyAdapter {
         }
         JSONObject obj = array.optJSONObject(i);
         hold.tv_money.setText(obj.optString("money"));
-        hold.tv_type.setText(obj.optBoolean("money") ? "支出" : "收入");
+        hold.tv_type.setText(obj.optBoolean("type") ? "支出" : "收入");
         hold.tv_remark.setText(obj.optString("remark"));
         hold.tv_billDate.setText(dateFormat.format(new Date(obj.optLong("billDate"))));
         return view;
