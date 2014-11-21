@@ -6,9 +6,11 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.hao.money.adapter.JlAdapter;
 import com.hao.money.dao.InfoDao;
 
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
+import org.androidannotations.annotations.UiThread;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -37,22 +39,15 @@ public class JlService {
      *
      * @param pageNo 页数
      */
+    @Background
     public void findPage(int pageNo) {
         currentPage = pageNo;
-        JSONObject pager = infoDao.findPage(pageNo, pageSize);
-        if (pageNo == 1) {
-            //如果是第一页，直接赋值
-            array = pager.optJSONArray("list");
-            adapter.refresh(array);
-        } else {
-            JSONArray jsonArray = pager.optJSONArray("list");
-            array = adapter.appendArray(jsonArray);
-        }
+        JSONObject obj = infoDao.findPage(pageNo, pageSize);
         PullToRefreshBase.Mode mode = PullToRefreshBase.Mode.PULL_FROM_START;//只支持下拉
-        if (pager.optInt("totalPage") > pageNo) {
+        if (obj.optInt("totalPage") > pageNo) {
             mode = PullToRefreshBase.Mode.BOTH;//如果当前加载的不是最后一页的话可以向下滑动
         }
-        ife.cancelLoading(mode);//关闭刷新
+        updateAdapter(obj, pageNo, mode);
     }
 
 
@@ -64,5 +59,26 @@ public class JlService {
         adapter = new JlAdapter(context, array);
         ife.setAdapter(adapter);
         findPage(1);//查询第一页的内容
+    }
+
+    /**
+     * ui更新列表
+     *
+     * @param pager
+     * @param pageNo
+     * @param mode
+     */
+    @UiThread
+    public void updateAdapter(JSONObject pager, int pageNo, PullToRefreshBase.Mode mode) {
+        if (pageNo == 1) {
+            //如果是第一页，直接赋值
+            array = pager.optJSONArray("list");
+            adapter.refresh(array);
+        } else {
+            JSONArray jsonArray = pager.optJSONArray("list");
+            array = adapter.appendArray(jsonArray);
+        }
+
+        ife.cancelLoading(mode);//关闭刷新
     }
 }

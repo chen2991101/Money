@@ -1,7 +1,5 @@
 package com.hao.money.view.fragment;
 
-import android.app.Service;
-import android.os.Handler;
 import android.widget.TextView;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -14,7 +12,6 @@ import com.hao.money.service.JlView;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 /**
@@ -62,7 +59,6 @@ public class Main_JL_Fragment extends BaseFragment implements JlView, PullToRefr
      * 取消加载状态
      */
     @Override
-    @UiThread
     public void cancelLoading(PullToRefreshBase.Mode mode) {
         lv_list.onRefreshComplete();
         lv_list.setMode(mode);
