@@ -43,8 +43,27 @@ public abstract class MyAdapter extends BaseAdapter {
 
     protected abstract View view(int i, View view, ViewGroup viewGroup);//自定义的数据
 
+    /**
+     * 刷新数据
+     *
+     * @param jsonArray
+     */
     public void refresh(JSONArray jsonArray) {
         array = jsonArray;
         notifyDataSetChanged();
+    }
+
+    /**
+     * 追加数据
+     *
+     * @param jsonArray
+     * @return
+     */
+    public JSONArray appendArray(JSONArray jsonArray) {
+        for (int i = 0; i < jsonArray.length(); i++) {
+            array.put(jsonArray.optJSONObject(i));
+        }
+        notifyDataSetChanged();
+        return array;
     }
 }

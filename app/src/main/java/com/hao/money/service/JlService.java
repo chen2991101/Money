@@ -43,14 +43,11 @@ public class JlService {
         if (pageNo == 1) {
             //如果是第一页，直接赋值
             array = pager.optJSONArray("list");
+            adapter.refresh(array);
         } else {
             JSONArray jsonArray = pager.optJSONArray("list");
-            for (int i = 0; i < jsonArray.length(); i++) {
-                array.put(jsonArray.optJSONObject(i));
-            }
+            array = adapter.appendArray(jsonArray);
         }
-        adapter.refresh(array);
-
         PullToRefreshBase.Mode mode = PullToRefreshBase.Mode.PULL_FROM_START;//只支持下拉
         if (pager.optInt("totalPage") > pageNo) {
             mode = PullToRefreshBase.Mode.BOTH;//如果当前加载的不是最后一页的话可以向下滑动
