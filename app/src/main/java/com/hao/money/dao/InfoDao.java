@@ -81,7 +81,7 @@ public class InfoDao extends BaseDao {
      */
     private JSONArray findAll(int pageNo, int pageSize) {
         JSONArray array = new JSONArray();
-        Cursor cursor = database.query(tableName, new String[]{"*"}, null, null, null, null, null, (pageNo - 1) * pageSize + "," + pageSize);
+        Cursor cursor = database.query(tableName, new String[]{"*"}, null, null, null, null, "billDate desc", (pageNo - 1) * pageSize + "," + pageSize);
         while (cursor.moveToNext()) {
             JSONObject obj = new JSONObject();
             try {

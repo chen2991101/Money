@@ -49,7 +49,7 @@ public class Main_JL_Fragment extends BaseFragment implements JlView, PullToRefr
 
     @Override
     public void onPullUpToRefresh(PullToRefreshBase refreshView) {
-        lv_list.onRefreshComplete();
+        service.findNextPage();
     }
 
     @Override
@@ -64,7 +64,7 @@ public class Main_JL_Fragment extends BaseFragment implements JlView, PullToRefr
     @Override
     @UiThread
     public void cancelLoading(PullToRefreshBase.Mode mode) {
-        lv_list.setMode(mode);
         lv_list.onRefreshComplete();
+        lv_list.setMode(mode);
     }
 }
