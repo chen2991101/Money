@@ -1,7 +1,6 @@
 package com.hao.money.service;
 
-import android.widget.EditText;
-
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.hao.money.adapter.JlAdapter;
 
 /**
@@ -15,5 +14,5 @@ public interface JlView {
     /**
      * 取消记载状态
      */
-    void cancelLoading();
+    void cancelLoading(PullToRefreshBase.Mode mode);
 }

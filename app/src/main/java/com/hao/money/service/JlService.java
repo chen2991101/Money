@@ -1,12 +1,11 @@
 package com.hao.money.service;
 
 import android.content.Context;
-import android.widget.Adapter;
 
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.hao.money.adapter.JlAdapter;
 import com.hao.money.dao.InfoDao;
 
-import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
@@ -32,15 +31,26 @@ public class JlService {
         this.ife = ife;
     }
 
+    /**
+     * 获取数据
+     *
+     * @param pageNo 页数
+     */
     public void findPage(int pageNo) {
         JSONObject pager = infoDao.findPage(pageNo, pageSize);
         array = pager.optJSONArray("list");
         adapter.refresh(array);
-        ife.cancelLoading();
+
+        PullToRefreshBase.Mode mode = PullToRefreshBase.Mode.PULL_FROM_START;//只支持下拉
+        if (pager.optInt("totalPage") < pageNo) {
+            mode = PullToRefreshBase.Mode.BOTH;//如果当前加载的不是最后一页的话可以向下滑动
+        }
+        ife.cancelLoading(mode);//关闭刷新
     }
 
     public void setAdapter() {
         adapter = new JlAdapter(context, array);
         ife.setAdapter(adapter);
+        findPage(1);//查询第一页的内容
     }
 }

@@ -38,7 +38,7 @@ public class Main_JL_Fragment extends BaseFragment implements JlView, PullToRefr
         tv_title.setText("记录");
         service.setIfe(this);//设置借口实现
         service.setAdapter();//设置适配器
-        lv_list.setMode(PullToRefreshBase.Mode.BOTH);//只支持下拉
+        lv_list.setMode(PullToRefreshBase.Mode.PULL_FROM_START);//lisetview只能下拉
         lv_list.setOnRefreshListener(this);
     }
 
@@ -63,7 +63,8 @@ public class Main_JL_Fragment extends BaseFragment implements JlView, PullToRefr
      */
     @Override
     @UiThread
-    public void cancelLoading() {
+    public void cancelLoading(PullToRefreshBase.Mode mode) {
+        lv_list.setMode(mode);
         lv_list.onRefreshComplete();
     }
 }
