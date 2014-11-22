@@ -1,16 +1,18 @@
 package com.hao.money.view.fragment;
 
 import android.annotation.SuppressLint;
-import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.hao.money.R;
-import com.hao.money.util.Util;
+import com.hao.money.service.MineService;
+import com.hao.money.service.MineView;
+import com.hao.money.util.Prompt;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
@@ -20,14 +22,13 @@ import org.androidannotations.annotations.ViewById;
  */
 @SuppressLint("ValidFragment")
 @EFragment(R.layout.fragment_main_mine)
-public class Main_mine_Fragment extends BaseFragment {
+public class Main_mine_Fragment extends BaseFragment implements MineView, View.OnClickListener {
     @ViewById
     TextView tv_myMoney, tv_title;
-    private float money;//金额
-
-    public void setMoney(float money) {
-        this.money = money;
-    }
+    @Bean
+    MineService service;
+    private EditText et_setMoney;
+    private Button bt_setMoney;
 
     /**
      * 初始化
@@ -35,15 +36,26 @@ public class Main_mine_Fragment extends BaseFragment {
     @AfterViews
     public void init() {
         tv_title.setText("我的");//设置标题
-        tv_myMoney.setText(Util.df.format(money));//设置我的身价
+        service.setIfe(this);
+        service.initMoney();
     }
 
-    /**
-     * 刷新我的金额
-     *
-     * @param money 金额
-     */
-    public void refreashMoney(float money) {
-        tv_myMoney.setText(money + "");
+    @Override
+    public void setMoney(String money) {
+        tv_myMoney.setText(money);
+    }
+
+    @Override
+    public void showSetMoney() {
+        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_setmoney, null);
+        et_setMoney = (EditText) view.findViewById(R.id.et_setMoney);//初始化金额数量
+        bt_setMoney = (Button) view.findViewById(R.id.bt_setMoney);//确认初始化金额按钮
+        bt_setMoney.setOnClickListener(this);//设置点击事件
+        Prompt.showView(getActivity(), view);
+    }
+
+    @Override
+    public void onClick(View v) {
+        service.setMoney(et_setMoney.getText().toString().trim());
     }
 }

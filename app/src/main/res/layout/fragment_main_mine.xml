@@ -22,7 +22,7 @@
                 android:id="@+id/tv_myMoney"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:text="0" />
+                android:text="0.00" />
         </TableRow>
     </TableLayout>
 </RelativeLayout>

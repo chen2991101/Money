@@ -1,8 +1,11 @@
 package com.hao.money.util;
 
+import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.Build;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -18,19 +21,27 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class Prompt {
 
     private static Dialog dialog;//展示的弹窗
+    private static Dialog viewDialog;
 
     /**
      * 显示自定义的dialog
      *
      * @param context
      * @param view
-     * @param cancelable
      */
-    public static void showDialog(Context context, View view, boolean cancelable) {
-        dialog = new Dialog(context, R.style.loading_dialog);// 创建自定义样式dialog
-        dialog.setContentView(view);
-        dialog.setCancelable(cancelable);
-        dialog.show();
+    public static void showView(Context context, View view) {
+        viewDialog = new Dialog(context, R.style.loading_dialog);// 创建自定义样式dialog
+        viewDialog.setContentView(view);
+        viewDialog.show();
+    }
+
+    /**
+     * 隐藏自定义的弹出框
+     */
+    public static void hideView() {
+        if (viewDialog != null && viewDialog.isShowing()) {
+            viewDialog.dismiss();
+        }
     }
 
     /**

@@ -2,6 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
+    android:background="@color/white"
     android:minHeight="100dp"
     android:minWidth="250dp"
     android:padding="10dp"
@@ -14,7 +15,7 @@
         android:layout_height="wrap_content" />
 
     <EditText
-        android:id="@+id/et_initMoney"
+        android:id="@+id/et_setMoney"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,7 +24,7 @@
         android:inputType="numberDecimal" />
 
     <Button
-        android:id="@+id/bt_initMoney"
+        android:id="@+id/bt_setMoney"
         android:layout_marginTop="10dp"
         android:gravity="center"
         android:text="确认"

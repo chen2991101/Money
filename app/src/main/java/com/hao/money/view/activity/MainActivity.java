@@ -36,14 +36,10 @@ import java.util.List;
  * 主页的activity
  */
 @EActivity(R.layout.activity_main)
-public class MainActivity extends FragmentActivity implements View.OnClickListener {
+public class MainActivity extends FragmentActivity {
     @ViewById
     RadioButton rb_mine, rb_jz, rb_jl;
-    @Pref
-    public Info_ info;
     private android.support.v4.app.FragmentManager fm;//framgnet的管理器
-    private EditText et_initMoney;
-    private Button bt_initMoney;
     private Main_mine_Fragment main_mine_Fragment;
     private float money;
     private Main_JZ_Fragment main_JZ_Fragment;
@@ -55,11 +51,11 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     @AfterViews
     public void init() {
         fm = getSupportFragmentManager();
-        float m = info.sumMoney().get();
+   /*     float m = info.sumMoney().get();
         if (m == -1) {
             initMoney();//初始化身上的钱
         }
-        money = m == -1 ? 0 : m;//获取我当前的金额
+        money = m == -1 ? 0 : m;//获取我当前的金额*/
 
         //设置记账为选中
         RadioButton rb = (RadioButton) findViewById(R.id.rb_mine);
@@ -67,17 +63,14 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     }
 
+/*    */
+
     /**
      * 第一次进入程序后让用户输入初始化的金额
-     */
+     *//*
     private void initMoney() {
-        View view = getLayoutInflater().inflate(R.layout.dialog_initmoney, null);
-        et_initMoney = (EditText) view.findViewById(R.id.et_initMoney);//初始化金额数量
-        bt_initMoney = (Button) view.findViewById(R.id.bt_initMoney);//确认初始化金额按钮
-        bt_initMoney.setOnClickListener(this);//设置点击事件
-        Prompt.showDialog(this, view, false);
-    }
 
+    }*/
     @CheckedChange({R.id.rb_mine, R.id.rb_jz, R.id.rb_jl})
     public void checkedChanged(CompoundButton button, boolean isChecked) {
         if (isChecked) {
@@ -109,7 +102,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                         break;
                     default:
                         main_mine_Fragment = new Main_mine_Fragment_();
-                        main_mine_Fragment.setMoney(money);
                         fragment = main_mine_Fragment;
                         break;
                 }
@@ -127,14 +119,14 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     public void resumeView(int checkedId) {
         if (checkedId == R.id.rb_mine && refreshMoeny) {
             //如果添加了记录需要更新我的金额
-            main_mine_Fragment.refreashMoney(info.sumMoney().get());
+            //main_mine_Fragment.refreashMoney();
             refreshMoeny = false;
         } else if (checkedId == R.id.rb_jz) {
             main_JZ_Fragment.initDateTime(Calendar.getInstance());
         }
     }
 
-    @Override
+/*    @Override
     public void onClick(View v) {
         String str = et_initMoney.getText().toString();//用户输入的钱数
         if (TextUtils.isEmpty(str) || TestUtil.testMoney(str)) {
@@ -150,7 +142,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         } else {
             Prompt.showToast(this, "请正确输入金额");
         }
-    }
+    }*/
 
 
     /**
