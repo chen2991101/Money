@@ -1,5 +1,8 @@
 package com.hao.money.view.fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -12,6 +15,7 @@ import com.hao.money.adapter.JlAdapter;
 import com.hao.money.service.JlService;
 import com.hao.money.service.JlView;
 import com.hao.money.util.Prompt;
+import com.hao.money.util.Util;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -43,7 +47,7 @@ public class Main_JL_Fragment extends BaseFragment implements JlView, PullToRefr
         lv_list.setMode(PullToRefreshBase.Mode.PULL_FROM_START);//lisetview只能下拉
         lv_list.setOnRefreshListener(this);
         listView = lv_list.getRefreshableView();
-        listView.setOnItemLongClickListener(this);
+        listView.setOnItemLongClickListener(this);//长按删除记录
     }
 
     @Override
@@ -61,7 +65,6 @@ public class Main_JL_Fragment extends BaseFragment implements JlView, PullToRefr
         lv_list.setAdapter(adapter);
     }
 
-
     /**
      * 取消加载状态
      */
@@ -72,8 +75,30 @@ public class Main_JL_Fragment extends BaseFragment implements JlView, PullToRefr
     }
 
     @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        Prompt.showToast(getActivity(),position+"");
+    public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+        new AlertDialog.Builder(getActivity()).setTitle("确认删除吗？")
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Prompt.showLoad(getActivity(), "正在删除数据");
+                        String res = service.delete(position);
+                        Prompt.hideDialog();
+                        if (TextUtils.isEmpty(res)) {
+                            //成功
+                            service.findPage(1);
+                        } else {
+                            //失败
+                            Prompt.showToast(getActivity(), res);
+                        }
+                    }
+                })
+                .setNegativeButton("返回", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // 点击“返回”后的操作,这里不设置没有任何操作
+                    }
+                }).show();
         return true;
     }
 }

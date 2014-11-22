@@ -59,6 +59,20 @@ public class InfoDao extends BaseDao {
         return pager;
     }
 
+
+    /**
+     * 删除记录
+     *
+     * @param id
+     * @return
+     */
+    public int deleteById(String id, Context context) {
+        open(context);
+        int i = database.delete(tableName, "id=?", new String[]{id});
+        close();
+        return i;
+    }
+
     /**
      * 查询数据的总条数
      *
@@ -85,6 +99,7 @@ public class InfoDao extends BaseDao {
         while (cursor.moveToNext()) {
             JSONObject obj = new JSONObject();
             try {
+                obj.put("id", cursor.getString(cursor.getColumnIndex("id")));
                 obj.put("money", cursor.getString(cursor.getColumnIndex("money")));//金额
                 obj.put("type", cursor.getInt(cursor.getColumnIndex("type")) == 1 ? true : false);//类型
                 obj.put("remark", cursor.getString(cursor.getColumnIndex("remark")));//备注
@@ -97,4 +112,5 @@ public class InfoDao extends BaseDao {
         }
         return array;
     }
+
 }

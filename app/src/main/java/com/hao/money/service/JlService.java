@@ -5,12 +5,16 @@ import android.content.Context;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.hao.money.adapter.JlAdapter;
 import com.hao.money.dao.InfoDao;
+import com.hao.money.dao.Info_;
+import com.hao.money.util.Util;
+import com.hao.money.view.activity.MainActivity;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 import org.androidannotations.annotations.UiThread;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -24,6 +28,8 @@ public class JlService {
     Context context;
     @Bean
     InfoDao infoDao;
+    @Pref
+    Info_ info;
     private int pageSize = 15;//每页条数
     private JlAdapter adapter;
     private JSONArray array;
@@ -33,6 +39,29 @@ public class JlService {
     public void setIfe(JlView ife) {
         this.ife = ife;
     }
+
+    /**
+     * 开始删除记录
+     *
+     * @param position
+     */
+    public String delete(int position) {
+        JSONObject obj = array.optJSONObject(position - 1);
+        if (obj == null) {
+            return "没有对应的数据";
+        }
+        int i = infoDao.deleteById(obj.optString("id"), context);
+        if (i == 0) {
+            return "删除失败";
+        }
+
+        float money = info.sumMoney().get();
+        money = Util.updateSumMoney(obj.optString("money"), money + "", obj.optBoolean("type"));
+        info.sumMoney().put(money);
+        MainActivity.refreshMoeny = true;
+        return null;
+    }
+
 
     /**
      * 获取数据

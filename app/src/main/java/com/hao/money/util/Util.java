@@ -6,6 +6,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hao.money.R;
+import com.hao.money.view.activity.MainActivity;
+
+import java.math.BigDecimal;
 
 /**
  * 单例工具类
@@ -41,5 +44,24 @@ public class Util {
                 activity.finish();
             }
         });
+    }
+
+
+    /**
+     * 计算sumMoney的值
+     *
+     * @param m
+     * @param oldMoney
+     * @param isAdd
+     */
+    public static float updateSumMoney(String m, String oldMoney, boolean isAdd) {
+        BigDecimal money = new BigDecimal(m);
+        BigDecimal om = new BigDecimal(oldMoney);
+        if (isAdd) {
+            om = om.add(money);
+        } else {
+            om = om.subtract(money);
+        }
+        return om.floatValue();
     }
 }

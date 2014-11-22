@@ -12,6 +12,7 @@ import com.hao.money.dao.InfoDao;
 import com.hao.money.dao.Info_;
 import com.hao.money.util.Prompt;
 import com.hao.money.util.TestUtil;
+import com.hao.money.util.Util;
 import com.hao.money.view.activity.MainActivity;
 
 import org.androidannotations.annotations.Background;
@@ -20,6 +21,8 @@ import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.Calendar;
 
 /**
@@ -57,22 +60,6 @@ public class JzService {
             return false;
         }
         return true;
-    }
-
-    /**
-     * 计算持久化的金额
-     */
-    public void saveMoney(float m, boolean type, float oldMoney) {
-        if (type) {
-            //支出
-            oldMoney -= m;
-        } else {
-            oldMoney += m;
-        }
-
-        info.sumMoney().put(oldMoney);
-
-        MainActivity.refreshMoeny = true;
     }
 
     /**
@@ -146,7 +133,10 @@ public class JzService {
         long id = infoDao.add(type, m, remark, calendar.getTimeInMillis(), Calendar.getInstance().getTimeInMillis());
         if (id != -1) {
             ife.sucessMethod();
-            saveMoney(m, type, info.sumMoney().get());//更新持久化的金额
+
+            m = Util.updateSumMoney(money + "", info.sumMoney().get() + "", !type);
+            info.sumMoney().put(m);
+            MainActivity.refreshMoeny = true;
         }
     }
 }
