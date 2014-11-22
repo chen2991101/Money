@@ -85,7 +85,7 @@ public class InfoDao extends BaseDao {
         while (cursor.moveToNext()) {
             JSONObject obj = new JSONObject();
             try {
-                obj.put("money", cursor.getFloat(cursor.getColumnIndex("money")));//金额
+                obj.put("money", cursor.getString(cursor.getColumnIndex("money")));//金额
                 obj.put("type", cursor.getInt(cursor.getColumnIndex("type")) == 1 ? true : false);//类型
                 obj.put("remark", cursor.getString(cursor.getColumnIndex("remark")));//备注
                 obj.put("billDate", cursor.getLong(cursor.getColumnIndex("billDate")));//生成时间
