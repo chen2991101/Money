@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.hao.money.R;
 import com.hao.money.service.SelectHistoryService;
+import com.hao.money.util.Util;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -45,7 +46,7 @@ public class JlAdapter extends MyAdapter {
             hold = (HoldView) view.getTag();
         }
         JSONObject obj = array.optJSONObject(i);
-        hold.tv_money.setText(obj.optString("money"));
+        hold.tv_money.setText(Util.df.format(obj.optDouble("money")));
         hold.tv_type.setText(obj.optBoolean("type") ? "支出" : "收入");
         hold.tv_remark.setText(obj.optString("remark"));
         hold.tv_billDate.setText(dateFormat.format(new Date(obj.optLong("billDate"))));

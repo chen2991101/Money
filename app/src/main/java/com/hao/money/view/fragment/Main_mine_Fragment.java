@@ -35,7 +35,7 @@ public class Main_mine_Fragment extends BaseFragment {
     @AfterViews
     public void init() {
         tv_title.setText("我的");//设置标题
-        tv_myMoney.setText(money + "");//设置我的身价
+        tv_myMoney.setText(Util.df.format(money));//设置我的身价
     }
 
     /**

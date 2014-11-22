@@ -21,8 +21,6 @@ import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.Calendar;
 
 /**
@@ -51,7 +49,7 @@ public class JzService {
      * @return
      */
     public boolean valid(String money, String remark) {
-        if (TextUtils.isEmpty(money) && !TestUtil.testMoney(money)) {
+        if (!TextUtils.isEmpty(money) && !TestUtil.testMoney(money)) {
             Prompt.showToast(context, "请输入正确的金额");
             return false;
         }
@@ -60,6 +58,24 @@ public class JzService {
             return false;
         }
         return true;
+    }
+
+    /**
+     * 记账
+     *
+     * @param money
+     * @param remark
+     * @param isSelect
+     * @param type
+     * @param calendar
+     */
+    public void jz(String money, String remark, boolean isSelect, boolean type, Calendar calendar) {
+        boolean b = valid(money, remark);
+        if (b) {
+            saveData(money, remark, isSelect, type, calendar);
+        } else {
+            Prompt.hideDialog();
+        }
     }
 
     /**

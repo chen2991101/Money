@@ -71,7 +71,10 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView {
                 jzService.selectTime(calendar, getActivity());//选择时间
                 break;
             case R.id.bt_config:
-                jz();
+                String money = et_money.getText().toString().trim();
+                String remark = et_remark.getText().toString().trim();
+                jzService.jz(money, remark, isSelect, type, calendar);
+                isSelect = false;
                 break;
             case R.id.bt_history:
                 Intent intent = new Intent(getActivity(), SelectHistoryActivity_.class);
@@ -124,22 +127,6 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView {
 
         et_date.setText(timeArray[0]);//设置日期
         et_time.setText(timeArray[1]);//设置时间
-    }
-
-
-    /**
-     * 记账的逻辑
-     */
-    public void jz() {
-        String money = et_money.getText().toString().trim();
-        String remark = et_remark.getText().toString().trim();
-        boolean b = jzService.valid(money, remark);
-        if (b) {
-            jzService.saveData(money, remark, isSelect, type, calendar);
-            isSelect = false;
-        } else {
-            Prompt.hideDialog();
-        }
     }
 
     @Override

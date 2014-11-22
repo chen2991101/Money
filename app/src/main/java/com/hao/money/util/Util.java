@@ -9,12 +9,14 @@ import com.hao.money.R;
 import com.hao.money.view.activity.MainActivity;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 
 /**
  * 单例工具类
  * Created by hao on 2014/11/2.
  */
 public class Util {
+    public static DecimalFormat df = new DecimalFormat("0.00");//保留两位小数
 
     /**
      * 设置标题

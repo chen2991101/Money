@@ -10,6 +10,6 @@ import org.androidannotations.annotations.sharedpreferences.SharedPref;
 @SharedPref
 public interface Info {
 
-    @DefaultFloat(0)
+    @DefaultFloat(-1)
     float sumMoney();
 }
