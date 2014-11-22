@@ -41,7 +41,6 @@ public class MainActivity extends FragmentActivity {
     RadioButton rb_mine, rb_jz, rb_jl;
     private android.support.v4.app.FragmentManager fm;//framgnet的管理器
     private Main_mine_Fragment main_mine_Fragment;
-    private float money;
     private Main_JZ_Fragment main_JZ_Fragment;
     public static boolean refreshMoeny = false;
 
@@ -51,11 +50,6 @@ public class MainActivity extends FragmentActivity {
     @AfterViews
     public void init() {
         fm = getSupportFragmentManager();
-   /*     float m = info.sumMoney().get();
-        if (m == -1) {
-            initMoney();//初始化身上的钱
-        }
-        money = m == -1 ? 0 : m;//获取我当前的金额*/
 
         //设置记账为选中
         RadioButton rb = (RadioButton) findViewById(R.id.rb_mine);
@@ -63,14 +57,6 @@ public class MainActivity extends FragmentActivity {
 
     }
 
-/*    */
-
-    /**
-     * 第一次进入程序后让用户输入初始化的金额
-     *//*
-    private void initMoney() {
-
-    }*/
     @CheckedChange({R.id.rb_mine, R.id.rb_jz, R.id.rb_jl})
     public void checkedChanged(CompoundButton button, boolean isChecked) {
         if (isChecked) {
@@ -125,25 +111,6 @@ public class MainActivity extends FragmentActivity {
             main_JZ_Fragment.initDateTime(Calendar.getInstance());
         }
     }
-
-/*    @Override
-    public void onClick(View v) {
-        String str = et_initMoney.getText().toString();//用户输入的钱数
-        if (TextUtils.isEmpty(str) || TestUtil.testMoney(str)) {
-            //KeyboardUtil.closeKeyboard(this);//关闭软键盘
-
-            float money = TextUtils.isEmpty(str) ? 0 : Float.parseFloat(str);//用户输入的金额
-
-            //把用户输入的金额写入到xml文件中
-            info.sumMoney().put(money);
-
-            Prompt.hideDialog();
-            main_mine_Fragment.refreashMoney(money);//刷新我的金额
-        } else {
-            Prompt.showToast(this, "请正确输入金额");
-        }
-    }*/
-
 
     /**
      * 两次返回键退出应用
