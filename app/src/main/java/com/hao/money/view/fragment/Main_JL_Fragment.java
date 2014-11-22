@@ -1,5 +1,8 @@
 package com.hao.money.view.fragment;
 
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -8,6 +11,7 @@ import com.hao.money.R;
 import com.hao.money.adapter.JlAdapter;
 import com.hao.money.service.JlService;
 import com.hao.money.service.JlView;
+import com.hao.money.util.Prompt;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -19,13 +23,14 @@ import org.androidannotations.annotations.ViewById;
  * Created by hao on 2014/11/2.
  */
 @EFragment(R.layout.fragment_main_jl)
-public class Main_JL_Fragment extends BaseFragment implements JlView, PullToRefreshBase.OnRefreshListener2 {
+public class Main_JL_Fragment extends BaseFragment implements JlView, PullToRefreshBase.OnRefreshListener2, AdapterView.OnItemLongClickListener {
     @ViewById
     TextView tv_title;
     @ViewById
     PullToRefreshListView lv_list;
     @Bean
     JlService service;
+    private ListView listView;
 
     /**
      * 初始化
@@ -37,6 +42,8 @@ public class Main_JL_Fragment extends BaseFragment implements JlView, PullToRefr
         service.setAdapter();//设置适配器
         lv_list.setMode(PullToRefreshBase.Mode.PULL_FROM_START);//lisetview只能下拉
         lv_list.setOnRefreshListener(this);
+        listView = lv_list.getRefreshableView();
+        listView.setOnItemLongClickListener(this);
     }
 
     @Override
@@ -62,5 +69,11 @@ public class Main_JL_Fragment extends BaseFragment implements JlView, PullToRefr
     public void cancelLoading(PullToRefreshBase.Mode mode) {
         lv_list.onRefreshComplete();
         lv_list.setMode(mode);
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        Prompt.showToast(getActivity(),position+"");
+        return true;
     }
 }
