@@ -58,7 +58,7 @@ public class JlService {
         float money = info.sumMoney().get();
         money = Util.updateSumMoney(obj.optString("money"), money + "", obj.optBoolean("type"));
         info.sumMoney().put(money);
-        MainActivity.refreshMoeny = true;
+        MainActivity.refreshMain = true;
         return null;
     }
 

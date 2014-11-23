@@ -46,7 +46,6 @@ public class MineService {
 
     public void setMoney(String str) {
         if (TestUtil.testMoney(str)) {
-            //KeyboardUtil.closeKeyboard(this);//关闭软键盘
             //把用户输入的金额写入到xml文件中
             info.sumMoney().put(Float.parseFloat(str));
             ife.setMoney(Util.df.format(Float.parseFloat(str)));
@@ -54,5 +53,12 @@ public class MineService {
         } else {
             Prompt.showToast(context, "请正确输入金额");
         }
+    }
+
+    /**
+     * 刷新金额
+     */
+    public void refreashMoney() {
+        ife.setMoney(Util.df.format(info.sumMoney().get()));
     }
 }

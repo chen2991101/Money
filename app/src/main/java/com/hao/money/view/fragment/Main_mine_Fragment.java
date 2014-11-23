@@ -58,4 +58,11 @@ public class Main_mine_Fragment extends BaseFragment implements MineView, View.O
     public void onClick(View v) {
         service.setMoney(et_setMoney.getText().toString().trim());
     }
+
+    /**
+     * 刷新金额
+     */
+    public void refreashMoney() {
+        service.refreashMoney();
+    }
 }

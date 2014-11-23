@@ -152,7 +152,8 @@ public class JzService {
 
             m = Util.updateSumMoney(money + "", info.sumMoney().get() + "", !type);
             info.sumMoney().put(m);
-            MainActivity.refreshMoeny = true;
+            MainActivity.refreshMain = true;
+            MainActivity.refreshJl = true;
         }
     }
 }

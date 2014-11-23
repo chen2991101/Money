@@ -101,4 +101,11 @@ public class Main_JL_Fragment extends BaseFragment implements JlView, PullToRefr
                 }).show();
         return true;
     }
+
+    /**
+     * 刷新纪录
+     */
+    public void refreash() {
+        service.findPage(1);
+    }
 }
