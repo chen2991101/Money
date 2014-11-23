@@ -87,6 +87,7 @@ public class Main_JL_Fragment extends BaseFragment implements JlView, PullToRefr
                         if (TextUtils.isEmpty(res)) {
                             //成功
                             service.findPage(1);
+                            Prompt.showToast(getActivity(),"删除成功");
                         } else {
                             //失败
                             Prompt.showToast(getActivity(), res);
