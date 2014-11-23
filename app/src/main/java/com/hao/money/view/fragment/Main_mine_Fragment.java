@@ -13,6 +13,7 @@ import com.hao.money.util.Prompt;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
@@ -26,6 +27,8 @@ import org.androidannotations.annotations.ViewById;
 public class Main_mine_Fragment extends BaseFragment implements MineView, View.OnClickListener {
     @ViewById
     TextView tv_myMoney, tv_title, tv_sevenOut, tv_sevenIn, tv_thirtyOut, tv_thirtyIn;
+    @ViewById
+    Button bt_button;
     @Bean
     MineService service;
     private EditText et_setMoney;
@@ -63,6 +66,11 @@ public class Main_mine_Fragment extends BaseFragment implements MineView, View.O
     @Override
     public void onClick(View v) {
         service.setMoney(et_setMoney.getText().toString().trim());
+    }
+
+    @Click(R.id.bt_button)
+    public void click(View view) {
+        service.initMoney();
     }
 
     /**
