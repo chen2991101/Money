@@ -13,7 +13,7 @@ public interface MineView {
      *
      * @param money
      */
-    void setMoney(String money);
+    void setMoney(String money, String sevenOut, String sevenIn, String thirtyOut, String thirtyIn);
 
     /**
      * 设置金额

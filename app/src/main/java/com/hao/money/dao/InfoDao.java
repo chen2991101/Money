@@ -66,11 +66,31 @@ public class InfoDao extends BaseDao {
      * @param id
      * @return
      */
-    public int deleteById(String id, Context context) {
+    public int deleteById(String id) {
         open(context);
         int i = database.delete(tableName, "id=?", new String[]{id});
         close();
         return i;
+    }
+
+
+    /**
+     * 根据时间查询总记录
+     *
+     * @param time
+     * @param type
+     * @return
+     */
+    public float findSumMoney(long time, boolean type) {
+        openRead(context);
+        Cursor cursor = database.query(tableName, new String[]{"sum(money)"}, "billDate>=? and type=?", new String[]{time + "", type ? "1" : "0"}, null, null, null);
+        float money = 0;
+        if (cursor.moveToFirst()) {
+            money = cursor.getFloat(0);
+        }
+        cursor.close();
+        close();
+        return money;
     }
 
     /**
@@ -95,7 +115,7 @@ public class InfoDao extends BaseDao {
      */
     private JSONArray findAll(int pageNo, int pageSize) {
         JSONArray array = new JSONArray();
-        Cursor cursor = database.query(tableName, new String[]{"*"}, null, null, null, null, "billDate desc", (pageNo - 1) * pageSize + "," + pageSize);
+        Cursor cursor = database.query(tableName, new String[]{"*"}, null, null, null, null, "billDate desc , createDate desc", (pageNo - 1) * pageSize + "," + pageSize);
         while (cursor.moveToNext()) {
             JSONObject obj = new JSONObject();
             try {

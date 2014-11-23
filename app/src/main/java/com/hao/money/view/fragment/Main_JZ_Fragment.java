@@ -55,10 +55,7 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView {
     public void init() {
         tv_title.setText("记账");
         jzService.setIfe(this);
-
-        calendar = Calendar.getInstance();//初始化日期
-
-        initDateTime(calendar);//初始化日期和时间
+        initDateTime();//初始化日期和时间
     }
 
     @Click({R.id.et_date, R.id.et_time, R.id.bt_config, R.id.bt_history})
@@ -120,7 +117,8 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView {
     /**
      * 初始化日期和时间(因为mainactivity可能要调用，所以不抽取到service中)
      */
-    public void initDateTime(Calendar calendar) {
+    public void initDateTime() {
+        calendar = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");//时间转换器
         String dateTime = dateFormat.format(calendar.getTime());//格式化时间
         String[] timeArray = dateTime.split(" ");//把日期和时间分开

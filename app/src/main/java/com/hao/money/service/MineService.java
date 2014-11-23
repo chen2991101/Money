@@ -9,10 +9,13 @@ import com.hao.money.util.Prompt;
 import com.hao.money.util.TestUtil;
 import com.hao.money.util.Util;
 
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 import org.androidannotations.annotations.sharedpreferences.Pref;
+
+import java.util.Calendar;
 
 /**
  * "我们"页面的service
@@ -38,17 +41,32 @@ public class MineService {
     public void initMoney() {
         boolean hasMoney = info.sumMoney().exists();
         if (hasMoney) {
-            ife.setMoney(Util.df.format(info.sumMoney().get()));
+            findMoney();
         } else {
             ife.showSetMoney();
         }
     }
 
+    /**
+     * 查询统计金额
+     */
+    @Background
+    public void findMoney() {
+        Calendar seven = beforeTime(-7);//7天之前的时间
+        Calendar thirty = beforeTime(-30);//30天之前的时间
+        float seven_out = infoDao.findSumMoney(seven.getTimeInMillis(), true);
+        float seven_in = infoDao.findSumMoney(seven.getTimeInMillis(), false);
+        float thirty_out = infoDao.findSumMoney(thirty.getTimeInMillis(), true);
+        float thirty_in = infoDao.findSumMoney(thirty.getTimeInMillis(), false);
+        ife.setMoney(Util.df.format(info.sumMoney().get()), Util.df.format(seven_out), Util.df.format(seven_in), Util.df.format(thirty_out), Util.df.format(thirty_in));
+    }
+
+
     public void setMoney(String str) {
         if (TestUtil.testMoney(str)) {
             //把用户输入的金额写入到xml文件中
             info.sumMoney().put(Float.parseFloat(str));
-            ife.setMoney(Util.df.format(Float.parseFloat(str)));
+            findMoney();
             Prompt.hideView();
         } else {
             Prompt.showToast(context, "请正确输入金额");
@@ -59,6 +77,22 @@ public class MineService {
      * 刷新金额
      */
     public void refreashMoney() {
-        ife.setMoney(Util.df.format(info.sumMoney().get()));
+        findMoney();
+    }
+
+
+    /**
+     * 计算几天之前的时间
+     *
+     * @param day
+     * @return
+     */
+    private Calendar beforeTime(int day) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, day);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        return calendar;
     }
 }

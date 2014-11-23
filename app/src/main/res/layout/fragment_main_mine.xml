@@ -7,11 +7,15 @@
     <include layout="@layout/include_head" />
 
     <LinearLayout
+        android:orientation="vertical"
         android:layout_centerInParent="true"
+        android:gravity="center_horizontal"
+        android:padding="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
@@ -22,9 +26,77 @@
 
             <TextView
                 android:id="@+id/tv_myMoney"
-                android:layout_width="80dp"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:text="0.00" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:gravity="right"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="7天内支出:" />
+
+            <TextView
+                android:id="@+id/tv_sevenOut"
+                android:layout_marginLeft="5dp"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:text="0.00" />
+
+            <TextView
+                android:gravity="right"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="7天内收入:" />
+
+            <TextView
+                android:id="@+id/tv_sevenIn"
+                android:layout_marginLeft="5dp"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:text="0.00" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:gravity="right"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="30天内支出:" />
+
+            <TextView
+                android:id="@+id/tv_thirtyOut"
+                android:layout_marginLeft="5dp"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:text="0.00" />
+
+            <TextView
+                android:gravity="right"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="30天内收入:" />
+
+            <TextView
+                android:id="@+id/tv_thirtyIn"
+                android:layout_marginLeft="5dp"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:text="0.00" />
+
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

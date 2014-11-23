@@ -107,7 +107,7 @@ public class MainActivity extends FragmentActivity {
             main_jl_fragment.refreash();
             refreshJl = false;
         } else if (checkedId == R.id.rb_jz) {
-            main_JZ_Fragment.initDateTime(Calendar.getInstance());
+            main_JZ_Fragment.initDateTime();
         }
     }
 

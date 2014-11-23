@@ -21,6 +21,16 @@ public class BaseDao {
     }
 
     /**
+     * 打开网络链接
+     *
+     * @param context
+     */
+    protected void openRead(Context context) {
+        helper = new DatabaseHelper(context);
+        database = helper.getReadableDatabase();
+    }
+
+    /**
      * 关闭链接
      */
     protected void close() {

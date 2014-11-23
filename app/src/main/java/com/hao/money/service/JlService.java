@@ -50,7 +50,7 @@ public class JlService {
         if (obj == null) {
             return "没有对应的数据";
         }
-        int i = infoDao.deleteById(obj.optString("id"), context);
+        int i = infoDao.deleteById(obj.optString("id"));
         if (i == 0) {
             return "删除失败";
         }
