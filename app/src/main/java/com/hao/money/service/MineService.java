@@ -57,7 +57,9 @@ public class MineService {
     }
 
     /**
-     * 查询统计金额
+     * 查询设置金额
+     *
+     * @param isFindAll 时候需要查询所有的记录
      */
     @Background
     public void findMoney(boolean isFindAll) {
