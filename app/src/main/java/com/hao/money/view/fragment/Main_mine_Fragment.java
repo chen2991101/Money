@@ -24,11 +24,11 @@ import org.androidannotations.annotations.ViewById;
  */
 @SuppressLint("ValidFragment")
 @EFragment(R.layout.fragment_main_mine)
-public class Main_mine_Fragment extends BaseFragment implements MineView, View.OnClickListener {
+public class Main_mine_Fragment extends BaseFragment implements MineView {
     @ViewById
     TextView tv_myMoney, tv_title, tv_sevenOut, tv_sevenIn, tv_thirtyOut, tv_thirtyIn;
     @ViewById
-    Button bt_button;
+    Button bt_resetMoney;
     @Bean
     MineService service;
     private EditText et_setMoney;
@@ -55,22 +55,24 @@ public class Main_mine_Fragment extends BaseFragment implements MineView, View.O
     }
 
     @Override
-    public void showSetMoney() {
-        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_setmoney, null);
-        et_setMoney = (EditText) view.findViewById(R.id.et_setMoney);//初始化金额数量
-        bt_setMoney = (Button) view.findViewById(R.id.bt_setMoney);//确认初始化金额按钮
-        bt_setMoney.setOnClickListener(this);//设置点击事件
-        Prompt.showView(getActivity(), view);
+    @UiThread
+    public void setOnlyMoney(String money) {
+        tv_myMoney.setText(money);
     }
 
     @Override
-    public void onClick(View v) {
-        service.setMoney(et_setMoney.getText().toString().trim());
+    public void showSetMoney(String msg, boolean isFindAll) {
+        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_setmoney, null);
+        ((TextView) view.findViewById(R.id.tv_msg)).setText(msg);//设置标题
+        et_setMoney = (EditText) view.findViewById(R.id.et_setMoney);//初始化金额数量
+        bt_setMoney = (Button) view.findViewById(R.id.bt_setMoney);//确认初始化金额按钮
+        bt_setMoney.setOnClickListener(new ClickListener(isFindAll));//设置点击事件
+        Prompt.showView(getActivity(), view);
     }
 
-    @Click(R.id.bt_button)
-    public void click(View view) {
-        service.initMoney();
+    @Click(R.id.bt_resetMoney)
+    public void click() {
+        service.resetMoney();
     }
 
     /**
@@ -78,5 +80,18 @@ public class Main_mine_Fragment extends BaseFragment implements MineView, View.O
      */
     public void refreashMoney() {
         service.refreashMoney();
+    }
+
+    private class ClickListener implements View.OnClickListener {
+        private boolean isFindAll;
+
+        public ClickListener(boolean isFindAll) {
+            this.isFindAll = isFindAll;
+        }
+
+        @Override
+        public void onClick(View view) {
+            service.setMoney(et_setMoney.getText().toString().trim(), isFindAll);
+        }
     }
 }

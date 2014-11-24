@@ -31,7 +31,7 @@
                 android:text="0.00" />
 
             <Button
-                android:id="@+id/bt_button"
+                android:id="@+id/bt_resetMoney"
                 android:text="校准金额"
                 style="@style/button"
                 android:padding="5dp"

@@ -16,8 +16,15 @@ public interface MineView {
     void setMoney(String money, String sevenOut, String sevenIn, String thirtyOut, String thirtyIn);
 
     /**
+     * 只设置金额
+     *
+     * @param money
+     */
+    void setOnlyMoney(String money);
+
+    /**
      * 设置金额
      */
-    void showSetMoney();
+    void showSetMoney(String msg, boolean isFindAll);
 
 }
