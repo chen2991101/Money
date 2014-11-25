@@ -46,7 +46,7 @@ public class HistoryDao extends BaseDao {
      * @param name
      */
     public int getCountByName(Context context, String name, boolean type) {
-        open(context);
+        openRead(context);
         int count = count(name, type);
         close();
         return count;
@@ -65,6 +65,7 @@ public class HistoryDao extends BaseDao {
             cursor.moveToNext();
             count = cursor.getInt(0);
         }
+        cursor.close();
         return count;
     }
 
@@ -77,7 +78,7 @@ public class HistoryDao extends BaseDao {
      */
     public JSONArray findAllOrderByCount(Context context, boolean type) {
         JSONArray array = new JSONArray();//需要返回的jaonArray
-        open(context);
+        openRead(context);
         Cursor cursor = database.query(tableName, new String[]{"*"}, "type=?", new String[]{type ? "1" : "0"}, null, null, "count desc");
         while (cursor.moveToNext()) {
             JSONObject obj = new JSONObject();
@@ -90,6 +91,7 @@ public class HistoryDao extends BaseDao {
             }
             array.put(obj);
         }
+        cursor.close();
         close();
         return array;
     }

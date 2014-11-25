@@ -45,7 +45,7 @@ public class InfoDao extends BaseDao {
      * @return
      */
     public JSONObject findPage(int pageNo, int pageSize) {
-        open(context);
+        openRead(context);
         JSONObject pager = new JSONObject();
         try {
             int sumCount = findCount();//总条数
@@ -105,6 +105,7 @@ public class InfoDao extends BaseDao {
             cursor.moveToNext();
             count = cursor.getInt(0);
         }
+        cursor.close();
         return count;
     }
 
@@ -130,6 +131,7 @@ public class InfoDao extends BaseDao {
             }
             array.put(obj);
         }
+        cursor.close();
         return array;
     }
 
