@@ -1,10 +1,5 @@
 package com.hao.money.view.fragment;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.text.TextUtils;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -14,8 +9,6 @@ import com.hao.money.R;
 import com.hao.money.adapter.JlAdapter;
 import com.hao.money.service.JlService;
 import com.hao.money.service.JlView;
-import com.hao.money.util.Prompt;
-import com.hao.money.util.Util;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
