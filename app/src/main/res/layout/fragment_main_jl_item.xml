@@ -1,38 +1,58 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+<com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingTop="5dp"
-    android:paddingBottom="5dp"
-    android:gravity="center"
-    android:background="@drawable/selector_item_press">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tv_money"
-        android:layout_weight="1"
-        android:singleLine="true"
-        android:layout_width="0dp"
-        android:gravity="center"
-        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:tag="Bottom2"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tv_type"
-        android:layout_weight="0.5"
-        android:layout_width="0dp"
-        android:gravity="center"
-        android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/iv_delete"
+            android:src="@drawable/delete"
+            android:layout_width="70dp"
+            android:background="#ff0000"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_remark"
-        android:layout_weight="1"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         android:gravity="center"
-        android:layout_height="wrap_content" />
+        android:background="@drawable/selector_item_press">
 
-    <TextView
-        android:id="@+id/tv_billDate"
-        android:gravity="center"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content" />
-</LinearLayout>
+        <TextView
+            android:id="@+id/tv_money"
+            android:layout_weight="1"
+            android:singleLine="true"
+            android:layout_width="0dp"
+            android:gravity="center"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv_type"
+            android:layout_weight="0.5"
+            android:layout_width="0dp"
+            android:gravity="center"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv_remark"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:gravity="center"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv_billDate"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</com.daimajia.swipe.SwipeLayout>

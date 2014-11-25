@@ -1,11 +1,15 @@
 package com.hao.money.service;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.text.TextUtils;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.hao.money.adapter.JlAdapter;
 import com.hao.money.dao.InfoDao;
 import com.hao.money.dao.Info_;
+import com.hao.money.util.Prompt;
 import com.hao.money.util.Util;
 import com.hao.money.view.activity.MainActivity;
 
@@ -40,13 +44,53 @@ public class JlService {
         this.ife = ife;
     }
 
+
+    /**
+     * 删除记录
+     *
+     * @param position
+     */
+    public void deleteItem(final int position) {
+        new AlertDialog.Builder(context).setTitle("确认删除吗？")
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Prompt.showLoad(context, "正在删除数据");
+                        String res = delete(position);
+                        Prompt.hideDialog();
+                        if (TextUtils.isEmpty(res)) {
+                            //成功
+                            JSONArray data = new JSONArray();
+                            for (int i = 0; i < adapter.getArray().length(); i++) {
+                                if (i == position) {
+                                    continue;
+                                }
+                                data.put(array.optJSONObject(i));
+                            }
+                            adapter.refresh(data);
+                            Prompt.showToast(context, "删除成功");
+                        } else {
+                            //失败
+                            Prompt.showToast(context, res);
+                        }
+                    }
+                })
+                .setNegativeButton("返回", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // 点击“返回”后的操作,这里不设置没有任何操作
+                    }
+                }).show();
+    }
+
     /**
      * 开始删除记录
      *
      * @param position
      */
     public String delete(int position) {
-        JSONObject obj = array.optJSONObject(position - 1);
+        JSONObject obj = array.optJSONObject(position);
         if (obj == null) {
             return "没有对应的数据";
         }
@@ -85,7 +129,7 @@ public class JlService {
     }
 
     public void setAdapter() {
-        adapter = new JlAdapter(context, array);
+        adapter = new JlAdapter(context, array, this);
         ife.setAdapter(adapter);
         findPage(1);//查询第一页的内容
     }
