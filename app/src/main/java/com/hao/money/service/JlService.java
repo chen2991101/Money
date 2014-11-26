@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.text.TextUtils;
 
+import com.daimajia.swipe.SwipeLayout;
+import com.daimajia.swipe.implments.SwipeItemMangerImpl;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.hao.money.adapter.JlAdapter;
 import com.hao.money.dao.InfoDao;
@@ -21,6 +23,8 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.List;
 
 /**
  * 记录的service
@@ -56,6 +60,12 @@ public class JlService {
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        //取消当前打开的按钮
+                        List<SwipeLayout> list = adapter.getOpenLayouts();
+                        for (SwipeLayout swipeLayout : list) {
+                            adapter.closeAllExcept(swipeLayout);
+                        }
+
                         Prompt.showLoad(context, "正在删除数据");
                         String res = delete(position);
                         Prompt.hideDialog();
@@ -129,7 +139,8 @@ public class JlService {
     }
 
     public void setAdapter() {
-        adapter = new JlAdapter(context, array, this);
+        adapter = new JlAdapter(array, context, this);
+        adapter.setMode(SwipeItemMangerImpl.Mode.Single);//单列
         ife.setAdapter(adapter);
         findPage(1);//查询第一页的内容
     }
