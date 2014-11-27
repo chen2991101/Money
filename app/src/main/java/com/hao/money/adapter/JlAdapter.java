@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.BaseSwipeAdapter;
 import com.hao.money.R;
 import com.hao.money.service.JlService;
@@ -31,10 +32,10 @@ public class JlAdapter extends BaseSwipeAdapter {
     private JlService service;
     private JSONArray array;
 
-    public JlAdapter(JSONArray array, Context context,JlService service) {
+    public JlAdapter(JSONArray array, Context context, JlService service) {
         this.array = array;
         this.context = context;
-        this.service=service;
+        this.service = service;
     }
 
     public JSONArray getArray() {
@@ -54,7 +55,8 @@ public class JlAdapter extends BaseSwipeAdapter {
         hold.tv_type = (TextView) view.findViewById(R.id.tv_type);
         hold.tv_remark = (TextView) view.findViewById(R.id.tv_remark);
         hold.tv_billDate = (TextView) view.findViewById(R.id.tv_billDate);
-        hold.iv_delete = (ImageView) view.findViewById(R.id.iv_delete);
+        //hold.iv_delete = (ImageView) view.findViewById(R.id.iv_delete);
+        hold.swipeLayout = (SwipeLayout) view.findViewById(R.id.swipeLayout);
         view.setTag(hold);
         return view;
     }
@@ -67,7 +69,7 @@ public class JlAdapter extends BaseSwipeAdapter {
         hold.tv_type.setText(obj.optBoolean("type") ? "支出" : "收入");
         hold.tv_remark.setText(obj.optString("remark"));
         hold.tv_billDate.setText(dateFormat.format(new Date(obj.optLong("billDate"))));
-        hold.iv_delete.setOnClickListener(new Delete(i));
+        //hold.iv_delete.setOnClickListener(new Delete(i));
     }
 
     @Override
@@ -88,6 +90,7 @@ public class JlAdapter extends BaseSwipeAdapter {
     private class HoldView {
         TextView tv_money, tv_type, tv_remark, tv_billDate;
         ImageView iv_delete;
+        SwipeLayout swipeLayout;
     }
 
     private class Delete implements View.OnClickListener {

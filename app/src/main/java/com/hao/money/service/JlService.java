@@ -4,10 +4,15 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.text.TextUtils;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.implments.SwipeItemMangerImpl;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.hao.money.R;
 import com.hao.money.adapter.JlAdapter;
 import com.hao.money.dao.InfoDao;
 import com.hao.money.dao.Info_;
@@ -43,6 +48,7 @@ public class JlService {
     private JSONArray array;
     private JlView ife;
     private int currentPage;
+    private boolean scrollable = true;//是否可以滑动
 
     public void setIfe(JlView ife) {
         this.ife = ife;
@@ -62,6 +68,7 @@ public class JlService {
                     public void onClick(DialogInterface dialog, int which) {
                         //取消当前打开的按钮
                         List<SwipeLayout> list = adapter.getOpenLayouts();
+                        System.out.println(list.size());
                         for (SwipeLayout swipeLayout : list) {
                             adapter.closeAllExcept(swipeLayout);
                         }
@@ -164,5 +171,29 @@ public class JlService {
         }
 
         ife.cancelLoading(mode);//关闭刷新
+    }
+
+    /**
+     * 滑动事件
+     *
+     * @return
+     */
+    public boolean touchListener(MotionEvent motionEvent) {
+        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+            List<SwipeLayout> list = adapter.getOpenLayouts();
+            for (SwipeLayout swipeLayout : list) {
+                if (swipeLayout.getOpenStatus() == SwipeLayout.Status.Open) {
+                    scrollable = false;
+                    swipeLayout.close();
+                    return true;
+                }
+            }
+        } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+            scrollable = true;
+            return false;
+        } else {
+            return !scrollable;
+        }
+        return false;
     }
 }

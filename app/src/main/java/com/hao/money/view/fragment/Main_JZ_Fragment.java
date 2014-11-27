@@ -133,8 +133,9 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView {
         //保存完毕后清空金额和用途
         KeyboardUtil.closeKeyboard(getActivity());
         Prompt.showToast(getActivity(), "保存成功");
-        et_money.setText("");
-        et_remark.setText("");
+        // todo 测试展示取消
+     /*   et_money.setText("");
+        et_remark.setText("");*/
         Prompt.hideDialog();
     }
 

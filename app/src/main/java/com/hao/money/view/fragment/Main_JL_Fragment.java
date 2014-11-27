@@ -1,5 +1,8 @@
 package com.hao.money.view.fragment;
 
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -40,6 +43,12 @@ public class Main_JL_Fragment extends BaseFragment implements JlView, PullToRefr
         lv_list.setMode(PullToRefreshBase.Mode.PULL_FROM_START);//lisetview只能下拉
         lv_list.setOnRefreshListener(this);
         listView = lv_list.getRefreshableView();
+        listView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                return service.touchListener(motionEvent);
+            }
+        });
     }
 
     @Override
