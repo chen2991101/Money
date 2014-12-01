@@ -55,8 +55,9 @@ public class JlAdapter extends BaseSwipeAdapter {
         hold.tv_type = (TextView) view.findViewById(R.id.tv_type);
         hold.tv_remark = (TextView) view.findViewById(R.id.tv_remark);
         hold.tv_billDate = (TextView) view.findViewById(R.id.tv_billDate);
-        //hold.iv_delete = (ImageView) view.findViewById(R.id.iv_delete);
+        hold.iv_delete = (ImageView) view.findViewById(R.id.iv_delete);
         hold.swipeLayout = (SwipeLayout) view.findViewById(R.id.swipeLayout);
+        hold.tv_position = (TextView) view.findViewById(R.id.tv_position);//行号
         view.setTag(hold);
         return view;
     }
@@ -69,7 +70,8 @@ public class JlAdapter extends BaseSwipeAdapter {
         hold.tv_type.setText(obj.optBoolean("type") ? "支出" : "收入");
         hold.tv_remark.setText(obj.optString("remark"));
         hold.tv_billDate.setText(dateFormat.format(new Date(obj.optLong("billDate"))));
-        //hold.iv_delete.setOnClickListener(new Delete(i));
+        hold.tv_position.setText(i + "");
+        hold.iv_delete.setOnClickListener(new Delete(i));
     }
 
     @Override
@@ -88,7 +90,7 @@ public class JlAdapter extends BaseSwipeAdapter {
     }
 
     private class HoldView {
-        TextView tv_money, tv_type, tv_remark, tv_billDate;
+        TextView tv_money, tv_type, tv_remark, tv_billDate, tv_position;
         ImageView iv_delete;
         SwipeLayout swipeLayout;
     }

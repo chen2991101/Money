@@ -68,9 +68,10 @@ public class JlService {
                     public void onClick(DialogInterface dialog, int which) {
                         //取消当前打开的按钮
                         List<SwipeLayout> list = adapter.getOpenLayouts();
-                        System.out.println(list.size());
                         for (SwipeLayout swipeLayout : list) {
-                            adapter.closeAllExcept(swipeLayout);
+                            if (swipeLayout.getOpenStatus().equals(SwipeLayout.Status.Open)) {
+                                swipeLayout.close(false);
+                            }
                         }
 
                         Prompt.showLoad(context, "正在删除数据");
