@@ -2,9 +2,9 @@ package com.hao.money.util;
 
 import android.app.Activity;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.baidu.location.LocationClient;
 import com.hao.money.R;
 import com.hao.money.view.activity.MainActivity;
 
@@ -65,5 +65,18 @@ public class Util {
             om = om.subtract(money);
         }
         return om.floatValue();
+    }
+
+    /**
+     * 获取位置
+     *
+     * @param locationClient
+     */
+    public static void getLocation(LocationClient locationClient) {
+        if (!locationClient.isStarted()) {
+            locationClient.start();
+        } else {
+            locationClient.requestLocation();
+        }
     }
 }

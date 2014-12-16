@@ -26,8 +26,9 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     apt "org.androidannotations:androidannotations:$AAVersion"
     compile "org.androidannotations:androidannotations-api:$AAVersion"
-    compile "com.daimajia.swipelayout:library:1.1.7@aar"
+    compile 'com.daimajia.swipelayout:library:1.1.7@aar'
     compile project(':pull')
+    compile files('libs/locSDK_5.0.jar')
 }
 
 apt {

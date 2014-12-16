@@ -22,7 +22,6 @@ import org.androidannotations.annotations.CheckedChange;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -39,6 +38,7 @@ public class MainActivity extends FragmentActivity {
     public static boolean refreshMain = false;
     public static boolean refreshJl = false;
 
+
     /**
      * 初始化方法
      */
@@ -49,7 +49,6 @@ public class MainActivity extends FragmentActivity {
         //设置记账为选中
         RadioButton rb = (RadioButton) findViewById(R.id.rb_mine);
         rb.setChecked(true);
-
     }
 
     @CheckedChange({R.id.rb_mine, R.id.rb_jz, R.id.rb_jl})

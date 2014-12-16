@@ -2,6 +2,7 @@ package com.hao.money.view.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.view.ActionProvider;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -9,14 +10,22 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
 import com.hao.money.R;
 import com.hao.money.service.JzService;
 import com.hao.money.service.JzView;
 import com.hao.money.util.KeyboardUtil;
 import com.hao.money.util.Prompt;
+import com.hao.money.util.Util;
+import com.hao.money.view.MyApplication;
+import com.hao.money.view.activity.MainActivity;
 import com.hao.money.view.activity.SelectHistoryActivity_;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.CheckedChange;
 import org.androidannotations.annotations.Click;
@@ -34,10 +43,12 @@ import java.util.Calendar;
 @SuppressLint("ValidFragment")
 @EFragment(R.layout.fragment_main_jz)
 public class Main_JZ_Fragment extends BaseFragment implements JzView {
+    @App
+    MyApplication application;
     @ViewById
     EditText et_money, et_time, et_date, et_remark;
     @ViewById
-    TextView tv_title;
+    TextView tv_title, tv_address;
     @ViewById
     Button bt_config, bt_history;
     @ViewById
@@ -56,6 +67,10 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView {
         tv_title.setText("记账");
         jzService.setIfe(this);
         initDateTime();//初始化日期和时间
+
+        //初始化的时候初始位置
+        application.mLocationClient.registerLocationListener(new JzAddressListener());//设置回调
+        Util.getLocation(application.mLocationClient);//获取位置
     }
 
     @Click({R.id.et_date, R.id.et_time, R.id.bt_config, R.id.bt_history})
@@ -137,6 +152,20 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView {
      /*   et_money.setText("");
         et_remark.setText("");*/
         Prompt.hideDialog();
+    }
+
+    /**
+     * 定位回调事件
+     */
+    private class JzAddressListener implements BDLocationListener {
+
+        @Override
+        public void onReceiveLocation(BDLocation location) {
+            if (location == null) {
+                return;
+            }
+            tv_address.setText(location.getAddrStr());
+        }
     }
 
 }
