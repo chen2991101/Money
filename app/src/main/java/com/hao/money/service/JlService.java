@@ -67,25 +67,26 @@ public class JlService {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //取消当前打开的按钮
-                        List<SwipeLayout> list = adapter.getOpenLayouts();
-                        for (SwipeLayout swipeLayout : list) {
-                            if (swipeLayout.getOpenStatus().equals(SwipeLayout.Status.Open)) {
-                                swipeLayout.close(false);
-                            }
-                        }
-
                         Prompt.showLoad(context, "正在删除数据");
                         String res = delete(position);
                         Prompt.hideDialog();
                         if (TextUtils.isEmpty(res)) {
                             //成功
+                            List<SwipeLayout> list = adapter.getOpenLayouts();
+                            for (SwipeLayout swipeLayout : list) {
+                                if (swipeLayout.getOpenStatus().equals(SwipeLayout.Status.Open)) {
+                                    swipeLayout.close(false);
+                                }
+                            }
+
                             JSONArray data = new JSONArray();
-                            for (int i = 0; i < adapter.getArray().length(); i++) {
+                            for (int i = 0; i < array.length(); i++) {
                                 if (i == position) {
                                     continue;
                                 }
                                 data.put(array.optJSONObject(i));
                             }
+                            array = data;
                             adapter.refresh(data);
                             Prompt.showToast(context, "删除成功");
                         } else {
