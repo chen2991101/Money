@@ -32,8 +32,7 @@ public class JlAdapter extends BaseSwipeAdapter {
     private JlService service;
     private JSONArray array;
 
-    public JlAdapter(JSONArray array, Context context, JlService service) {
-        this.array = array;
+    public JlAdapter(Context context, JlService service) {
         this.context = context;
         this.service = service;
     }
