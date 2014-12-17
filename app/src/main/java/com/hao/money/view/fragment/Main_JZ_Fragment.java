@@ -158,7 +158,6 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView {
      * 定位回调事件
      */
     private class JzAddressListener implements BDLocationListener {
-
         @Override
         public void onReceiveLocation(BDLocation location) {
             if (location == null) {
