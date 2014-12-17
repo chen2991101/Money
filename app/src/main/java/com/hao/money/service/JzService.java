@@ -69,10 +69,10 @@ public class JzService {
      * @param type
      * @param calendar
      */
-    public void jz(String money, String remark, boolean isSelect, boolean type, Calendar calendar) {
+    public void jz(String money, String remark, boolean isSelect, boolean type, Calendar calendar, String address) {
         boolean b = valid(money, remark);
         if (b) {
-            saveData(money, remark, isSelect, type, calendar);
+            saveData(money, remark, isSelect, type, calendar, address);
         } else {
             Prompt.hideDialog();
         }
@@ -142,11 +142,11 @@ public class JzService {
      * @param calendar
      */
     @Background
-    public void saveData(String money, String remark, boolean isSelect, boolean type, Calendar calendar) {
+    public void saveData(String money, String remark, boolean isSelect, boolean type, Calendar calendar, String address) {
         HistoryDao historyDao = new HistoryDao();
         historyDao.add(context, remark, isSelect, type);//保存到你是记录中
         float m = Float.parseFloat(money);
-        long id = infoDao.add(type, m, remark, calendar.getTimeInMillis(), Calendar.getInstance().getTimeInMillis());
+        long id = infoDao.add(type, m, remark, calendar.getTimeInMillis(), Calendar.getInstance().getTimeInMillis(), address);
         if (id != -1) {
             ife.sucessMethod();
 

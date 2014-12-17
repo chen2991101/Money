@@ -22,7 +22,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         //创建用途历史表
         String sql = "CREATE TABLE tb_history (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR, count INTEGER,type boolean)";
         db.execSQL(sql);
-        sql = "CREATE TABLE tb_info (id INTEGER PRIMARY KEY AUTOINCREMENT,type boolean, money float, remark VARCHAR,billDate long,createDate long)";
+        sql = "CREATE TABLE tb_info (id INTEGER PRIMARY KEY AUTOINCREMENT,type boolean, money float,address VARCHAR, remark VARCHAR,billDate long,createDate long)";
         db.execSQL(sql);
     }
 

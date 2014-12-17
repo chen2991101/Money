@@ -85,7 +85,8 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView {
             case R.id.bt_config:
                 String money = et_money.getText().toString().trim();
                 String remark = et_remark.getText().toString().trim();
-                jzService.jz(money, remark, isSelect, type, calendar);
+                String address = tv_address.getText().toString().trim();
+                jzService.jz(money, remark, isSelect, type, calendar, address);
                 isSelect = false;
                 break;
             case R.id.bt_history:

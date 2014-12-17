@@ -23,7 +23,7 @@ public class InfoDao extends BaseDao {
     /**
      * 添加记账信息
      */
-    public long add(boolean type, float money, String remark, long billDate, long createDate) {
+    public long add(boolean type, float money, String remark, long billDate, long createDate, String address) {
         open(context);
         ContentValues values = new ContentValues();
         values.put("type", type);
@@ -31,6 +31,7 @@ public class InfoDao extends BaseDao {
         values.put("remark", remark);
         values.put("billDate", billDate);
         values.put("createDate", createDate);
+        values.put("address", address);
         long id = database.insert(tableName, null, values);
         close();
         return id;
