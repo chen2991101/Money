@@ -75,11 +75,12 @@ public class JlService {
                             }
 
                             JSONArray data = new JSONArray();
-                            for (int i = 0; i < adapter.getArray().length(); i++) {
+                            JSONArray adapterArray = adapter.getArray();
+                            for (int i = 0; i < adapterArray.length(); i++) {
                                 if (i == position) {
                                     continue;
                                 }
-                                data.put(adapter.getArray().optJSONObject(i));
+                                data.put(adapterArray.optJSONObject(i));
                             }
                             adapter.refresh(data);
                             Prompt.showToast(context, "删除成功");
