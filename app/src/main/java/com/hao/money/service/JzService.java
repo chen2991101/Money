@@ -49,7 +49,7 @@ public class JzService {
      * @return
      */
     public boolean valid(String money, String remark) {
-        if (!TextUtils.isEmpty(money) && !TestUtil.testMoney(money)) {
+        if (!TextUtils.isEmpty(money) || !TestUtil.testMoney(money)) {
             Prompt.showToast(context, "请输入正确的金额");
             return false;
         }
