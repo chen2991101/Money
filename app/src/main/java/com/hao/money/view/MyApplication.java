@@ -23,10 +23,10 @@ public class MyApplication extends Application {
         // mLocationClient.registerLocationListener(myListener);    //注册监听函数
 
         LocationClientOption option = new LocationClientOption();
-        option.setLocationMode(LocationClientOption.LocationMode.Battery_Saving);//设置定位模式
+        option.setLocationMode(LocationClientOption.LocationMode.Battery_Saving);//设置定位模式,暂时不要gps定位，
         option.setCoorType("bd09ll");//返回的定位结果是百度经纬度,默认值gcj02
         option.setIsNeedAddress(true);//返回的定位结果包含地址信息
-        option.setOpenGps(true);
+        option.setOpenGps(false);
         option.setNeedDeviceDirect(true);//返回的定位结果包含手机机头的方向
         mLocationClient.setLocOption(option);
     }
