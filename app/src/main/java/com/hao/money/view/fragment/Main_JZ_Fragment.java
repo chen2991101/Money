@@ -70,7 +70,7 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView {
 
         //初始化的时候初始位置
         application.mLocationClient.registerLocationListener(new JzAddressListener());//设置回调
-        Util.getLocation(application.mLocationClient);//获取位置
+        application.mLocationClient.start();
     }
 
     @Click({R.id.et_date, R.id.et_time, R.id.bt_config, R.id.bt_history})
@@ -164,6 +164,7 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView {
                 return;
             }
             tv_address.setText(location.getAddrStr());
+            application.mLocationClient.stop();//取消定位服务
         }
     }
 

@@ -127,6 +127,11 @@ public class JlService {
      */
     @Background
     public void findPage(int pageNo) {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         currentPage = pageNo;
         JSONObject obj = infoDao.findPage(pageNo, pageSize);
         PullToRefreshBase.Mode mode = PullToRefreshBase.Mode.PULL_FROM_START;//只支持下拉
@@ -145,7 +150,6 @@ public class JlService {
         adapter = new JlAdapter(context, this);
         adapter.setMode(SwipeItemMangerImpl.Mode.Single);//单列
         ife.setAdapter(adapter);
-        findPage(1);//查询第一页的内容
     }
 
     /**
@@ -165,29 +169,5 @@ public class JlService {
         }
 
         ife.cancelLoading(mode);//关闭刷新
-    }
-
-    /**
-     * 滑动事件
-     *
-     * @return
-     */
-    public boolean touchListener(MotionEvent motionEvent) {
-        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-            List<SwipeLayout> list = adapter.getOpenLayouts();
-            for (SwipeLayout swipeLayout : list) {
-                if (swipeLayout.getOpenStatus() == SwipeLayout.Status.Open) {
-                    scrollable = false;
-                    swipeLayout.close();
-                    return true;
-                }
-            }
-        } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-            scrollable = true;
-            return false;
-        } else {
-            return !scrollable;
-        }
-        return false;
     }
 }

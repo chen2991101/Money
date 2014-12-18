@@ -3,6 +3,7 @@ package com.hao.money.view.fragment;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -13,9 +14,13 @@ import com.hao.money.adapter.JlAdapter;
 import com.hao.money.service.JlService;
 import com.hao.money.service.JlView;
 
+import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 /**
@@ -30,7 +35,6 @@ public class Main_JL_Fragment extends BaseFragment implements JlView, PullToRefr
     PullToRefreshListView lv_list;
     @Bean
     JlService service;
-    private ListView listView;
 
     /**
      * 初始化
@@ -42,13 +46,23 @@ public class Main_JL_Fragment extends BaseFragment implements JlView, PullToRefr
         service.setAdapter();//设置适配器
         lv_list.setMode(PullToRefreshBase.Mode.PULL_FROM_START);//lisetview只能下拉
         lv_list.setOnRefreshListener(this);
-        listView = lv_list.getRefreshableView();
-        listView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                return service.touchListener(motionEvent);
-            }
-        });
+
+        a();
+    }
+
+    @Background
+    public void a() {
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        b();
+    }
+
+    @UiThread
+    public void b() {
+        lv_list.setRefreshing(true);
     }
 
     @Override
@@ -79,6 +93,6 @@ public class Main_JL_Fragment extends BaseFragment implements JlView, PullToRefr
      * 刷新纪录
      */
     public void refreash() {
-        service.findPage(1);
+        lv_list.setRefreshing(true);
     }
 }

@@ -63,17 +63,4 @@ public class Util {
         }
         return oldMoney.setScale(2, 4).toString();
     }
-
-    /**
-     * 获取位置
-     *
-     * @param locationClient
-     */
-    public static void getLocation(LocationClient locationClient) {
-        if (!locationClient.isStarted()) {
-            locationClient.start();
-        } else {
-            locationClient.requestLocation();
-        }
-    }
 }

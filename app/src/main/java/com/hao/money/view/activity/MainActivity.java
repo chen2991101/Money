@@ -60,8 +60,8 @@ public class MainActivity extends FragmentActivity {
             if (fragments != null && fragments.size() > 0) {
                 for (Fragment fragment : fragments) {
                     if (checkedId == ((BaseFragment) fragment).getClickId()) {
-                        resumeView(checkedId);//恢复显示fragment时的操作
                         fm.beginTransaction().show(fragment).commit();
+                        resumeView(checkedId);//恢复显示fragment时的操作
                         b = false;
                     } else {
                         fm.beginTransaction().hide(fragment).commit();
