@@ -2,6 +2,7 @@ package com.hao.money.dao;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SyncStatusObserver;
 import android.database.Cursor;
 
 import org.androidannotations.annotations.EBean;
@@ -9,6 +10,8 @@ import org.androidannotations.annotations.RootContext;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.math.BigDecimal;
 
 /**
  * 记账信息的表单
@@ -23,11 +26,11 @@ public class InfoDao extends BaseDao {
     /**
      * 添加记账信息
      */
-    public long add(boolean type, float money, String remark, long billDate, long createDate, String address) {
+    public long add(boolean type, BigDecimal money, String remark, long billDate, long createDate, String address) {
         open(context);
         ContentValues values = new ContentValues();
         values.put("type", type);
-        values.put("money", money);
+        values.put("money", money.toString());
         values.put("remark", remark);
         values.put("billDate", billDate);
         values.put("createDate", createDate);
@@ -82,16 +85,16 @@ public class InfoDao extends BaseDao {
      * @param type
      * @return
      */
-    public float findSumMoney(long time, boolean type) {
+    public BigDecimal findSumMoney(long time, boolean type) {
         openRead(context);
         Cursor cursor = database.query(tableName, new String[]{"sum(money)"}, "billDate>=? and type=?", new String[]{time + "", type ? "1" : "0"}, null, null, null);
-        float money = 0;
-        if (cursor.moveToFirst()) {
-            money = cursor.getFloat(0);
+        BigDecimal money = BigDecimal.ZERO;
+        if (cursor.moveToFirst() && cursor.getString(0) != null) {
+            money = new BigDecimal(cursor.getString(0));
         }
         cursor.close();
         close();
-        return money;
+        return money.setScale(2, 4);
     }
 
     /**

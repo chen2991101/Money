@@ -16,7 +16,6 @@ import java.text.DecimalFormat;
  * Created by hao on 2014/11/2.
  */
 public class Util {
-    public static DecimalFormat df = new DecimalFormat("0.00");//保留两位小数
 
     /**
      * 设置标题
@@ -56,15 +55,13 @@ public class Util {
      * @param oldMoney
      * @param isAdd
      */
-    public static float updateSumMoney(String m, String oldMoney, boolean isAdd) {
-        BigDecimal money = new BigDecimal(m);
-        BigDecimal om = new BigDecimal(oldMoney);
+    public static String updateSumMoney(BigDecimal m, BigDecimal oldMoney, boolean isAdd) {
         if (isAdd) {
-            om = om.add(money);
+            oldMoney = oldMoney.add(m);
         } else {
-            om = om.subtract(money);
+            oldMoney = oldMoney.subtract(m);
         }
-        return om.floatValue();
+        return oldMoney.setScale(2, 4).toString();
     }
 
     /**

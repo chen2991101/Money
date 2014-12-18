@@ -1,15 +1,11 @@
 package com.hao.money.service;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.text.TextUtils;
 
-import com.hao.money.R;
 import com.hao.money.dao.InfoDao;
 import com.hao.money.dao.Info_;
 import com.hao.money.util.Prompt;
 import com.hao.money.util.TestUtil;
-import com.hao.money.util.Util;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
@@ -17,6 +13,7 @@ import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 
 /**
@@ -63,17 +60,16 @@ public class MineService {
      */
     @Background
     public void findMoney(boolean isFindAll) {
-        String money = Util.df.format(info.sumMoney().get());
         if (isFindAll) {
             Calendar seven = beforeTime(-7);//7天之前的时间
             Calendar thirty = beforeTime(-30);//30天之前的时间
-            float seven_out = infoDao.findSumMoney(seven.getTimeInMillis(), true);
-            float seven_in = infoDao.findSumMoney(seven.getTimeInMillis(), false);
-            float thirty_out = infoDao.findSumMoney(thirty.getTimeInMillis(), true);
-            float thirty_in = infoDao.findSumMoney(thirty.getTimeInMillis(), false);
-            ife.setMoney(money, Util.df.format(seven_out), Util.df.format(seven_in), Util.df.format(thirty_out), Util.df.format(thirty_in));
+            BigDecimal seven_out = infoDao.findSumMoney(seven.getTimeInMillis(), true);
+            BigDecimal seven_in = infoDao.findSumMoney(seven.getTimeInMillis(), false);
+            BigDecimal thirty_out = infoDao.findSumMoney(thirty.getTimeInMillis(), true);
+            BigDecimal thirty_in = infoDao.findSumMoney(thirty.getTimeInMillis(), false);
+            ife.setMoney(info.sumMoney().get(), seven_out.toString(), seven_in.toString(), thirty_out.toString(), thirty_in.toString());
         } else {
-            ife.setOnlyMoney(money);//只设置金额
+            ife.setOnlyMoney(info.sumMoney().get());//只设置金额
         }
     }
 
@@ -81,7 +77,7 @@ public class MineService {
     public void setMoney(String str, boolean isFindAll) {
         if (TestUtil.testMoney(str)) {
             //把用户输入的金额写入到xml文件中
-            info.sumMoney().put(Float.parseFloat(str));
+            info.sumMoney().put(str);
             findMoney(isFindAll);
             Prompt.hideView();
         } else {

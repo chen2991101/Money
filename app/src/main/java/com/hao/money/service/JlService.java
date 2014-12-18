@@ -5,14 +5,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.text.TextUtils;
 import android.view.MotionEvent;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
 
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.implments.SwipeItemMangerImpl;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.hao.money.R;
 import com.hao.money.adapter.JlAdapter;
 import com.hao.money.dao.InfoDao;
 import com.hao.money.dao.Info_;
@@ -29,6 +25,7 @@ import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -117,9 +114,7 @@ public class JlService {
             return "删除失败";
         }
 
-        float money = info.sumMoney().get();
-        money = Util.updateSumMoney(obj.optString("money"), money + "", obj.optBoolean("type"));
-        info.sumMoney().put(money);
+        info.sumMoney().put(Util.updateSumMoney(new BigDecimal(obj.optString("money")), new BigDecimal(info.sumMoney().get()), obj.optBoolean("type")));
         MainActivity.refreshMain = true;
         return null;
     }

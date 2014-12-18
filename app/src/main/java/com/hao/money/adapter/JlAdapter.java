@@ -11,11 +11,7 @@ import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.BaseSwipeAdapter;
 import com.hao.money.R;
 import com.hao.money.service.JlService;
-import com.hao.money.util.Util;
 
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.EBean;
-import org.androidannotations.annotations.RootContext;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -66,7 +62,7 @@ public class JlAdapter extends BaseSwipeAdapter {
     public void fillValues(int i, View view) {
         HoldView hold = (HoldView) view.getTag();
         JSONObject obj = array.optJSONObject(i);
-        hold.tv_money.setText(Util.df.format(obj.optDouble("money")));
+        hold.tv_money.setText(obj.optString("money"));
         hold.tv_type.setText(obj.optBoolean("type") ? "支出" : "收入");
         hold.tv_remark.setText(obj.optString("remark"));
         hold.tv_billDate.setText(dateFormat.format(new Date(obj.optLong("billDate"))));

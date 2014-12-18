@@ -21,6 +21,7 @@ import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 
 /**
@@ -145,13 +146,11 @@ public class JzService {
     public void saveData(String money, String remark, boolean isSelect, boolean type, Calendar calendar, String address) {
         HistoryDao historyDao = new HistoryDao();
         historyDao.add(context, remark, isSelect, type);//保存到你是记录中
-        float m = Float.parseFloat(money);
+        BigDecimal m = new BigDecimal(money);
         long id = infoDao.add(type, m, remark, calendar.getTimeInMillis(), Calendar.getInstance().getTimeInMillis(), address);
         if (id != -1) {
             ife.sucessMethod();
-
-            m = Util.updateSumMoney(money + "", info.sumMoney().get() + "", !type);
-            info.sumMoney().put(m);
+            info.sumMoney().put(Util.updateSumMoney(m, new BigDecimal(info.sumMoney().get()), !type));
             MainActivity.refreshMain = true;
             MainActivity.refreshJl = true;
         }
