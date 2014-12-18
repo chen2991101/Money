@@ -8,7 +8,9 @@ import android.view.MotionEvent;
 
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.implments.SwipeItemMangerImpl;
+import com.handmark.pulltorefresh.library.ILoadingLayout;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.hao.money.adapter.JlAdapter;
 import com.hao.money.dao.InfoDao;
 import com.hao.money.dao.Info_;
@@ -163,5 +165,19 @@ public class JlService {
         }
 
         ife.cancelLoading(mode);//关闭刷新
+    }
+
+
+    /**
+     * 设置上下拉的提示信息
+     */
+    public void setPullText(ILoadingLayout up, ILoadingLayout down) {
+        up.setPullLabel("上拉加载...");
+        up.setRefreshingLabel("正在加载...");
+        up.setReleaseLabel("松开加载更多...");
+
+        down.setPullLabel("下拉加载...");
+        down.setRefreshingLabel("正在加载...");
+        down.setReleaseLabel("松开加载更多...");
     }
 }

@@ -2,7 +2,6 @@ package com.hao.money.view.fragment;
 
 import android.widget.TextView;
 
-import com.handmark.pulltorefresh.library.ILoadingLayout;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.hao.money.R;
@@ -36,6 +35,9 @@ public class Main_JL_Fragment extends BaseFragment implements JlView, PullToRefr
     @AfterViews
     public void init() {
         tv_title.setText("记录");
+
+        service.setPullText(lv_list.getLoadingLayoutProxy(false, true), lv_list.getLoadingLayoutProxy(true, false));
+
         service.setIfe(this);//设置借口实现
         service.setAdapter();//设置适配器
         lv_list.setMode(PullToRefreshBase.Mode.PULL_FROM_START);//lisetview只能下拉
@@ -82,15 +84,7 @@ public class Main_JL_Fragment extends BaseFragment implements JlView, PullToRefr
         lv_list.onRefreshComplete();
         lv_list.setMode(mode);
 
-        ILoadingLayout up = lv_list.getLoadingLayoutProxy(false, true);
-        up.setPullLabel("上拉加载...");
-        up.setRefreshingLabel("正在加载...");
-        up.setReleaseLabel("松开加载更多...");
-
-        ILoadingLayout down = lv_list.getLoadingLayoutProxy(true, false);
-        down.setPullLabel("下拉加载...");
-        down.setRefreshingLabel("正在加载...");
-        down.setReleaseLabel("松开加载更多...");
+        service.setPullText(lv_list.getLoadingLayoutProxy(false, true), lv_list.getLoadingLayoutProxy(true, false));
     }
 
     /**
