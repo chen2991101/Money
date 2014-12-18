@@ -6,6 +6,7 @@ import android.content.Intent;
 
 import com.hao.money.adapter.SelectHistoryAdapter;
 import com.hao.money.dao.HistoryDao;
+import com.hao.money.util.Prompt;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
@@ -69,6 +70,7 @@ public class SelectHistoryService {
             }
             array = jsonArray;
             adapter.refresh(array);
+            Prompt.showToast(context, "删除成功");
         }
     }
 }
