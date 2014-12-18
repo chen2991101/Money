@@ -15,6 +15,7 @@ import com.hao.money.service.JlService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -61,7 +62,7 @@ public class JlAdapter extends BaseSwipeAdapter {
     public void fillValues(int i, View view) {
         HoldView hold = (HoldView) view.getTag();
         JSONObject obj = array.optJSONObject(i);
-        hold.tv_money.setText(obj.optString("money"));
+        hold.tv_money.setText(new BigDecimal(obj.optString("money")).setScale(2, 4).toString());
         hold.tv_type.setText(obj.optBoolean("type") ? "支出" : "收入");
         hold.tv_remark.setText(obj.optString("remark"));
         hold.tv_billDate.setText(dateFormat.format(new Date(obj.optLong("billDate"))));
