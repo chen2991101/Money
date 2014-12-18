@@ -127,11 +127,6 @@ public class JlService {
      */
     @Background
     public void findPage(int pageNo) {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         currentPage = pageNo;
         JSONObject obj = infoDao.findPage(pageNo, pageSize);
         PullToRefreshBase.Mode mode = PullToRefreshBase.Mode.PULL_FROM_START;//只支持下拉
