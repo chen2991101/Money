@@ -5,10 +5,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.text.TextUtils;
 import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.implments.SwipeItemMangerImpl;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.hao.money.R;
 import com.hao.money.adapter.JlAdapter;
 import com.hao.money.dao.InfoDao;
 import com.hao.money.dao.Info_;
@@ -25,7 +29,6 @@ import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -42,6 +45,7 @@ public class JlService {
     Info_ info;
     private int pageSize = 15;//每页条数
     private JlAdapter adapter;
+    private JSONArray array;
     private JlView ife;
     private int currentPage;
     private boolean scrollable = true;//是否可以滑动
@@ -62,28 +66,25 @@ public class JlService {
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        //取消当前打开的按钮
+                        List<SwipeLayout> list = adapter.getOpenLayouts();
+                        for (SwipeLayout swipeLayout : list) {
+                            if (swipeLayout.getOpenStatus().equals(SwipeLayout.Status.Open)) {
+                                swipeLayout.close(false);
+                            }
+                        }
 
                         Prompt.showLoad(context, "正在删除数据");
                         String res = delete(position);
                         Prompt.hideDialog();
                         if (TextUtils.isEmpty(res)) {
                             //成功
-
-                            //取消当前打开的按钮
-                            List<SwipeLayout> list = adapter.getOpenLayouts();
-                            for (SwipeLayout swipeLayout : list) {
-                                if (swipeLayout.getOpenStatus().equals(SwipeLayout.Status.Open)) {
-                                    swipeLayout.close(false);
-                                }
-                            }
-
                             JSONArray data = new JSONArray();
-                            JSONArray adapterArray = adapter.getArray();
-                            for (int i = 0; i < adapterArray.length(); i++) {
+                            for (int i = 0; i < adapter.getArray().length(); i++) {
                                 if (i == position) {
                                     continue;
                                 }
-                                data.put(adapterArray.optJSONObject(i));
+                                data.put(array.optJSONObject(i));
                             }
                             adapter.refresh(data);
                             Prompt.showToast(context, "删除成功");
@@ -107,7 +108,7 @@ public class JlService {
      * @param position
      */
     public String delete(int position) {
-        JSONObject obj = adapter.getArray().optJSONObject(position);
+        JSONObject obj = array.optJSONObject(position);
         if (obj == null) {
             return "没有对应的数据";
         }
@@ -116,7 +117,9 @@ public class JlService {
             return "删除失败";
         }
 
-        info.sumMoney().put(Util.updateSumMoney(new BigDecimal(obj.optString("money")), new BigDecimal(info.sumMoney().get()), obj.optBoolean("type")));
+        float money = info.sumMoney().get();
+        money = Util.updateSumMoney(obj.optString("money"), money + "", obj.optBoolean("type"));
+        info.sumMoney().put(money);
         MainActivity.refreshMain = true;
         return null;
     }
@@ -144,7 +147,7 @@ public class JlService {
     }
 
     public void setAdapter() {
-        adapter = new JlAdapter(context, this);
+        adapter = new JlAdapter(array, context, this);
         adapter.setMode(SwipeItemMangerImpl.Mode.Single);//单列
         ife.setAdapter(adapter);
         findPage(1);//查询第一页的内容
@@ -161,9 +164,11 @@ public class JlService {
     public void updateAdapter(JSONObject pager, int pageNo, PullToRefreshBase.Mode mode) {
         if (pageNo == 1) {
             //如果是第一页，直接赋值
-            adapter.refresh(pager.optJSONArray("list"));
+            array = pager.optJSONArray("list");
+            adapter.refresh(array);
         } else {
-            adapter.appendArray(pager.optJSONArray("list"));
+            JSONArray jsonArray = pager.optJSONArray("list");
+            array = adapter.appendArray(jsonArray);
         }
 
         ife.cancelLoading(mode);//关闭刷新
