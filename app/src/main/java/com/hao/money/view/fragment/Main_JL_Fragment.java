@@ -1,10 +1,5 @@
 package com.hao.money.view.fragment;
 
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.AbsListView;
-import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -14,11 +9,9 @@ import com.hao.money.adapter.JlAdapter;
 import com.hao.money.service.JlService;
 import com.hao.money.service.JlView;
 
-import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
@@ -46,23 +39,22 @@ public class Main_JL_Fragment extends BaseFragment implements JlView, PullToRefr
         service.setAdapter();//设置适配器
         lv_list.setMode(PullToRefreshBase.Mode.PULL_FROM_START);//lisetview只能下拉
         lv_list.setOnRefreshListener(this);
-
-        a();
+        bkRefresh();
     }
 
     @Background
-    public void a() {
+    public void bkRefresh() {
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        b();
+        uiRefresh();
     }
 
     @UiThread
-    public void b() {
-        lv_list.setRefreshing(true);
+    public void uiRefresh() {
+        lv_list.setRefreshing();
     }
 
     @Override
@@ -93,6 +85,6 @@ public class Main_JL_Fragment extends BaseFragment implements JlView, PullToRefr
      * 刷新纪录
      */
     public void refreash() {
-        lv_list.setRefreshing(true);
+        lv_list.setRefreshing();
     }
 }
