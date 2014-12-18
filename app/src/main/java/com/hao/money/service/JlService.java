@@ -44,7 +44,6 @@ public class JlService {
     private JlAdapter adapter;
     private JlView ife;
     private int currentPage;
-    private boolean scrollable = true;//是否可以滑动
 
     public void setIfe(JlView ife) {
         this.ife = ife;

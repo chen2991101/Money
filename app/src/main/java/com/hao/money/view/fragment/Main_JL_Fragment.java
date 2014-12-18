@@ -2,6 +2,7 @@ package com.hao.money.view.fragment;
 
 import android.widget.TextView;
 
+import com.handmark.pulltorefresh.library.ILoadingLayout;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.hao.money.R;
@@ -64,6 +65,7 @@ public class Main_JL_Fragment extends BaseFragment implements JlView, PullToRefr
 
     @Override
     public void onPullUpToRefresh(PullToRefreshBase refreshView) {
+        // 设置刷新文本说明(刷新过程中)
         service.findNextPage();
     }
 
@@ -79,6 +81,16 @@ public class Main_JL_Fragment extends BaseFragment implements JlView, PullToRefr
     public void cancelLoading(PullToRefreshBase.Mode mode) {
         lv_list.onRefreshComplete();
         lv_list.setMode(mode);
+
+        ILoadingLayout up = lv_list.getLoadingLayoutProxy(false, true);
+        up.setPullLabel("上拉加载...");
+        up.setRefreshingLabel("正在加载...");
+        up.setReleaseLabel("松开加载更多...");
+
+        ILoadingLayout down = lv_list.getLoadingLayoutProxy(true, false);
+        down.setPullLabel("下拉加载...");
+        down.setRefreshingLabel("正在加载...");
+        down.setReleaseLabel("松开加载更多...");
     }
 
     /**
