@@ -77,7 +77,7 @@ public class MineService {
     public void setMoney(String str, boolean isFindAll) {
         if (TestUtil.testMoney(str)) {
             //把用户输入的金额写入到xml文件中
-            info.sumMoney().put(str);
+            info.sumMoney().put(new BigDecimal(str).setScale(2, 4).toString());
             findMoney(isFindAll);
             Prompt.hideView();
         } else {
