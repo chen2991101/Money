@@ -96,8 +96,8 @@ public class MineService {
     /**
      * 计算几天之前的时间
      *
-     * @param day
-     * @return
+     * @param day 开始计算的时间
+     * @return 时间
      */
     private Calendar beforeTime(int day) {
         Calendar calendar = Calendar.getInstance();
