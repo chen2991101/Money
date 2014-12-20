@@ -37,6 +37,8 @@ public class InfoDao extends BaseDao {
 
         values.put("latitude", latitude);
         values.put("longitude", longitude);
+
+        values.put("isUpload", false);//刚添加的还没有上传
         long id = database.insert(tableName, null, values);
         close();
         return id;
