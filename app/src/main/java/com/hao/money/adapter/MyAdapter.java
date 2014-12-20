@@ -20,10 +20,6 @@ public abstract class MyAdapter extends BaseAdapter {
         this.context = context;
     }
 
-    public JSONArray getArray() {
-        return array;
-    }
-
     @Override
     public int getCount() {
         return array == null ? 0 : array.length();

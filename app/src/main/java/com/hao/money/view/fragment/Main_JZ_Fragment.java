@@ -2,7 +2,6 @@ package com.hao.money.view.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.view.ActionProvider;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -12,16 +11,12 @@ import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
 import com.hao.money.R;
 import com.hao.money.service.JzService;
 import com.hao.money.service.JzView;
 import com.hao.money.util.KeyboardUtil;
 import com.hao.money.util.Prompt;
-import com.hao.money.util.Util;
 import com.hao.money.view.MyApplication;
-import com.hao.money.view.activity.MainActivity;
 import com.hao.money.view.activity.SelectHistoryActivity_;
 
 import org.androidannotations.annotations.AfterViews;
@@ -55,6 +50,7 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView {
     RadioButton rb_out, rb_in;
     @Bean
     JzService jzService;
+    private double latitude, longitude;//经纬度
     private Calendar calendar;//日期
     private boolean isSelect = false, type = true;//true为支出 false为收入
 
@@ -86,7 +82,7 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView {
                 String money = et_money.getText().toString().trim();
                 String remark = et_remark.getText().toString().trim();
                 String address = tv_address.getText().toString().trim();
-                jzService.jz(money, remark, isSelect, type, calendar, address);
+                jzService.jz(money, remark, isSelect, type, calendar, address, latitude, longitude);
                 isSelect = false;
                 break;
             case R.id.bt_history:
@@ -100,7 +96,7 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView {
     /**
      * 选择历史了后设置备注
      *
-     * @param remark
+     * @param remark 设置的备注信息
      */
     public void setRemark(String remark) {
         et_remark.setText(remark);
@@ -164,6 +160,8 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView {
                 return;
             }
             tv_address.setText(location.getAddrStr());
+            latitude = location.getLatitude();//设置纬度
+            longitude = location.getLongitude();//设置精度
             application.mLocationClient.stop();//取消定位服务
         }
     }

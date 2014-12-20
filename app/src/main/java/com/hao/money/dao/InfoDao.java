@@ -2,7 +2,6 @@ package com.hao.money.dao;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.SyncStatusObserver;
 import android.database.Cursor;
 
 import org.androidannotations.annotations.EBean;
@@ -26,7 +25,7 @@ public class InfoDao extends BaseDao {
     /**
      * 添加记账信息
      */
-    public long add(boolean type, BigDecimal money, String remark, long billDate, long createDate, String address) {
+    public long add(boolean type, BigDecimal money, String remark, long billDate, long createDate, String address, double latitude, double longitude) {
         open(context);
         ContentValues values = new ContentValues();
         values.put("type", type);
@@ -35,6 +34,9 @@ public class InfoDao extends BaseDao {
         values.put("billDate", billDate);
         values.put("createDate", createDate);
         values.put("address", address);
+
+        values.put("latitude", latitude);
+        values.put("longitude", longitude);
         long id = database.insert(tableName, null, values);
         close();
         return id;
@@ -44,9 +46,9 @@ public class InfoDao extends BaseDao {
     /**
      * 分页查询数据
      *
-     * @param pageNo
-     * @param pageSize
-     * @return
+     * @param pageNo   页数
+     * @param pageSize 每页条数
+     * @return 查询的记录
      */
     public JSONObject findPage(int pageNo, int pageSize) {
         openRead(context);
@@ -67,8 +69,8 @@ public class InfoDao extends BaseDao {
     /**
      * 删除记录
      *
-     * @param id
-     * @return
+     * @param id 需要删除的id
+     * @return 影响的条数
      */
     public int deleteById(String id) {
         open(context);
@@ -81,9 +83,9 @@ public class InfoDao extends BaseDao {
     /**
      * 根据时间查询总记录
      *
-     * @param time
-     * @param type
-     * @return
+     * @param time 时间
+     * @param type 类型
+     * @return 金额
      */
     public BigDecimal findSumMoney(long time, boolean type) {
         openRead(context);
@@ -100,7 +102,7 @@ public class InfoDao extends BaseDao {
     /**
      * 查询数据的总条数
      *
-     * @return
+     * @return 总条数
      */
     private int findCount() {
         int count = 0;
@@ -116,7 +118,7 @@ public class InfoDao extends BaseDao {
     /**
      * 查询所有数据
      *
-     * @return
+     * @return 查询的数据
      */
     private JSONArray findAll(int pageNo, int pageSize) {
         JSONArray array = new JSONArray();
@@ -126,7 +128,7 @@ public class InfoDao extends BaseDao {
             try {
                 obj.put("id", cursor.getString(cursor.getColumnIndex("id")));
                 obj.put("money", cursor.getFloat(cursor.getColumnIndex("money")));//金额
-                obj.put("type", cursor.getInt(cursor.getColumnIndex("type")) == 1 ? true : false);//类型
+                obj.put("type", cursor.getInt(cursor.getColumnIndex("type")) == 1);//类型
                 obj.put("remark", cursor.getString(cursor.getColumnIndex("remark")));//备注
                 obj.put("billDate", cursor.getLong(cursor.getColumnIndex("billDate")));//生成时间
                 obj.put("createDate", cursor.getLong(cursor.getColumnIndex("createDate")));//记录时间
