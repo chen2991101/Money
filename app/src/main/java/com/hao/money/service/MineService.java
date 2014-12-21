@@ -2,7 +2,7 @@ package com.hao.money.service;
 
 import android.content.Context;
 
-import com.hao.money.dao.InfoDao;
+import com.hao.money.dao.RecordDao;
 import com.hao.money.dao.Info_;
 import com.hao.money.util.Prompt;
 import com.hao.money.util.TestUtil;
@@ -27,7 +27,7 @@ public class MineService {
     @Pref
     Info_ info;
     @Bean
-    InfoDao infoDao;
+    RecordDao recordDao;
     private MineView ife;
 
     public void setIfe(MineView ife) {
@@ -63,10 +63,10 @@ public class MineService {
         if (isFindAll) {
             Calendar seven = beforeTime(-7);//7天之前的时间
             Calendar thirty = beforeTime(-30);//30天之前的时间
-            BigDecimal seven_out = infoDao.findSumMoney(seven.getTimeInMillis(), true);
-            BigDecimal seven_in = infoDao.findSumMoney(seven.getTimeInMillis(), false);
-            BigDecimal thirty_out = infoDao.findSumMoney(thirty.getTimeInMillis(), true);
-            BigDecimal thirty_in = infoDao.findSumMoney(thirty.getTimeInMillis(), false);
+            BigDecimal seven_out = recordDao.findSumMoney(seven.getTimeInMillis(), true);
+            BigDecimal seven_in = recordDao.findSumMoney(seven.getTimeInMillis(), false);
+            BigDecimal thirty_out = recordDao.findSumMoney(thirty.getTimeInMillis(), true);
+            BigDecimal thirty_in = recordDao.findSumMoney(thirty.getTimeInMillis(), false);
             ife.setMoney(info.sumMoney().get(), seven_out.toString(), seven_in.toString(), thirty_out.toString(), thirty_in.toString());
         } else {
             ife.setOnlyMoney(info.sumMoney().get());//只设置金额

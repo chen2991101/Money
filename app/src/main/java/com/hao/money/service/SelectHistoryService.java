@@ -6,11 +6,15 @@ import android.content.Intent;
 
 import com.hao.money.adapter.SelectHistoryAdapter;
 import com.hao.money.dao.HistoryDao;
+import com.hao.money.entity.History;
 import com.hao.money.util.Prompt;
 
 import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
-import org.json.JSONArray;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 选择历史的service
@@ -18,7 +22,8 @@ import org.json.JSONArray;
  */
 @EBean
 public class SelectHistoryService {
-    private JSONArray array;
+    @Bean
+    HistoryDao historyDao;
     private SelectHistoryView ife;
     private SelectHistoryAdapter adapter;
 
@@ -33,9 +38,8 @@ public class SelectHistoryService {
      */
     @Background
     public void findData(final boolean type, final Activity activity) {
-        HistoryDao historyDao = new HistoryDao();
-        array = historyDao.findAllOrderByCount(activity, type);//获取需要展示的数据
-        adapter = new SelectHistoryAdapter(activity, array, SelectHistoryService.this);
+        List<History> list = historyDao.findAllOrderByCount(type);//获取需要展示的数据
+        adapter = new SelectHistoryAdapter(activity, list, SelectHistoryService.this);
         ife.setAdapter(adapter);
     }
 
@@ -44,7 +48,7 @@ public class SelectHistoryService {
      */
     public void back(int i, Activity activity) {
         Intent intent = new Intent();
-        intent.putExtra("remark", array.optJSONObject(i).optString("name"));//设置选中的内容
+        intent.putExtra("remark", adapter.list.get(i).getName());//设置选中的内容
         activity.setResult(1, intent);
         activity.finish();
     }
@@ -56,20 +60,19 @@ public class SelectHistoryService {
      * @param context
      */
     public void deleteHistory(int i, Context context) {
-        String id = array.optJSONObject(i).optString("id");
-        HistoryDao historyDao = new HistoryDao();
-        int count = historyDao.deleteById(context, id);
+        int id = adapter.list.get(i).getId();
+        int count = historyDao.deleteById(id);
         if (count == 1) {
             //删除成功，更新数据
-            JSONArray jsonArray = new JSONArray();
-            for (int j = 0; j < array.length(); j++) {
+            List l = new ArrayList<History>();
+            List original = adapter.list;
+            for (int j = 0; j < original.size(); j++) {
                 if (j == i) {
                     continue;
                 }
-                jsonArray.put(array.optJSONObject(j));
+                l.add(original.get(i));
             }
-            array = jsonArray;
-            adapter.refresh(array);
+            adapter.refresh(l);
             Prompt.showToast(context, "删除成功");
         }
     }

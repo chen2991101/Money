@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.BaseSwipeAdapter;
 import com.hao.money.R;
+import com.hao.money.entity.Record;
 import com.hao.money.service.JlService;
 
 import org.json.JSONArray;
@@ -18,6 +19,7 @@ import org.json.JSONObject;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 选择历史的activity的适配器
@@ -27,16 +29,13 @@ public class JlAdapter extends BaseSwipeAdapter {
     private Context context;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     private JlService service;
-    private JSONArray array;
+    public List<Record> list;
 
     public JlAdapter(Context context, JlService service) {
         this.context = context;
         this.service = service;
     }
 
-    public JSONArray getArray() {
-        return array;
-    }
 
     @Override
     public int getSwipeLayoutResourceId(int i) {
@@ -61,23 +60,23 @@ public class JlAdapter extends BaseSwipeAdapter {
     @Override
     public void fillValues(int i, View view) {
         HoldView hold = (HoldView) view.getTag();
-        JSONObject obj = array.optJSONObject(i);
-        hold.tv_money.setText(new BigDecimal(obj.optString("money")).setScale(2, 4).toString());
-        hold.tv_type.setText(obj.optBoolean("type") ? "支出" : "收入");
-        hold.tv_remark.setText(obj.optString("remark"));
-        hold.tv_billDate.setText(dateFormat.format(new Date(obj.optLong("billDate"))));
+        Record obj = list.get(i);
+        hold.tv_money.setText(obj.getMoney().setScale(2, 4).toString());
+        hold.tv_type.setText(obj.isType() ? "支出" : "收入");
+        hold.tv_remark.setText(obj.getRemark());
+        hold.tv_billDate.setText(dateFormat.format(new Date(obj.getBillDate())));
         hold.tv_position.setText(i + "");
         hold.iv_delete.setOnClickListener(new Delete(i));
     }
 
     @Override
     public int getCount() {
-        return array == null ? 0 : array.length();
+        return list == null ? 0 : list.size();
     }
 
     @Override
-    public Object getItem(int position) {
-        return array.optJSONObject(position);
+    public Record getItem(int position) {
+        return list.get(position);
     }
 
     @Override
@@ -107,25 +106,20 @@ public class JlAdapter extends BaseSwipeAdapter {
 
     /**
      * 刷新数据
-     *
-     * @param jsonArray
      */
-    public void refresh(JSONArray jsonArray) {
-        array = jsonArray;
+    public void refresh(List<Record> l) {
+        list = l;
         notifyDataSetChanged();
     }
 
     /**
      * 追加数据
      *
-     * @param jsonArray
      * @return
      */
-    public JSONArray appendArray(JSONArray jsonArray) {
-        for (int i = 0; i < jsonArray.length(); i++) {
-            array.put(jsonArray.optJSONObject(i));
-        }
+    public List<Record> appendArray(List<Record> l) {
+        list.addAll(l);
         notifyDataSetChanged();
-        return array;
+        return list;
     }
 }

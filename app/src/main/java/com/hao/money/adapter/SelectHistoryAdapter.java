@@ -10,20 +10,23 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.hao.money.R;
+import com.hao.money.entity.History;
 import com.hao.money.service.SelectHistoryService;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.List;
+
 /**
  * 选择历史的activity的适配器
  * Created by Administrator on 2014-11-17.
  */
-public class SelectHistoryAdapter extends MyAdapter {
+public class SelectHistoryAdapter extends MyAdapter<History> {
     private SelectHistoryService service;
 
-    public SelectHistoryAdapter(Context context, JSONArray array, SelectHistoryService service) {
-        super(context, array);
+    public SelectHistoryAdapter(Context context, List list, SelectHistoryService service) {
+        super(context, list);
         this.service = service;
     }
 
@@ -41,9 +44,9 @@ public class SelectHistoryAdapter extends MyAdapter {
             hold = (HoldView) view.getTag();
         }
 
-        JSONObject obj = array.optJSONObject(i);
-        hold.tv_name.setText(obj.optString("name"));
-        hold.tv_count.setText(obj.optString("count"));
+        History history = list.get(i);
+        hold.tv_name.setText(history.getName());
+        hold.tv_count.setText(history.getCount());
         hold.bt_delete.setOnClickListener(new Click(i));
         return view;
     }

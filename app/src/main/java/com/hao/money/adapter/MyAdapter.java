@@ -5,29 +5,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import org.json.JSONArray;
+import java.util.List;
 
 /**
  * 自己实现的adapter,做一些重复的工作
  * Created by Administrator on 2014-11-17.
  */
-public abstract class MyAdapter extends BaseAdapter {
-    protected JSONArray array;
+public abstract class MyAdapter<T> extends BaseAdapter {
+    public List<T> list;
     protected Context context;
 
-    public MyAdapter(Context context, JSONArray array) {
-        this.array = array;
+    public MyAdapter(Context context, List<T> list) {
         this.context = context;
+        this.list = list;
     }
 
     @Override
     public int getCount() {
-        return array == null ? 0 : array.length();
+        return list == null ? 0 : list.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return array.optJSONObject(i);
+        return list.get(i);
     }
 
     @Override
@@ -44,25 +44,9 @@ public abstract class MyAdapter extends BaseAdapter {
 
     /**
      * 刷新数据
-     *
-     * @param jsonArray
      */
-    public void refresh(JSONArray jsonArray) {
-        array = jsonArray;
+    public void refresh(List list) {
+        this.list = list;
         notifyDataSetChanged();
-    }
-
-    /**
-     * 追加数据
-     *
-     * @param jsonArray
-     * @return
-     */
-    public JSONArray appendArray(JSONArray jsonArray) {
-        for (int i = 0; i < jsonArray.length(); i++) {
-            array.put(jsonArray.optJSONObject(i));
-        }
-        notifyDataSetChanged();
-        return array;
     }
 }

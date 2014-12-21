@@ -8,8 +8,10 @@ import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 import com.hao.money.dao.HistoryDao;
-import com.hao.money.dao.InfoDao;
+import com.hao.money.dao.RecordDao;
 import com.hao.money.dao.Info_;
+import com.hao.money.entity.History;
+import com.hao.money.entity.Record;
 import com.hao.money.util.Prompt;
 import com.hao.money.util.TestUtil;
 import com.hao.money.util.Util;
@@ -33,7 +35,9 @@ public class JzService {
     @RootContext
     Context context;
     @Bean
-    InfoDao infoDao;
+    RecordDao recordDao;
+    @Bean
+    HistoryDao historyDao;
     private JzView ife;
     @Pref
     Info_ info;
@@ -70,7 +74,7 @@ public class JzService {
      * @param type
      * @param calendar
      */
-    public void jz(String money, String remark, boolean isSelect, boolean type, Calendar calendar, String address, double latitude, double longitude) {
+    public void jz(String money, String remark, boolean isSelect, boolean type, Calendar calendar, String address, String latitude, String longitude) {
         boolean b = valid(money, remark);
         if (b) {
             saveData(money, remark, isSelect, type, calendar, address, latitude, longitude);
@@ -143,11 +147,11 @@ public class JzService {
      * @param calendar
      */
     @Background
-    public void saveData(String money, String remark, boolean isSelect, boolean type, Calendar calendar, String address, double latitude, double longitude) {
-        HistoryDao historyDao = new HistoryDao();
-        historyDao.add(context, remark, isSelect, type);//保存到你是记录中
+    public void saveData(String money, String remark, boolean isSelect, boolean type, Calendar calendar, String address, String latitude, String longitude) {
+        History history = new History(remark, type);
+        historyDao.add(context, isSelect, history);//保存到你是记录中
         BigDecimal m = new BigDecimal(money);
-        long id = infoDao.add(type, m, remark, calendar.getTimeInMillis(), Calendar.getInstance().getTimeInMillis(), address, latitude, longitude);
+        long id = recordDao.add(new Record(type, m, address, latitude, longitude, remark, false, calendar.getTimeInMillis(), System.currentTimeMillis()));
         if (id != -1) {
             ife.sucessMethod();
             info.sumMoney().put(Util.updateSumMoney(m, new BigDecimal(info.sumMoney().get()), !type));

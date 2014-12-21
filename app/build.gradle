@@ -29,6 +29,8 @@ dependencies {
     compile 'com.daimajia.swipelayout:library:1.1.7@aar'
     compile project(':pull')
     compile files('libs/locSDK_5.0.jar')
+    compile files('libs/ormlite-android-4.48.jar')
+    compile files('libs/ormlite-core-4.48.jar')
 }
 
 apt {

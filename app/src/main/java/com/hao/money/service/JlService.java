@@ -4,16 +4,15 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.text.TextUtils;
-import android.view.MotionEvent;
 
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.implments.SwipeItemMangerImpl;
 import com.handmark.pulltorefresh.library.ILoadingLayout;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.hao.money.adapter.JlAdapter;
-import com.hao.money.dao.InfoDao;
+import com.hao.money.dao.RecordDao;
 import com.hao.money.dao.Info_;
+import com.hao.money.entity.Record;
 import com.hao.money.util.Prompt;
 import com.hao.money.util.Util;
 import com.hao.money.view.activity.MainActivity;
@@ -28,7 +27,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * 记录的service
@@ -39,7 +41,7 @@ public class JlService {
     @RootContext
     Context context;
     @Bean
-    InfoDao infoDao;
+    RecordDao recordDao;
     @Pref
     Info_ info;
     private int pageSize = 15;//每页条数
@@ -76,13 +78,13 @@ public class JlService {
                         Prompt.hideDialog();
                         if (TextUtils.isEmpty(res)) {
                             //成功
-                            JSONArray data = new JSONArray();
-                            JSONArray adapterArray = adapter.getArray();
-                            for (int i = 0; i < adapterArray.length(); i++) {
+                            List<Record> data = new ArrayList<Record>();
+                            List<Record> l = adapter.list;
+                            for (int i = 0; i < l.size(); i++) {
                                 if (i == position) {
                                     continue;
                                 }
-                                data.put(adapterArray.optJSONObject(i));
+                                data.add(l.get(i));
                             }
                             adapter.refresh(data);
                             Prompt.showToast(context, "删除成功");
@@ -106,16 +108,16 @@ public class JlService {
      * @param position
      */
     public String delete(int position) {
-        JSONObject obj = adapter.getArray().optJSONObject(position);
+        Record obj = adapter.getItem(position);
         if (obj == null) {
             return "没有对应的数据";
         }
-        int i = infoDao.deleteById(obj.optString("id"));
+        int i = recordDao.deleteById(obj.getId());
         if (i == 0) {
             return "删除失败";
         }
 
-        info.sumMoney().put(Util.updateSumMoney(new BigDecimal(obj.optString("money")), new BigDecimal(info.sumMoney().get()), obj.optBoolean("type")));
+        info.sumMoney().put(Util.updateSumMoney(obj.getMoney(), new BigDecimal(info.sumMoney().get()), obj.isType()));
         MainActivity.refreshMain = true;
         return null;
     }
@@ -129,12 +131,12 @@ public class JlService {
     @Background
     public void findPage(int pageNo) {
         currentPage = pageNo;
-        JSONObject obj = infoDao.findPage(pageNo, pageSize);
+        Map<String, Object> map = recordDao.findPage(pageNo, pageSize);
         PullToRefreshBase.Mode mode = PullToRefreshBase.Mode.PULL_FROM_START;//只支持下拉
-        if (obj.optInt("totalPage") > pageNo) {
+        if ((Long) map.get("totalPage") > pageNo) {
             mode = PullToRefreshBase.Mode.BOTH;//如果当前加载的不是最后一页的话可以向下滑动
         }
-        updateAdapter(obj, pageNo, mode);
+        updateAdapter(map, pageNo, mode);
     }
 
 
@@ -156,12 +158,12 @@ public class JlService {
      * @param mode
      */
     @UiThread
-    public void updateAdapter(JSONObject pager, int pageNo, PullToRefreshBase.Mode mode) {
+    public void updateAdapter(Map<String, Object> pager, int pageNo, PullToRefreshBase.Mode mode) {
         if (pageNo == 1) {
             //如果是第一页，直接赋值
-            adapter.refresh(pager.optJSONArray("list"));
+            adapter.refresh((List<Record>) pager.get("list"));
         } else {
-            adapter.appendArray(pager.optJSONArray("list"));
+            adapter.appendArray((List<Record>) pager.get("list"));
         }
 
         ife.cancelLoading(mode);//关闭刷新

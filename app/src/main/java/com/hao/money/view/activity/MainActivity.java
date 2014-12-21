@@ -8,6 +8,9 @@ import android.widget.CompoundButton;
 import android.widget.RadioButton;
 
 import com.hao.money.R;
+import com.hao.money.dao.BaseHelper;
+import com.hao.money.dao.HistoryDao;
+import com.hao.money.entity.History;
 import com.hao.money.util.Prompt;
 import com.hao.money.view.fragment.BaseFragment;
 import com.hao.money.view.fragment.Main_JL_Fragment;
@@ -16,12 +19,15 @@ import com.hao.money.view.fragment.Main_JZ_Fragment;
 import com.hao.money.view.fragment.Main_JZ_Fragment_;
 import com.hao.money.view.fragment.Main_mine_Fragment;
 import com.hao.money.view.fragment.Main_mine_Fragment_;
+import com.j256.ormlite.dao.Dao;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.CheckedChange;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.OrmLiteDao;
 import org.androidannotations.annotations.ViewById;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
