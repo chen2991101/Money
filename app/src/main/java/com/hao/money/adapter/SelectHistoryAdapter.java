@@ -46,7 +46,7 @@ public class SelectHistoryAdapter extends MyAdapter<History> {
 
         History history = list.get(i);
         hold.tv_name.setText(history.getName());
-        hold.tv_count.setText(history.getCount());
+        hold.tv_count.setText(history.getCount()+"");
         hold.bt_delete.setOnClickListener(new Click(i));
         return view;
     }
