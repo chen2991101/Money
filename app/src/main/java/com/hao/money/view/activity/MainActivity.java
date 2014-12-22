@@ -61,9 +61,10 @@ public class MainActivity extends FragmentActivity {
         RadioButton rb = (RadioButton) findViewById(R.id.rb_mine);
         rb.setChecked(true);
 
-        application.addressListener = new AddressListener();
+        //TODO 暂时不定位
+/*        application.addressListener = new AddressListener();
         application.mLocationClient.registerLocationListener(application.addressListener);
-        application.mLocationClient.start();
+        application.mLocationClient.start();*/
 
     }
 
