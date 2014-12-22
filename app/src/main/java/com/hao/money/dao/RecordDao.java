@@ -84,11 +84,11 @@ public class RecordDao {
     public BigDecimal findSumMoney(long time, boolean type) {
         String[] res = null;
         try {
-            res = dao.queryRaw("select sum(money) from tb_record where billDate>=" + time + "and type=" + (type ? "1" : "0")).getResults().get(0);
+            res = dao.queryRaw("select sum(money) from tb_record where billDate>=" + time + " and type=" + (type ? "1" : "0")).getResults().get(0);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return new BigDecimal(res == null ? "0" : res[0]).setScale(2, 4);
+        return new BigDecimal(res[0] == null ? "0" : res[0]).setScale(2, 4);
     }
 
     /**
