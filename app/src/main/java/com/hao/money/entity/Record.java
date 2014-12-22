@@ -10,7 +10,7 @@ import java.math.BigDecimal;
  * Created by hao on 2014/12/20.
  */
 @DatabaseTable(tableName = "tb_record")
-public class Record {
+public class Record extends BaseEntity {
 
     public Record(boolean type, BigDecimal money, String address, String latitude, String longitude, String remark, boolean isUpload, long billDate) {
         this.type = type;
@@ -26,8 +26,6 @@ public class Record {
     public Record() {
     }
 
-    @DatabaseField(generatedId = true)
-    private int id;//id
     @DatabaseField
     private boolean type;
     @DatabaseField
@@ -43,18 +41,8 @@ public class Record {
     @DatabaseField
     private long billDate;
     @DatabaseField
-    private long createDate;
-    @DatabaseField
     private boolean isUpload;
 
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public boolean isType() {
         return type;
@@ -110,14 +98,6 @@ public class Record {
 
     public void setBillDate(long billDate) {
         this.billDate = billDate;
-    }
-
-    public long getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(long createDate) {
-        this.createDate = createDate;
     }
 
     public boolean isUpload() {
