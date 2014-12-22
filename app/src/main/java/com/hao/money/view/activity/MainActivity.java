@@ -11,6 +11,8 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.hao.money.R;
 import com.hao.money.util.Prompt;
+import com.hao.money.util.UrlUtil;
+import com.hao.money.util.Util;
 import com.hao.money.view.MyApplication;
 import com.hao.money.view.fragment.BaseFragment;
 import com.hao.money.view.fragment.Main_JL_Fragment;
@@ -19,13 +21,15 @@ import com.hao.money.view.fragment.Main_JZ_Fragment;
 import com.hao.money.view.fragment.Main_JZ_Fragment_;
 import com.hao.money.view.fragment.Main_mine_Fragment;
 import com.hao.money.view.fragment.Main_mine_Fragment_;
-import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.CheckedChange;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
+import org.apache.http.Header;
 
 import java.util.List;
 
@@ -165,8 +169,27 @@ public class MainActivity extends FragmentActivity {
             if (location == null) {
                 return;
             }
-            System.out.println("******************" + location.getAddrStr());
+            if (location != null) {
+                RequestParams params = new RequestParams();
+                Util.post(UrlUtil.upLoadAddress, params, new uploadHandler());
+            }
             application.mLocationClient.stop();//取消定位服务
+        }
+    }
+
+
+    /**
+     * 上传地址的回调，不做任务处理
+     */
+    private class uploadHandler extends AsyncHttpResponseHandler {
+        @Override
+        public void onSuccess(int i, Header[] headers, byte[] bytes) {
+
+        }
+
+        @Override
+        public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
+            Prompt.showToast(MainActivity.this, "失败");
         }
     }
 }

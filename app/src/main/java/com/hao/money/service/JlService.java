@@ -10,8 +10,8 @@ import com.daimajia.swipe.implments.SwipeItemMangerImpl;
 import com.handmark.pulltorefresh.library.ILoadingLayout;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.hao.money.adapter.JlAdapter;
-import com.hao.money.dao.RecordDao;
 import com.hao.money.dao.Info_;
+import com.hao.money.dao.RecordDao;
 import com.hao.money.entity.Record;
 import com.hao.money.util.Prompt;
 import com.hao.money.util.Util;
@@ -23,14 +23,11 @@ import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.sharedpreferences.Pref;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * 记录的service
