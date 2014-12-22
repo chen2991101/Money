@@ -18,7 +18,6 @@ import com.hao.money.util.Prompt;
 import com.hao.money.util.Util;
 import com.hao.money.view.MyApplication;
 import com.hao.money.view.activity.SelectHistoryActivity_;
-import com.loopj.android.http.AsyncHttpClient;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
