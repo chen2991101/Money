@@ -19,6 +19,7 @@ import com.hao.money.view.fragment.Main_JZ_Fragment;
 import com.hao.money.view.fragment.Main_JZ_Fragment_;
 import com.hao.money.view.fragment.Main_mine_Fragment;
 import com.hao.money.view.fragment.Main_mine_Fragment_;
+import com.loopj.android.http.AsyncHttpClient;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;

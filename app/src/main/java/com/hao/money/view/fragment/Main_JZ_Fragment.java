@@ -12,15 +12,12 @@ import android.widget.TextView;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.hao.money.R;
-import com.hao.money.dao.BaseHelper;
-import com.hao.money.entity.History;
 import com.hao.money.service.JzService;
 import com.hao.money.service.JzView;
-import com.hao.money.util.KeyboardUtil;
 import com.hao.money.util.Prompt;
+import com.hao.money.util.Util;
 import com.hao.money.view.MyApplication;
 import com.hao.money.view.activity.SelectHistoryActivity_;
-import com.j256.ormlite.dao.Dao;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
@@ -28,11 +25,9 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.CheckedChange;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.OrmLiteDao;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -118,7 +113,7 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView {
 
     @Override
     public void closeKeyboard() {
-        KeyboardUtil.closeKeyboard(getActivity());
+        Util.closeKeyboard(getActivity());
     }
 
     @Override
@@ -149,7 +144,7 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView {
     @UiThread
     public void sucessMethod() {
         //保存完毕后清空金额和用途
-        KeyboardUtil.closeKeyboard(getActivity());
+        Util.closeKeyboard(getActivity());
         Prompt.showToast(getActivity(), "保存成功");
         et_money.setText("");
         et_remark.setText("");
