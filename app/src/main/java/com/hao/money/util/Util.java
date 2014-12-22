@@ -10,6 +10,12 @@ import android.widget.TextView;
 import com.baidu.location.LocationClient;
 import com.hao.money.R;
 import com.hao.money.view.activity.MainActivity;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -19,6 +25,8 @@ import java.text.DecimalFormat;
  * Created by hao on 2014/11/2.
  */
 public class Util {
+
+    private static AsyncHttpClient httpClient = null;//http请求
 
     /**
      * 设置标题
@@ -87,5 +95,19 @@ public class Util {
     public static void openKeyboard(Activity activity, EditText editText) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
+    }
+
+    /**
+     * http请求
+     *
+     * @param url             地址
+     * @param params          参数
+     * @param responseHandler 请求回调
+     */
+    public static void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+        if (httpClient == null) {
+            httpClient = new AsyncHttpClient();
+        }
+        httpClient.post(url, params, responseHandler);
     }
 }
