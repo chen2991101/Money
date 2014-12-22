@@ -38,9 +38,9 @@ public class JzService {
     RecordDao recordDao;
     @Bean
     HistoryDao historyDao;
-    private JzView ife;
     @Pref
     Info_ info;
+    private JzView ife;
 
     public void setIfe(JzView ife) {
         this.ife = ife;

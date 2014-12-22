@@ -25,8 +25,9 @@ public class HistoryDao {
      * 添加历史
      */
     public void add(boolean isSelect, History history) {
+        history = getHistory(history.getName(), history.isType());
         try {
-            if (!isSelect && getHistory(history.getName(), history.isType()) == null) {
+            if (!isSelect && history == null) {
                 //如果还没有这个历史就添加
                 history.setCount(1);
                 history.setCreateDate(System.currentTimeMillis());
