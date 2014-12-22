@@ -8,8 +8,8 @@ import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 import com.hao.money.dao.HistoryDao;
-import com.hao.money.dao.RecordDao;
 import com.hao.money.dao.Info_;
+import com.hao.money.dao.RecordDao;
 import com.hao.money.entity.History;
 import com.hao.money.entity.Record;
 import com.hao.money.util.Prompt;
@@ -149,10 +149,10 @@ public class JzService {
     @Background
     public void saveData(String money, String remark, boolean isSelect, boolean type, Calendar calendar, String address, String latitude, String longitude) {
         History history = new History(remark, type);
-        historyDao.add(context, isSelect, history);//保存到你是记录中
+        historyDao.add(isSelect, history);//保存到你是记录中
         BigDecimal m = new BigDecimal(money);
-        long id = recordDao.add(new Record(type, m, address, latitude, longitude, remark, false, calendar.getTimeInMillis(), System.currentTimeMillis()));
-        if (id != -1) {
+        int id = recordDao.add(new Record(type, m, address, latitude, longitude, remark, false, calendar.getTimeInMillis()));
+        if (id != 0) {
             ife.sucessMethod();
             info.sumMoney().put(Util.updateSumMoney(m, new BigDecimal(info.sumMoney().get()), !type));
             MainActivity.refreshMain = true;

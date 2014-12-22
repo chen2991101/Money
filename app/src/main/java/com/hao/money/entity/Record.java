@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @DatabaseTable(tableName = "tb_record")
 public class Record {
 
-    public Record(boolean type, BigDecimal money, String address, String latitude, String longitude, String remark, boolean isUpload,long billDate,long createDate) {
+    public Record(boolean type, BigDecimal money, String address, String latitude, String longitude, String remark, boolean isUpload, long billDate) {
         this.type = type;
         this.money = money;
         this.address = address;
@@ -20,8 +20,7 @@ public class Record {
         this.longitude = longitude;
         this.remark = remark;
         this.isUpload = isUpload;
-        this.billDate=billDate;
-        this.createDate=createDate;
+        this.billDate = billDate;
     }
 
     public Record() {

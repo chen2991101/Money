@@ -18,7 +18,6 @@ import java.util.Map;
  */
 @EBean
 public class RecordDao {
-
     @OrmLiteDao(helper = BaseHelper.class, model = Record.class)
     Dao<Record, Integer> dao;
 
@@ -28,8 +27,8 @@ public class RecordDao {
      */
     public int add(Record record) {
         try {
-            record = dao.createIfNotExists(record);
-            return record.getId();
+            record.setCreateDate(System.currentTimeMillis());
+            return dao.create(record);
         } catch (SQLException e) {
             e.printStackTrace();
         }
