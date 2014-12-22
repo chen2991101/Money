@@ -14,13 +14,12 @@ import org.androidannotations.annotations.EApplication;
 @EApplication
 public class MyApplication extends Application {
     public LocationClient mLocationClient = null;
-    //public BDLocationListener myListener = new MyLocationListener();
+    public BDLocationListener addressListener = null;//主页面的事件
 
     @Override
     public void onCreate() {
         super.onCreate();
         mLocationClient = new LocationClient(getApplicationContext());     //声明LocationClient类
-        // mLocationClient.registerLocationListener(myListener);    //注册监听函数
 
         LocationClientOption option = new LocationClientOption();
         option.setLocationMode(LocationClientOption.LocationMode.Battery_Saving);//设置定位模式,暂时不要gps定位，

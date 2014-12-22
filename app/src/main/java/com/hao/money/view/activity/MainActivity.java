@@ -7,8 +7,11 @@ import android.view.KeyEvent;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
 
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
 import com.hao.money.R;
 import com.hao.money.util.Prompt;
+import com.hao.money.view.MyApplication;
 import com.hao.money.view.fragment.BaseFragment;
 import com.hao.money.view.fragment.Main_JL_Fragment;
 import com.hao.money.view.fragment.Main_JL_Fragment_;
@@ -18,6 +21,7 @@ import com.hao.money.view.fragment.Main_mine_Fragment;
 import com.hao.money.view.fragment.Main_mine_Fragment_;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.CheckedChange;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
@@ -31,6 +35,8 @@ import java.util.List;
 public class MainActivity extends FragmentActivity {
     @ViewById
     RadioButton rb_mine, rb_jz, rb_jl;
+    @App
+    MyApplication application;
     private android.support.v4.app.FragmentManager fm;//framgnet的管理器
     private Main_mine_Fragment main_mine_Fragment;
     private Main_JZ_Fragment main_JZ_Fragment;
@@ -49,6 +55,11 @@ public class MainActivity extends FragmentActivity {
         //设置记账为选中
         RadioButton rb = (RadioButton) findViewById(R.id.rb_mine);
         rb.setChecked(true);
+
+        application.addressListener = new AddressListener();
+        application.mLocationClient.registerLocationListener(application.addressListener);
+        application.mLocationClient.start();
+
     }
 
     @CheckedChange({R.id.rb_mine, R.id.rb_jz, R.id.rb_jl})
@@ -141,6 +152,20 @@ public class MainActivity extends FragmentActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == 1) {
             main_JZ_Fragment.setRemark(data.getStringExtra("remark"));//选择历史后填充到统计的输入框中
+        }
+    }
+
+    /**
+     * 定位回调事件
+     */
+    private class AddressListener implements BDLocationListener {
+        @Override
+        public void onReceiveLocation(BDLocation location) {
+            if (location == null) {
+                return;
+            }
+            System.out.println("******************" + location.getAddrStr());
+            application.mLocationClient.stop();//取消定位服务
         }
     }
 }
