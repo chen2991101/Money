@@ -17,7 +17,7 @@ import org.androidannotations.annotations.EApplication;
 @EApplication
 public class MyApplication extends Application {
     public LocationClient mLocationClient = null;
-    public BDLocationListener addressListener = null;//主页面的事件
+    public BDLocationListener addressListener = null, jzAddressListener = null;//主页面的事件
 
     @Override
     public void onCreate() {
@@ -32,11 +32,19 @@ public class MyApplication extends Application {
         option.setNeedDeviceDirect(true);//返回的定位结果包含手机机头的方向
         mLocationClient.setLocOption(option);
 
-        /**
-         * 绑定联网改变的事件
-         */
-        IntentFilter filter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
-        MyReceiver_ receiver = new MyReceiver_();
-        registerReceiver(receiver, filter);
+    }
+
+    /**
+     * 取消定位注册事件
+     */
+    public void unRegisterListener() {
+        if (addressListener != null) {
+            mLocationClient.unRegisterLocationListener(addressListener);
+            addressListener = null;
+        }
+        if (jzAddressListener != null) {
+            mLocationClient.unRegisterLocationListener(jzAddressListener);
+            jzAddressListener = null;
+        }
     }
 }

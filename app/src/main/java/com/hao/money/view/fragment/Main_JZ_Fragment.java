@@ -43,14 +43,14 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView {
     @ViewById
     EditText et_money, et_time, et_date, et_remark;
     @ViewById
-    TextView tv_title, tv_address;
+    TextView tv_title;
     @ViewById
     Button bt_config, bt_history;
     @ViewById
     RadioButton rb_out, rb_in;
     @Bean
     JzService jzService;
-    private String latitude, longitude;//经纬度
+    private String latitude, longitude, address;//经纬度
     private Calendar calendar;//日期
     private boolean isSelect = false, type = true;//true为支出 false为收入
 
@@ -65,8 +65,9 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView {
         initDateTime();//初始化日期和时间
 
         //初始化的时候初始位置
-//        application.mLocationClient.unRegisterLocationListener(application.addressListener);//先取消注册
-        application.mLocationClient.registerLocationListener(new JzAddressListener());//设置回调
+        application.unRegisterListener();//取消所有绑定
+        application.jzAddressListener = new JzAddressListener();
+        application.mLocationClient.registerLocationListener(application.jzAddressListener);//设置回调
         application.mLocationClient.start();
     }
 
@@ -82,7 +83,6 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView {
             case R.id.bt_config:
                 String money = et_money.getText().toString().trim();
                 String remark = et_remark.getText().toString().trim();
-                String address = tv_address.getText().toString().trim();
                 jzService.jz(money, remark, isSelect, type, calendar, address, latitude, longitude);
                 isSelect = false;
                 break;
@@ -160,7 +160,7 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView {
             if (location == null) {
                 return;
             }
-            tv_address.setText(location.getAddrStr());
+            address = location.getAddrStr();
             latitude = location.getLatitude() + "";//设置纬度
             longitude = location.getLongitude() + "";//设置精度
             application.mLocationClient.stop();//取消定位服务

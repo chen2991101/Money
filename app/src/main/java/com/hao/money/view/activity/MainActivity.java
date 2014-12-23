@@ -1,6 +1,7 @@
 package com.hao.money.view.activity;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.telephony.TelephonyManager;
@@ -11,6 +12,7 @@ import android.widget.RadioButton;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.hao.money.R;
+import com.hao.money.receiver.MyReceiver_;
 import com.hao.money.util.Prompt;
 import com.hao.money.util.UrlUtil;
 import com.hao.money.util.Util;
@@ -53,7 +55,6 @@ public class MainActivity extends FragmentActivity {
     public static boolean refreshMain = false;
     public static boolean refreshJl = false;
 
-
     /**
      * 初始化方法
      */
@@ -65,10 +66,12 @@ public class MainActivity extends FragmentActivity {
         RadioButton rb = (RadioButton) findViewById(R.id.rb_mine);
         rb.setChecked(true);
 
-        application.addressListener = new AddressListener();
-        application.mLocationClient.registerLocationListener(application.addressListener);
-        application.mLocationClient.start();
-
+        /**
+         * 绑定联网改变的事件
+         */
+        IntentFilter filter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
+        MyReceiver_ receiver = new MyReceiver_();
+        registerReceiver(receiver, filter);
     }
 
     @CheckedChange({R.id.rb_mine, R.id.rb_jz, R.id.rb_jl})
@@ -160,44 +163,6 @@ public class MainActivity extends FragmentActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == 1) {
             main_JZ_Fragment.setRemark(data.getStringExtra("remark"));//选择历史后填充到统计的输入框中
-        }
-    }
-
-    /**
-     * 定位回调事件
-     */
-    private class AddressListener implements BDLocationListener {
-        @Override
-        public void onReceiveLocation(BDLocation location) {
-            if (location == null) {
-                application.mLocationClient.stop();//取消定位服务
-                return;
-            }
-            String address = location.getAddrStr();
-            if (address != null) {
-                RequestParams params = new RequestParams();
-                params.put("address", address);
-                params.put("latitude", location.getLatitude());
-                params.put("longitude", location.getLongitude());
-                params.put("deviceId", TelephonyMgr.getDeviceId());//手机的唯一编码
-                Util.post(UrlUtil.upLoadAddress, params, new uploadHandler());
-            }
-            application.mLocationClient.stop();//取消定位服务
-        }
-    }
-
-
-    /**
-     * 上传地址的回调，不做任务处理
-     */
-    private class uploadHandler extends AsyncHttpResponseHandler {
-        @Override
-        public void onSuccess(int i, Header[] headers, byte[] bytes) {
-
-        }
-
-        @Override
-        public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
         }
     }
 }

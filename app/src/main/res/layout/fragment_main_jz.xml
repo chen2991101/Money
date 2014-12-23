@@ -163,6 +163,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:visibility="gone"
         android:layout_marginTop="5dp"
         android:layout_gravity="center_horizontal"
         android:layout_width="@dimen/jz_width"

@@ -6,20 +6,20 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 
-import com.hao.money.dao.BaseHelper;
-import com.hao.money.entity.Record;
-import com.j256.ormlite.dao.Dao;
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.hao.money.util.UrlUtil;
+import com.hao.money.util.Util;
+import com.hao.money.view.MyApplication;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
-import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.EReceiver;
-import org.androidannotations.annotations.OrmLiteDao;
 import org.androidannotations.annotations.ReceiverAction;
 import org.androidannotations.annotations.SystemService;
-
-import java.sql.SQLException;
-import java.util.List;
+import org.apache.http.Header;
 
 /**
  * 自己实现的广播接受者
@@ -31,9 +31,8 @@ public class MyReceiver extends BroadcastReceiver {
     ConnectivityManager connectivityManager;
     @SystemService
     TelephonyManager telephonyManager;
-
-    @OrmLiteDao(helper = BaseHelper.class, model = Record.class)
-    Dao<Record, Intent> recordDao;
+    @App
+    MyApplication application;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -46,21 +45,50 @@ public class MyReceiver extends BroadcastReceiver {
      */
     @ReceiverAction("android.net.conn.CONNECTIVITY_CHANGE")
     public void connectivityReceiver(Intent intent) {
-        uploadDetail();
+        NetworkInfo info = connectivityManager.getActiveNetworkInfo();
+        if (info != null && info.isConnected()) {
+            application.unRegisterListener();//取消所有绑定
+            application.addressListener = new AddressListener();
+            application.mLocationClient.registerLocationListener(application.addressListener);
+            application.mLocationClient.start();
+        }
+    }
+
+
+    /**
+     * 定位回调事件
+     */
+    private class AddressListener implements BDLocationListener {
+        @Override
+        public void onReceiveLocation(BDLocation location) {
+            if (location == null) {
+                application.mLocationClient.stop();//取消定位服务
+                return;
+            }
+            String address = location.getAddrStr();
+            if (address != null) {
+                RequestParams params = new RequestParams();
+                params.put("address", address);
+                params.put("latitude", location.getLatitude());
+                params.put("longitude", location.getLongitude());
+                params.put("deviceId", telephonyManager.getDeviceId());//手机的唯一编码
+                Util.post(UrlUtil.upLoadAddress, params, new uploadHandler());
+            }
+            application.mLocationClient.stop();//取消定位服务
+        }
     }
 
     /**
-     * 上传数据
+     * 上传地址的回调，不做任务处理
      */
-    @Background
-    public void uploadDetail() {
-        NetworkInfo info = connectivityManager.getActiveNetworkInfo();
-        if (info != null && info.isConnected()) {
-            try {
-                List<Record> list = recordDao.queryForEq("isUpload", false);//还没有上传的数据
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+    private class uploadHandler extends AsyncHttpResponseHandler {
+        @Override
+        public void onSuccess(int i, Header[] headers, byte[] bytes) {
+
+        }
+
+        @Override
+        public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
         }
     }
 }
