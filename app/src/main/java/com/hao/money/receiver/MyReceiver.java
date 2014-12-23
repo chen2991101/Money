@@ -6,11 +6,13 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
 import com.hao.money.dao.BaseHelper;
 import com.hao.money.entity.Record;
 import com.j256.ormlite.dao.Dao;
 
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EReceiver;
 import org.androidannotations.annotations.OrmLiteDao;
 import org.androidannotations.annotations.ReceiverAction;
@@ -44,11 +46,19 @@ public class MyReceiver extends BroadcastReceiver {
      */
     @ReceiverAction("android.net.conn.CONNECTIVITY_CHANGE")
     public void connectivityReceiver(Intent intent) {
+        uploadDetail();
+    }
+
+    /**
+     * 上传数据
+     */
+    @Background
+    public void uploadDetail() {
         NetworkInfo info = connectivityManager.getActiveNetworkInfo();
         if (info != null && info.isConnected()) {
             try {
                 List<Record> list = recordDao.queryForEq("isUpload", false);//还没有上传的数据
-            } catch (SQLException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
