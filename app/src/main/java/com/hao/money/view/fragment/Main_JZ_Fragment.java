@@ -158,6 +158,7 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView {
         @Override
         public void onReceiveLocation(BDLocation location) {
             if (location == null) {
+                application.mLocationClient.stop();//取消定位服务
                 return;
             }
             address = location.getAddrStr();
