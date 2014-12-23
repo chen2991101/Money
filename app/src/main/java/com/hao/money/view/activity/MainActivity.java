@@ -65,7 +65,6 @@ public class MainActivity extends FragmentActivity {
         RadioButton rb = (RadioButton) findViewById(R.id.rb_mine);
         rb.setChecked(true);
 
-        //TODO 暂时不定位
         application.addressListener = new AddressListener();
         application.mLocationClient.registerLocationListener(application.addressListener);
         application.mLocationClient.start();
@@ -92,7 +91,7 @@ public class MainActivity extends FragmentActivity {
 
             //添加对应的fragment
             if (b) {
-                BaseFragment fragment = null;
+                BaseFragment fragment;
                 switch (checkedId) {
                     case R.id.rb_jz:
                         main_JZ_Fragment = new Main_JZ_Fragment_();
@@ -139,8 +138,7 @@ public class MainActivity extends FragmentActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
-                if (keyCode == KeyEvent.KEYCODE_BACK
-                        && event.getAction() == KeyEvent.ACTION_DOWN) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN) {
                     if ((System.currentTimeMillis() - exitTime) > 2000) {
                         Prompt.showToast(this, "再按一次返回键退出");
                         exitTime = System.currentTimeMillis();
