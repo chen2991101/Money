@@ -19,7 +19,7 @@ import java.math.BigDecimal;
  * Created by hao on 2014/11/2.
  */
 public class UrlUtil {
-    private static String url = "http://127.0.0.1";//基本的地址
+    private static String url = "http://10.0.0.109";//基本的地址
 
     public static String upLoadAddress = url + "/money/uploadAddress.do";
 }

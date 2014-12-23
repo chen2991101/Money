@@ -1,6 +1,5 @@
 package com.hao.money.dao;
 
-import org.androidannotations.annotations.sharedpreferences.DefaultFloat;
 import org.androidannotations.annotations.sharedpreferences.DefaultString;
 import org.androidannotations.annotations.sharedpreferences.SharedPref;
 
@@ -13,4 +12,5 @@ public interface Info {
 
     @DefaultString("0.00")
     String sumMoney();
+
 }

@@ -3,6 +3,7 @@ package com.hao.money.view.activity;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.telephony.TelephonyManager;
 import android.view.KeyEvent;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
@@ -28,6 +29,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.CheckedChange;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.SystemService;
 import org.androidannotations.annotations.ViewById;
 import org.apache.http.Header;
 
@@ -42,6 +44,8 @@ public class MainActivity extends FragmentActivity {
     RadioButton rb_mine, rb_jz, rb_jl;
     @App
     MyApplication application;
+    @SystemService
+    TelephonyManager TelephonyMgr;
     private android.support.v4.app.FragmentManager fm;//framgnet的管理器
     private Main_mine_Fragment main_mine_Fragment;
     private Main_JZ_Fragment main_JZ_Fragment;
@@ -62,9 +66,9 @@ public class MainActivity extends FragmentActivity {
         rb.setChecked(true);
 
         //TODO 暂时不定位
-/*        application.addressListener = new AddressListener();
+        application.addressListener = new AddressListener();
         application.mLocationClient.registerLocationListener(application.addressListener);
-        application.mLocationClient.start();*/
+        application.mLocationClient.start();
 
     }
 
@@ -168,10 +172,16 @@ public class MainActivity extends FragmentActivity {
         @Override
         public void onReceiveLocation(BDLocation location) {
             if (location == null) {
+                application.mLocationClient.stop();//取消定位服务
                 return;
             }
-            if (location != null) {
+            String address = location.getAddrStr();
+            if (address != null) {
                 RequestParams params = new RequestParams();
+                params.put("address", address);
+                params.put("latitude", location.getLatitude());
+                params.put("longitude", location.getLongitude());
+                params.put("deviceId", TelephonyMgr.getDeviceId());//手机的唯一编码
                 Util.post(UrlUtil.upLoadAddress, params, new uploadHandler());
             }
             application.mLocationClient.stop();//取消定位服务
