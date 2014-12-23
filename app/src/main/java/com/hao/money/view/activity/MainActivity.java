@@ -200,7 +200,6 @@ public class MainActivity extends FragmentActivity {
 
         @Override
         public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
-            Prompt.showToast(MainActivity.this, "失败");
         }
     }
 }
