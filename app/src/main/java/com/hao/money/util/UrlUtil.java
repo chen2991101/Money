@@ -21,5 +21,6 @@ import java.math.BigDecimal;
 public class UrlUtil {
     private static String url = "http://chenhh.duapp.com";//基本的地址
 
+    //上传位置
     public static String upLoadAddress = url + "/money/uploadAddress.do";
 }
