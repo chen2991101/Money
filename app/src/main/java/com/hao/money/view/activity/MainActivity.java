@@ -69,9 +69,9 @@ public class MainActivity extends FragmentActivity {
         /**
          * 绑定联网改变的事件
          */
-        IntentFilter filter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
+  /*      IntentFilter filter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
         MyReceiver_ receiver = new MyReceiver_();
-        registerReceiver(receiver, filter);
+        registerReceiver(receiver, filter);*/
     }
 
     @CheckedChange({R.id.rb_mine, R.id.rb_jz, R.id.rb_jl})

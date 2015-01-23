@@ -33,9 +33,11 @@ public class MyReceiver extends BroadcastReceiver {
     TelephonyManager telephonyManager;
     @App
     MyApplication application;
+    Context context;
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        this.context = context;
     }
 
     /**
@@ -54,6 +56,15 @@ public class MyReceiver extends BroadcastReceiver {
         }
     }
 
+    /**
+     * 用户解锁的广播
+     *
+     * @param intent
+     */
+    @ReceiverAction("android.intent.action.USER_PRESENT")
+    public void userPresent(Intent intent) {
+        context.startService(new Intent(context, MyService_.class));//添加服务
+    }
 
     /**
      * 定位回调事件

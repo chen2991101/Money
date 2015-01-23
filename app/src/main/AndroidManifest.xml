@@ -53,6 +53,16 @@
             android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote"></service>
+
+
+        <!--自己实现的广播-->
+        <receiver android:name=".receiver.MyReceiver_">
+            <intent-filter>
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+        </receiver>
+        <!--自己实现的服务-->
+        <service android:name=".receiver.MyService_"></service>
     </application>
 
 </manifest>

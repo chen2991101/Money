@@ -2,6 +2,7 @@ package com.hao.money.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -109,5 +110,14 @@ public class Util {
             httpClient = new AsyncHttpClient();
         }
         httpClient.post(url, params, responseHandler);
+    }
+
+    /**
+     * 打印日志信息
+     *
+     * @param msg 需要打印的信息
+     */
+    public static void log(String msg) {
+        Log.e("chen", msg);
     }
 }
