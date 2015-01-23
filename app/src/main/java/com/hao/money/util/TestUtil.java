@@ -14,7 +14,6 @@ public class TestUtil {
      * @return
      */
     public static boolean testMoney(String money) {
-        System.out.println(money.matches(moneyMatch));
         return money.matches(moneyMatch);
     }
 }
