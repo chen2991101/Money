@@ -56,6 +56,18 @@ public class MyReceiver extends BroadcastReceiver {
         }
     }
 
+
+    /**
+     * 修改网络链接的广播
+     *
+     * @param intent
+     */
+    @ReceiverAction("android.net.conn.CONNECTIVITY_CHANGE")
+    public void connectivity(Intent intent) {
+        Util.log("修改了网络链接");
+    }
+
+
     /**
      * 用户解锁的广播
      *

@@ -2,6 +2,8 @@ package com.hao.money.receiver;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.IBinder;
 
 import com.hao.money.util.Util;
@@ -23,6 +25,8 @@ public class MyService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        Util.log("哈哈");
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(new MyReceiver_(), filter);
+        Util.log("注册广播");
     }
 }
