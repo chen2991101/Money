@@ -25,8 +25,6 @@ public class MyService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        registerReceiver(new MyReceiver_(), filter);
-        Util.log("注册广播");
+        registerReceiver(new MyReceiver_(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     }
 }

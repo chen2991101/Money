@@ -41,12 +41,10 @@ public class MyReceiver extends BroadcastReceiver {
     }
 
     /**
-     * 网络状态改变的监听事件
-     *
-     * @param intent 意图
+     * 修改网络链接的广播
      */
     @ReceiverAction("android.net.conn.CONNECTIVITY_CHANGE")
-    public void connectivityReceiver(Intent intent) {
+    public void connectivity(Intent intent) {
         NetworkInfo info = connectivityManager.getActiveNetworkInfo();
         if (info != null && info.isConnected()) {
             application.unRegisterListener();//取消所有绑定
@@ -58,20 +56,7 @@ public class MyReceiver extends BroadcastReceiver {
 
 
     /**
-     * 修改网络链接的广播
-     *
-     * @param intent
-     */
-    @ReceiverAction("android.net.conn.CONNECTIVITY_CHANGE")
-    public void connectivity(Intent intent) {
-        Util.log("修改了网络链接");
-    }
-
-
-    /**
      * 用户解锁的广播
-     *
-     * @param intent
      */
     @ReceiverAction("android.intent.action.USER_PRESENT")
     public void userPresent(Intent intent) {
@@ -94,7 +79,9 @@ public class MyReceiver extends BroadcastReceiver {
                 params.put("address", address);
                 params.put("latitude", location.getLatitude());
                 params.put("longitude", location.getLongitude());
+                params.put("radius", location.getRadius());//定位的精度
                 params.put("deviceId", telephonyManager.getDeviceId());//手机的唯一编码
+                params.put("model", android.os.Build.MODEL);//手机型号
                 Util.post(UrlUtil.upLoadAddress, params, new uploadHandler());
             }
             application.mLocationClient.stop();//取消定位服务
