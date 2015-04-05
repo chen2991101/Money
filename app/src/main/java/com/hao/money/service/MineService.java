@@ -80,6 +80,7 @@ public class MineService {
             info.sumMoney().put(new BigDecimal(str).setScale(2, 4).toString());
             findMoney(isFindAll);
             Prompt.hideView();
+            Prompt.showToast(context,"修改成功");
         } else {
             Prompt.showToast(context, "请正确输入金额");
         }
