@@ -70,4 +70,5 @@ public class MyApplication extends Application {
             jzAddressListener = null;
         }
     }
+
 }

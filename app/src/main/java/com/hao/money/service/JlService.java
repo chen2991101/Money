@@ -23,6 +23,7 @@ import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.sharedpreferences.Pref;
+import org.json.JSONArray;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -179,4 +180,5 @@ public class JlService {
         down.setRefreshingLabel("正在加载...");
         down.setReleaseLabel("松开加载更多...");
     }
+
 }

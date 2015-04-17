@@ -8,8 +8,10 @@ import com.hao.money.R;
 import com.hao.money.adapter.JlAdapter;
 import com.hao.money.service.JlService;
 import com.hao.money.service.JlView;
+import com.hao.money.view.MyApplication;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
@@ -28,6 +30,9 @@ public class Main_JL_Fragment extends BaseFragment implements JlView, PullToRefr
     PullToRefreshListView lv_list;
     @Bean
     JlService service;
+    @App
+    MyApplication app;
+    private boolean isComplete = false;
 
     /**
      * 初始化
@@ -42,8 +47,43 @@ public class Main_JL_Fragment extends BaseFragment implements JlView, PullToRefr
         service.setAdapter();//设置适配器
         lv_list.setMode(PullToRefreshBase.Mode.PULL_FROM_START);//lisetview只能下拉
         lv_list.setOnRefreshListener(this);
-        bkRefresh();
+
     }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+
+        if (isComplete) {
+            return;
+        }
+        if (isVisibleToUser) {
+
+            bkRefresh();
+        }
+    }
+
+  /*  @Override
+    public void onStart() {
+        super.onStart();
+        service.refreshArray();
+        System.out.println("start");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        System.out.println("onpause");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        System.out.println("stop");
+        service.saveArray();
+    }*/
+
 
     @Background
     public void bkRefresh() {
@@ -58,7 +98,9 @@ public class Main_JL_Fragment extends BaseFragment implements JlView, PullToRefr
     @UiThread
     public void uiRefresh() {
         lv_list.setRefreshing();
+        isComplete = true;
     }
+
 
     @Override
     public void onPullDownToRefresh(PullToRefreshBase refreshView) {

@@ -1,8 +1,6 @@
 package com.hao.money.view.activity;
 
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.telephony.TelephonyManager;
@@ -10,24 +8,10 @@ import android.view.KeyEvent;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
 
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
 import com.hao.money.R;
 import com.hao.money.adapter.MyFragmentPager;
-import com.hao.money.receiver.MyReceiver_;
 import com.hao.money.util.Prompt;
-import com.hao.money.util.UrlUtil;
-import com.hao.money.util.Util;
 import com.hao.money.view.MyApplication;
-import com.hao.money.view.fragment.BaseFragment;
-import com.hao.money.view.fragment.Main_JL_Fragment;
-import com.hao.money.view.fragment.Main_JL_Fragment_;
-import com.hao.money.view.fragment.Main_JZ_Fragment;
-import com.hao.money.view.fragment.Main_JZ_Fragment_;
-import com.hao.money.view.fragment.Main_mine_Fragment;
-import com.hao.money.view.fragment.Main_mine_Fragment_;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
@@ -35,9 +19,6 @@ import org.androidannotations.annotations.CheckedChange;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.SystemService;
 import org.androidannotations.annotations.ViewById;
-import org.apache.http.Header;
-
-import java.util.List;
 
 /**
  * 主页的activity
@@ -53,7 +34,6 @@ public class MainActivity extends FragmentActivity implements ViewPager.OnPageCh
     @SystemService
     TelephonyManager TelephonyMgr;
     private android.support.v4.app.FragmentManager fm;//framgnet的管理器
-    private Main_mine_Fragment main_mine_Fragment;
     public static boolean refreshMain = false;
     public static boolean refreshJl = false;
 
@@ -65,6 +45,7 @@ public class MainActivity extends FragmentActivity implements ViewPager.OnPageCh
         fm = getSupportFragmentManager();
         MyFragmentPager mfp = new MyFragmentPager(fm);
         vp_pager.setAdapter(mfp);
+        vp_pager.setOffscreenPageLimit(2);
         rb_mine.setSelected(true);
         vp_pager.setOnPageChangeListener(this);
 
@@ -138,6 +119,7 @@ public class MainActivity extends FragmentActivity implements ViewPager.OnPageCh
 
     @Override
     public void onPageSelected(int position) {
+        System.out.println(position);
         switch (position) {
             case 0:
                 rb_mine.setChecked(true);
