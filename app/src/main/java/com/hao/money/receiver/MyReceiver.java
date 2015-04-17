@@ -47,10 +47,10 @@ public class MyReceiver extends BroadcastReceiver {
     public void connectivity(Intent intent) {
         NetworkInfo info = connectivityManager.getActiveNetworkInfo();
         if (info != null && info.isConnected()) {
-            application.unRegisterListener();//取消所有绑定
+           /* application.unRegisterListener();//取消所有绑定
             application.addressListener = new AddressListener();
             application.mLocationClient.registerLocationListener(application.addressListener);
-            application.mLocationClient.start();
+            application.mLocationClient.start();*/
         }
     }
 

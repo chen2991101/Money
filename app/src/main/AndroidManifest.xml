@@ -31,9 +31,10 @@
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Light.NoTitleBar">
 
+
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="76tBNXFSeIMwvO58jbCX1XZr" />//key:开发者申请的key
+            android:value="hDlYYUiviASlv61gIna5UEGi" />//key:开发者申请的key
 
         <activity
             android:name=".view.activity.MainActivity_"
@@ -46,6 +47,11 @@
         <!--选择历史用途-->
         <activity
             android:name=".view.activity.SelectHistoryActivity_"
+            android:screenOrientation="portrait"></activity>
+
+        <!--地图-->
+        <activity
+            android:name=".view.activity.MapActivity_"
             android:screenOrientation="portrait"></activity>
 
         <!--百度定位的service-->

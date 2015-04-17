@@ -1,15 +1,24 @@
 package com.hao.money.view.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hao.money.R;
 import com.hao.money.service.MineService;
 import com.hao.money.service.MineView;
 import com.hao.money.util.Prompt;
+import com.hao.money.view.MyTitle;
+import com.hao.money.view.activity.MapActivity;
+import com.hao.money.view.activity.MapActivity_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -26,9 +35,11 @@ import org.androidannotations.annotations.ViewById;
 @EFragment(R.layout.fragment_main_mine)
 public class Main_mine_Fragment extends BaseFragment implements MineView {
     @ViewById
-    TextView tv_myMoney, tv_title, tv_sevenOut, tv_sevenIn, tv_thirtyOut, tv_thirtyIn;
+    TextView tv_myMoney, tv_sevenOut, tv_sevenIn, tv_thirtyOut, tv_thirtyIn;
     @ViewById
     Button bt_resetMoney;
+    @ViewById
+    ViewPager vp_test;
     @Bean
     MineService service;
     private EditText et_setMoney;
@@ -39,9 +50,9 @@ public class Main_mine_Fragment extends BaseFragment implements MineView {
      */
     @AfterViews
     public void init() {
-        tv_title.setText("我的");//设置标题
         service.setIfe(this);
         service.initMoney();
+
     }
 
     @Override
@@ -72,7 +83,11 @@ public class Main_mine_Fragment extends BaseFragment implements MineView {
 
     @Click(R.id.bt_resetMoney)
     public void click() {
-        service.resetMoney();
+        //service.resetMoney();
+        //TODO 测试百度地图
+        startActivity(new Intent(getActivity(), MapActivity_.class));
+
+
     }
 
     /**

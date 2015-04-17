@@ -4,8 +4,9 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <FrameLayout
-        android:id="@+id/fl_content"
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1" />
@@ -24,6 +25,7 @@
         <RadioButton
             style="@style/main_radio"
             android:id="@+id/rb_mine"
+            android:checked="true"
             android:drawableTop="@drawable/selector_mainactivity_count"
             android:text="我的" />
 

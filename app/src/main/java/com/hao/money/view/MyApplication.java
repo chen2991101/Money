@@ -6,6 +6,7 @@ import android.content.IntentFilter;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.baidu.mapapi.SDKInitializer;
 import com.hao.money.receiver.MyReceiver;
 import com.hao.money.receiver.MyReceiver_;
 
@@ -22,6 +23,27 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        SDKInitializer.initialize(getApplicationContext());
+        initLocationClient();
+    }
+
+    private LocationClient locationClient;
+
+    private void initLocationClient() {
+        if (locationClient != null) return;
+        locationClient = new LocationClient(this);
+        LocationClientOption localLocationClientOption = new LocationClientOption();
+        localLocationClientOption.setOpenGps(true);
+        localLocationClientOption.setAddrType("all");
+        localLocationClientOption.setCoorType("bd09ll");
+        localLocationClientOption.setScanSpan(1000);
+        locationClient.setLocOption(localLocationClientOption);
+    }
+
+    public LocationClient getLocation() {
+        if (mLocationClient != null) {
+            return mLocationClient;
+        }
         mLocationClient = new LocationClient(getApplicationContext());     //声明LocationClient类
 
         LocationClientOption option = new LocationClientOption();
@@ -31,6 +53,7 @@ public class MyApplication extends Application {
         option.setOpenGps(false);
         option.setNeedDeviceDirect(true);//返回的定位结果包含手机机头的方向
         mLocationClient.setLocOption(option);
+        return mLocationClient;
 
     }
 

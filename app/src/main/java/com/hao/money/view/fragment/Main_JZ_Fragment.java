@@ -65,10 +65,10 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView {
         initDateTime();//初始化日期和时间
 
         //初始化的时候初始位置
-        application.unRegisterListener();//取消所有绑定
+     /*   application.unRegisterListener();//取消所有绑定
         application.jzAddressListener = new JzAddressListener();
         application.mLocationClient.registerLocationListener(application.jzAddressListener);//设置回调
-        application.mLocationClient.start();
+        application.mLocationClient.start();*/
     }
 
     @Click({R.id.et_date, R.id.et_time, R.id.bt_config, R.id.bt_history})
