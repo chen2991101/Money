@@ -1,22 +1,19 @@
 package com.hao.money.view.activity;
 
 import android.app.Activity;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ListView;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
-import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
-import com.baidu.mapapi.map.InfoWindow;
-import com.baidu.mapapi.map.MapPoi;
-import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
@@ -24,35 +21,41 @@ import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.overlayutil.DrivingRouteOverlay;
+import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.route.DrivingRoutePlanOption;
+import com.baidu.mapapi.search.route.DrivingRouteResult;
+import com.baidu.mapapi.search.route.OnGetRoutePlanResultListener;
+import com.baidu.mapapi.search.route.PlanNode;
+import com.baidu.mapapi.search.route.RoutePlanSearch;
+import com.baidu.mapapi.search.route.TransitRouteResult;
+import com.baidu.mapapi.search.route.WalkingRouteResult;
 import com.hao.money.R;
-import com.hao.money.adapter.SelectHistoryAdapter;
-import com.hao.money.service.SelectHistoryService;
-import com.hao.money.service.SelectHistoryView;
 import com.hao.money.util.Util;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.BeforeTextChange;
 import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.Extra;
-import org.androidannotations.annotations.ItemClick;
-import org.androidannotations.annotations.UiThread;
+import org.androidannotations.annotations.SystemService;
 import org.androidannotations.annotations.ViewById;
-
-import java.util.Iterator;
 
 /**
  * 选择历史用途的activity
  */
 @EActivity(R.layout.activity_map)
-public class MapActivity extends Activity {
+public class MapActivity extends Activity implements SensorEventListener {
     @ViewById
     MapView mv_map;
+    @SystemService
+    SensorManager sensorManager;
+    private Sensor sensor;
     private BaiduMap mBaiduMap;
     private MyLocationConfiguration.LocationMode mCurrentMode;
     private BitmapDescriptor mCurrentMarker;
     private LocationClient mLocClient;
+    private double angle, lat, lon;
+    private RoutePlanSearch mSearch;
 
 
     @AfterViews
@@ -63,6 +66,8 @@ public class MapActivity extends Activity {
 
         mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
         mBaiduMap = mv_map.getMap();
+
+        mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
         mv_map.showZoomControls(false);
         mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(mCurrentMode, true, mCurrentMarker));
         mBaiduMap.setMyLocationEnabled(true);
@@ -71,10 +76,104 @@ public class MapActivity extends Activity {
         LocationClientOption localLocationClientOption = new LocationClientOption();
         localLocationClientOption.setOpenGps(true);
         localLocationClientOption.setCoorType("bd09ll");
-        localLocationClientOption.setScanSpan(999);
+        localLocationClientOption.setScanSpan(1000);
+        localLocationClientOption.setNeedDeviceDirect(true);
         mLocClient.setLocOption(localLocationClientOption);
         mLocClient.start();
+        sensor = sensorManager
+                .getDefaultSensor(Sensor.TYPE_ORIENTATION);
+
+
+        //定义Maker坐标点104.69965,31.470188
+        LatLng point = new LatLng(31.470188, 104.69965);
+//构建Marker图标
+        BitmapDescriptor bitmap = BitmapDescriptorFactory
+                .fromResource(R.drawable.ic_launcher);
+//构建MarkerOption，用于在地图上添加Marker
+        OverlayOptions option = new MarkerOptions()
+                .position(point)
+                .icon(bitmap);
+//在地图上添加Marker，并显示
+        mBaiduMap.addOverlay(option);
+
+
+        mBaiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                System.out.println("你好，我点击了");
+                PlanNode from = PlanNode.withLocation(new LatLng(lat, lon));
+                PlanNode to = PlanNode.withLocation(marker.getPosition());
+
+
+                mSearch = RoutePlanSearch.newInstance();
+                mSearch.setOnGetRoutePlanResultListener(listener);
+                mSearch.drivingSearch(new DrivingRoutePlanOption().from(from).to(to));
+                return false;
+            }
+        });
     }
+
+
+    private class MyTransitRouteOverlay extends DrivingRouteOverlay {
+        public MyTransitRouteOverlay(BaiduMap paramBaiduMap) {
+            super(paramBaiduMap);
+        }
+
+        public BitmapDescriptor getStartMarker() {
+            return null;
+        }
+
+        public BitmapDescriptor getTerminalMarker() {
+            return null;
+        }
+    }
+
+
+    OnGetRoutePlanResultListener listener = new OnGetRoutePlanResultListener() {
+        public void onGetWalkingRouteResult(WalkingRouteResult result) {
+            //
+
+        }
+
+        public void onGetTransitRouteResult(TransitRouteResult result) {
+          /*  if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
+                Toast.makeText(MapActivity.this, "抱歉，未找到结果", Toast.LENGTH_SHORT).show();
+            }
+            if (result.error == SearchResult.ERRORNO.AMBIGUOUS_ROURE_ADDR) {
+                //起终点或途经点地址有岐义，通过以下接口获取建议查询信息
+                //result.getSuggestAddrInfo()
+                return;
+            }
+            if (result.error == SearchResult.ERRORNO.NO_ERROR) {
+                DrivingRouteOverlay overlay = new MyTransitRouteOverlay(mBaiduMap);
+                mBaiduMap.setOnMarkerClickListener(overlay);
+                overlay.setData(result.getRouteLines().get(0));
+                overlay.addToMap();
+                overlay.zoomToSpan();
+            }*/
+        }
+
+        public void onGetDrivingRouteResult(DrivingRouteResult result) {
+            //
+            mSearch.destroy();
+            if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
+                System.out.println(result.error);
+                Toast.makeText(MapActivity.this, "抱歉，未找到结果", Toast.LENGTH_SHORT).show();
+            }
+            if (result.error == SearchResult.ERRORNO.AMBIGUOUS_ROURE_ADDR) {
+                //起终点或途经点地址有岐义，通过以下接口获取建议查询信息
+                //result.getSuggestAddrInfo()
+                return;
+            }
+            if (result.error == SearchResult.ERRORNO.NO_ERROR) {
+                DrivingRouteOverlay overlay = new MyTransitRouteOverlay(mBaiduMap);
+                mBaiduMap.setOnMarkerClickListener(overlay);
+                overlay.setData(result.getRouteLines().get(0));
+                overlay.addToMap();
+                overlay.zoomToSpan();
+            }
+        }
+    };
 
 
     @Override
@@ -89,6 +188,8 @@ public class MapActivity extends Activity {
 
     @Override
     protected void onResume() {
+        sensorManager.registerListener(this, sensor,
+                SensorManager.SENSOR_DELAY_NORMAL);
 
         //在activity执行onResume时执行mMapView. onResume ()，实现地图生命周期管理
         mv_map.onResume();
@@ -97,6 +198,7 @@ public class MapActivity extends Activity {
 
     @Override
     protected void onPause() {
+        sensorManager.unregisterListener(this);
 
         //在activity执行onPause时执行mMapView. onPause ()，实现地图生命周期管理
         mv_map.onPause();
@@ -104,72 +206,44 @@ public class MapActivity extends Activity {
         super.onPause();
     }
 
-    private double locationLat;
-    private double locationLng;
     boolean isFirstLoc = true;
 
-    public void getNearByStore() {
 
-        BitmapDescriptor localBitmapDescriptor = BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher);
-        LatLng localLatLng = new LatLng(30.552650545909, 104.07337060826);
-        Bundle localBundle = new Bundle();
-        MarkerOptions localMarkerOptions =
-                new MarkerOptions().position(localLatLng)
-                        .icon(localBitmapDescriptor)
-                        .zIndex(9).draggable(true).extraInfo(localBundle);
-        mBaiduMap.addOverlay(localMarkerOptions);
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        angle = event.values[0];
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 
     public class MyLocationListener implements BDLocationListener {
 
-        public void onReceiveLocation(BDLocation paramBDLocation) {
-            System.out.println("***************");
-            if ((paramBDLocation == null) || (mv_map == null)) return;
+        public void onReceiveLocation(BDLocation location) {
+            // map view 销毁后不在处理新接收的位置
+            if (location == null || mv_map == null)
+                return;
 
-            locationLat = paramBDLocation.getLatitude();
-            locationLng = paramBDLocation.getLongitude();
-            MyLocationData localMyLocationData = new MyLocationData.Builder().accuracy(paramBDLocation.getRadius()).direction(100.0F).latitude(paramBDLocation.getLatitude()).longitude(paramBDLocation.getLongitude()).build();
-            mBaiduMap.setMyLocationData(localMyLocationData);
+            lat = location.getLatitude();
+            lon = location.getLongitude();
+
+            MyLocationData locData = new MyLocationData.Builder()
+                    .accuracy(location.getRadius())
+                            // 此处设置开发者获取到的方向信息，顺时针0-360
+                    .direction(Math.round(angle)).latitude(lat)
+                    .longitude(lon).build();
+            mBaiduMap.setMyLocationData(locData);
+
             if (isFirstLoc) {
+
                 isFirstLoc = false;
-                LatLng localLatLng = new LatLng(paramBDLocation.getLatitude(), paramBDLocation.getLongitude());
-                MapStatusUpdate localMapStatusUpdate1 = MapStatusUpdateFactory.zoomTo(15.0F);
-                mBaiduMap.setMapStatus(localMapStatusUpdate1);
-                MapStatusUpdate localMapStatusUpdate2 = MapStatusUpdateFactory.newLatLng(localLatLng);
-                mBaiduMap.animateMapStatus(localMapStatusUpdate2);
+                LatLng ll = new LatLng(location.getLatitude(),
+                        location.getLongitude());
+                MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
+                mBaiduMap.animateMapStatus(u);
             }
-            mBaiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
-
-                public boolean onMarkerClick(Marker paramMarker) {
-                    Bundle localBundle = paramMarker.getExtraInfo();
-                    System.out.println("你好吗");
-                    return false;
-
-                }
-            });
-            mBaiduMap.setOnMapClickListener(new BaiduMap.OnMapClickListener() {
-                public void onMapClick(LatLng paramLatLng) {
-                }
-
-                public boolean onMapPoiClick(MapPoi paramMapPoi) {
-                    return false;
-                }
-            });
-
-            mBaiduMap.setOnMapStatusChangeListener(new BaiduMap.OnMapStatusChangeListener() {
-                public void onMapStatusChange(MapStatus paramMapStatus) {
-                }
-
-                public void onMapStatusChangeFinish(MapStatus paramMapStatus) {
-                    LatLng localLatLng = mBaiduMap.getMapStatus().target;
-                    locationLat = localLatLng.latitude;
-                    locationLng = localLatLng.longitude;
-                }
-
-                public void onMapStatusChangeStart(MapStatus paramMapStatus) {
-                }
-            });
-            getNearByStore();
         }
     }
 

@@ -55,6 +55,7 @@
             android:name=".view.activity.MapActivity_"
             android:screenOrientation="portrait"></activity>
 
+
         <!--百度定位的service-->
         <service
             android:name="com.baidu.location.f"

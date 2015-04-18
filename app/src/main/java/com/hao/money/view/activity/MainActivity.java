@@ -119,7 +119,6 @@ public class MainActivity extends FragmentActivity implements ViewPager.OnPageCh
 
     @Override
     public void onPageSelected(int position) {
-        System.out.println(position);
         switch (position) {
             case 0:
                 rb_mine.setChecked(true);

@@ -24,7 +24,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         SDKInitializer.initialize(getApplicationContext());
-        initLocationClient();
+        //initLocationClient();
     }
 
     private LocationClient locationClient;
