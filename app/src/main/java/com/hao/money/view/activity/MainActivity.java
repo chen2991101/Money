@@ -63,16 +63,23 @@ public class MainActivity extends FragmentActivity implements ViewPager.OnPageCh
 
     @CheckedChange({R.id.rb_mine, R.id.rb_jz, R.id.rb_jl})
     public void checkedChanged(CompoundButton button, boolean isChecked) {
+        int index = vp_pager.getCurrentItem();
         if (isChecked) {
             switch (button.getId()) {
                 case R.id.rb_mine:
-                    vp_pager.setCurrentItem(0);
+                    if (index != 0) {
+                        vp_pager.setCurrentItem(0);
+                    }
                     break;
                 case R.id.rb_jz:
-                    vp_pager.setCurrentItem(1);
+                    if (index != 1) {
+                        vp_pager.setCurrentItem(1);
+                    }
                     break;
                 case R.id.rb_jl:
-                    vp_pager.setCurrentItem(2);
+                    if (index != 2) {
+                        vp_pager.setCurrentItem(2);
+                    }
                     break;
             }
         }
