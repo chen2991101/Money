@@ -2,22 +2,15 @@ package com.hao.money.view.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hao.money.R;
 import com.hao.money.service.MineService;
 import com.hao.money.service.MineView;
 import com.hao.money.util.Prompt;
-import com.hao.money.view.MyTitle;
-import com.hao.money.view.activity.MapActivity;
 import com.hao.money.view.activity.MapActivity_;
 
 import org.androidannotations.annotations.AfterViews;
@@ -38,8 +31,6 @@ public class Main_mine_Fragment extends BaseFragment implements MineView {
     TextView tv_myMoney, tv_sevenOut, tv_sevenIn, tv_thirtyOut, tv_thirtyIn;
     @ViewById
     Button bt_resetMoney;
-    @ViewById
-    ViewPager vp_test;
     @Bean
     MineService service;
     private EditText et_setMoney;
@@ -81,13 +72,16 @@ public class Main_mine_Fragment extends BaseFragment implements MineView {
         Prompt.showView(getActivity(), view);
     }
 
-    @Click(R.id.bt_resetMoney)
-    public void click() {
-        //service.resetMoney();
-        //TODO 测试百度地图
-        startActivity(new Intent(getActivity(), MapActivity_.class));
-
-
+    @Click({R.id.bt_resetMoney, R.id.bt_map})
+    public void click(View view) {
+        switch (view.getId()) {
+            case R.id.bt_resetMoney:
+                service.resetMoney();
+                break;
+            case R.id.bt_map:
+                startActivity(new Intent(getActivity(), MapActivity_.class));
+                break;
+        }
     }
 
     /**

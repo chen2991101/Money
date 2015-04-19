@@ -115,10 +115,13 @@
 
         </LinearLayout>
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/vp_test"
-            android:layout_weight="3"
+        <Button
+            android:id="@+id/bt_map"
+            android:text="地图"
+            android:padding="5dp"
+            style="@style/button"
+            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
-            android:layout_height="100dp" />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 </RelativeLayout>
