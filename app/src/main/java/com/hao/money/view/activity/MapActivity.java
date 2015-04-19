@@ -62,6 +62,7 @@ public class MapActivity extends Activity implements SensorEventListener {
     private LocationClient mLocClient;
     private double angle, lat, lon;
     private RoutePlanSearch mSearch;
+    private LatLng toLatLng;
 
 
     @AfterViews
@@ -111,7 +112,8 @@ public class MapActivity extends Activity implements SensorEventListener {
             public boolean onMarkerClick(Marker marker) {
                 System.out.println("你好，我点击了");
                 PlanNode from = PlanNode.withLocation(new LatLng(lat, lon));
-                PlanNode to = PlanNode.withLocation(marker.getPosition());
+                toLatLng = marker.getPosition();
+                PlanNode to = PlanNode.withLocation(toLatLng);
 
                 mSearch = RoutePlanSearch.newInstance();
                 mSearch.setOnGetRoutePlanResultListener(listener);
@@ -183,8 +185,8 @@ public class MapActivity extends Activity implements SensorEventListener {
 
 
             BaiduNaviManager.getInstance().launchNavigator(MapActivity.this,
-                    40.05087, 116.30142, "百度大厦",
-                    39.90882, 116.39750, "北京天安门",
+                    lat, lon, "百度大厦",
+                    toLatLng.latitude, toLatLng.longitude, "北京天安门",
                     RoutePlanParams.NE_RoutePlan_Mode.ROUTE_PLAN_MOD_MIN_TIME,       //算路方式
                     true,                                            //真实导航
                     BaiduNaviManager.STRATEGY_FORCE_ONLINE_PRIORITY, //在离线策略
@@ -207,32 +209,32 @@ public class MapActivity extends Activity implements SensorEventListener {
 
     @Override
     protected void onDestroy() {
+        super.onDestroy();
 
         mBaiduMap.setMyLocationEnabled(false);
 
         //在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
         mv_map.onDestroy();
-        super.onDestroy();
     }
 
     @Override
     protected void onResume() {
+        super.onResume();
         sensorManager.registerListener(this, sensor,
                 SensorManager.SENSOR_DELAY_NORMAL);
 
         //在activity执行onResume时执行mMapView. onResume ()，实现地图生命周期管理
         mv_map.onResume();
-        super.onResume();
     }
 
     @Override
     protected void onPause() {
+        super.onPause();
         sensorManager.unregisterListener(this);
 
         //在activity执行onPause时执行mMapView. onPause ()，实现地图生命周期管理
         mv_map.onPause();
         mLocClient.stop();
-        super.onPause();
     }
 
     boolean isFirstLoc = true;
