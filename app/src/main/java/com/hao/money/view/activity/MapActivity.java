@@ -1,10 +1,13 @@
 package com.hao.money.view.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Bundle;
+import android.os.Environment;
 import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
@@ -32,6 +35,9 @@ import com.baidu.mapapi.search.route.PlanNode;
 import com.baidu.mapapi.search.route.RoutePlanSearch;
 import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
+import com.baidu.navisdk.BNaviEngineManager;
+import com.baidu.navisdk.BaiduNaviManager;
+import com.baidu.navisdk.comapi.routeplan.RoutePlanParams;
 import com.hao.money.R;
 import com.hao.money.util.Util;
 
@@ -97,13 +103,15 @@ public class MapActivity extends Activity implements SensorEventListener {
         mBaiduMap.addOverlay(option);
 
 
+        BaiduNaviManager.getInstance().
+                initEngine(this, getSdcardDir(), mNaviEngineInitListener, "hDlYYUiviASlv61gIna5UEGi", null);
+
         mBaiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
                 System.out.println("你好，我点击了");
                 PlanNode from = PlanNode.withLocation(new LatLng(lat, lon));
                 PlanNode to = PlanNode.withLocation(marker.getPosition());
-
 
                 mSearch = RoutePlanSearch.newInstance();
                 mSearch.setOnGetRoutePlanResultListener(listener);
@@ -172,6 +180,27 @@ public class MapActivity extends Activity implements SensorEventListener {
                 overlay.addToMap();
                 overlay.zoomToSpan();
             }
+
+
+            BaiduNaviManager.getInstance().launchNavigator(MapActivity.this,
+                    40.05087, 116.30142, "百度大厦",
+                    39.90882, 116.39750, "北京天安门",
+                    RoutePlanParams.NE_RoutePlan_Mode.ROUTE_PLAN_MOD_MIN_TIME,       //算路方式
+                    true,                                            //真实导航
+                    BaiduNaviManager.STRATEGY_FORCE_ONLINE_PRIORITY, //在离线策略
+                    new BaiduNaviManager.OnStartNavigationListener() {                //跳转监听
+
+                        @Override
+                        public void onJumpToNavigator(Bundle configParams) {
+                            Intent intent = new Intent(MapActivity.this, NavigationActivity.class);
+                            intent.putExtras(configParams);
+                            startActivity(intent);
+                        }
+
+                        @Override
+                        public void onJumpToDownloader() {
+                        }
+                    });
         }
     };
 
@@ -245,6 +274,29 @@ public class MapActivity extends Activity implements SensorEventListener {
                 mBaiduMap.animateMapStatus(u);
             }
         }
+    }
+
+
+    private boolean mIsEngineInitSuccess = false;
+    private BNaviEngineManager.NaviEngineInitListener mNaviEngineInitListener = new BNaviEngineManager.NaviEngineInitListener() {
+        public void engineInitSuccess() {
+            //导航初始化是异步的，需要一小段时间，以这个标志来识别引擎是否初始化成功，为true时候才能发起导航
+            mIsEngineInitSuccess = true;
+        }
+
+        public void engineInitStart() {
+        }
+
+        public void engineInitFail() {
+        }
+    };
+
+    private String getSdcardDir() {
+        if (Environment.getExternalStorageState().equalsIgnoreCase(
+                Environment.MEDIA_MOUNTED)) {
+            return Environment.getExternalStorageDirectory().toString();
+        }
+        return null;
     }
 
 
