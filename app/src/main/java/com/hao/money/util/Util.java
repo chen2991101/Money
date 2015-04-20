@@ -8,18 +8,12 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.baidu.location.LocationClient;
 import com.hao.money.R;
-import com.hao.money.view.activity.MainActivity;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 
 /**
  * 单例工具类
@@ -119,5 +113,15 @@ public class Util {
      */
     public static void log(String msg) {
         Log.e("chen", msg);
+    }
+
+    /**
+     * dip转换成px
+     *
+     * @return
+     */
+    public static int dip2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
     }
 }

@@ -1,25 +1,18 @@
 package com.hao.money.adapter;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hao.money.R;
 import com.hao.money.entity.History;
 import com.hao.money.service.SelectHistoryService;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.List;
 
@@ -54,33 +47,7 @@ public class SelectHistoryAdapter extends MyAdapter<History> {
         hold.tv_name.setText(history.getName());
         hold.tv_count.setText(history.getCount() + "");
         hold.bt_delete.setOnClickListener(new Click(i));
-        hold.vp_test.setAdapter(new PagerAdapter() {
-            @Override
-            public int getCount() {
-                return 3;
-            }
-
-            @Override
-            public boolean isViewFromObject(View view, Object object) {
-                return view == object;
-            }
-
-            @Override
-            public void destroyItem(ViewGroup container, int position, Object object) {
-                container.removeView((View) object);
-            }
-
-            @Override
-            public Object instantiateItem(ViewGroup container, int position) {
-                System.out.println("********");
-                ImageView imageView = new ImageView(context);
-                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-                imageView.setLayoutParams(new WindowManager.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-                imageView.setImageResource(R.drawable.ic_launcher);
-                container.addView(imageView);
-                return imageView;
-            }
-        });
+        hold.vp_test.setAdapter(new MyPagerAdapter(context));
 
         return view;
     }

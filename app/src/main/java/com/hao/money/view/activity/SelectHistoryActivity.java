@@ -1,31 +1,25 @@
 package com.hao.money.view.activity;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.view.View;
-import android.widget.AdapterView;
+import android.support.v4.view.ViewPager;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ListView;
 
 import com.hao.money.R;
+import com.hao.money.adapter.MyPagerAdapter;
 import com.hao.money.adapter.SelectHistoryAdapter;
-import com.hao.money.dao.HistoryDao;
 import com.hao.money.service.SelectHistoryService;
 import com.hao.money.service.SelectHistoryView;
-import com.hao.money.util.Prompt;
 import com.hao.money.util.Util;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ItemClick;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
-import org.json.JSONArray;
 
 /**
  * 选择历史用途的activity
@@ -47,6 +41,12 @@ public class SelectHistoryActivity extends Activity implements SelectHistoryView
         Util.setHead(this, "请选择历史");
         service.setIfe(this);
         service.findData(type, this);//获取历史数据
+
+        ViewPager viewPager = new ViewPager(this);
+        viewPager.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Util.dip2px(this, 150)));
+        viewPager.setAdapter(new MyPagerAdapter(this));
+        lv_list.addHeaderView(viewPager);
+
     }
 
     @ItemClick(R.id.lv_list)
