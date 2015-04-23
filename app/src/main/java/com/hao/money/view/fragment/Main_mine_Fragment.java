@@ -51,7 +51,7 @@ public class Main_mine_Fragment extends BaseFragment implements MineView {
     public void init() {
         service.setIfe(this);
         service.initMoney();
-        ImageLoader.getInstance().displayImage("http://f.hiphotos.baidu.com/lvpics/s%3D800/sign=e491031b544e9258a2348beeac83d1d1/c2cec3fdfc0392453b3a0a708594a4c27c1e25c6.jpg", iv_image);
+        ImageLoader.getInstance().displayImage("http://f.hiphotos.baidu.com/lvpics/s%3D800/sign=e491031b544e9258a2348beeac83d1d1/c2cec3fdfc0392453b3a0a708594a4c27c1e25c6.jpg", iv_image, app.getImageOption());
     }
 
     @Override

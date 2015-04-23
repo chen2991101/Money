@@ -48,7 +48,7 @@ public class MyApplication extends Application {
                 .showImageOnLoading(R.drawable.ic_launcher)   //默认图片
                 .showImageForEmptyUri(R.drawable.ic_launcher)    //url爲空會显示该图片，自己放在drawable里面的
                 .showImageOnFail(R.drawable.ic_launcher)// 加载失败显示的图片
-                .displayer(new RoundedBitmapDisplayer(100))  //圆角，不需要请删除
+                .displayer(new RoundedBitmapDisplayer(1000))  //圆角，不需要请删除
                 .build();
         return options;
     }
@@ -68,6 +68,7 @@ public class MyApplication extends Application {
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
                 this)
                 .memoryCacheExtraOptions(480, 800)// 缓存在内存的图片的宽和高度
+                .threadPoolSize(3)//线程池内加载的数量
                 .memoryCache(new WeakMemoryCache())
                 .memoryCacheSize(2 * 1024 * 1024) //缓存到内存的最大数据
                 .discCacheSize(50 * 1024 * 1024).  //缓存到文件的最大数据
