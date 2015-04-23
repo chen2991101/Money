@@ -10,6 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></com.hao.money.view.MyTitle>
 
+
+    <ImageView
+        android:id="@+id/iv_image"
+        android:scaleType="fitXY"
+        android:layout_width="100dp"
+        android:layout_height="100dp" />
+
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_centerInParent="true"
@@ -122,5 +130,8 @@
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
     </LinearLayout>
+
+
 </RelativeLayout>

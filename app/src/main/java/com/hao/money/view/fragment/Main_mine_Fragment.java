@@ -5,22 +5,24 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hao.money.R;
 import com.hao.money.service.MineService;
 import com.hao.money.service.MineView;
 import com.hao.money.util.Prompt;
+import com.hao.money.view.MyApplication;
 import com.hao.money.view.activity.MapActivity_;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
-
-import java.util.Calendar;
 
 /**
  * 首页统计的fragment
@@ -33,8 +35,12 @@ public class Main_mine_Fragment extends BaseFragment implements MineView {
     TextView tv_myMoney, tv_sevenOut, tv_sevenIn, tv_thirtyOut, tv_thirtyIn;
     @ViewById
     Button bt_resetMoney;
+    @ViewById
+    ImageView iv_image;
     @Bean
     MineService service;
+    @App
+    MyApplication app;
     private EditText et_setMoney;
     private Button bt_setMoney;
 
@@ -45,6 +51,7 @@ public class Main_mine_Fragment extends BaseFragment implements MineView {
     public void init() {
         service.setIfe(this);
         service.initMoney();
+        ImageLoader.getInstance().displayImage("http://f.hiphotos.baidu.com/lvpics/s%3D800/sign=e491031b544e9258a2348beeac83d1d1/c2cec3fdfc0392453b3a0a708594a4c27c1e25c6.jpg", iv_image);
     }
 
     @Override
