@@ -6,7 +6,6 @@
     android:orientation="vertical">
 
     <com.hao.money.view.MyTitle
-        android:id="@+id/mt_title"
         app:name="请选择历史"
         app:hasBack="true"
         android:layout_width="match_parent"

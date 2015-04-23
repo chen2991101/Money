@@ -19,7 +19,7 @@ public class MyTitle extends RelativeLayout {
     private TextView tv_title, tv_back;
 
 
-    public MyTitle(Context context, AttributeSet attrs) {
+    public MyTitle(final Context context, AttributeSet attrs) {
         super(context, attrs);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MyTitle);
 
@@ -34,6 +34,12 @@ public class MyTitle extends RelativeLayout {
         if (hasBack) {
             tv_back = (TextView) view.findViewById(R.id.tv_back);//返回键
             tv_back.setVisibility(VISIBLE);
+            tv_back.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((Activity) context).finish();
+                }
+            });
         }
         a.recycle();
     }
@@ -41,22 +47,4 @@ public class MyTitle extends RelativeLayout {
     public MyTitle(Context context) {
         super(context);
     }
-
-
-    /**
-     * 关闭当前activity
-     *
-     * @param activity 需要关闭的activity
-     */
-    public void back(final Activity activity) {
-        if (tv_back != null) {
-            tv_back.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    activity.finish();
-                }
-            });
-        }
-    }
-
 }
