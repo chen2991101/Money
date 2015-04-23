@@ -46,7 +46,7 @@ public class MyTitle extends RelativeLayout {
     /**
      * 关闭当前activity
      *
-     * @param activity
+     * @param activity 需要关闭的activity
      */
     public void back(final Activity activity) {
         if (tv_back != null) {
