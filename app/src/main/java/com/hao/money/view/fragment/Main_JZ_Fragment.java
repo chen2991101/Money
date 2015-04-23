@@ -43,8 +43,6 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView {
     @ViewById
     EditText et_money, et_time, et_date, et_remark;
     @ViewById
-    TextView tv_title;
-    @ViewById
     Button bt_config, bt_history;
     @ViewById
     RadioButton rb_out, rb_in;
@@ -60,7 +58,6 @@ public class Main_JZ_Fragment extends BaseFragment implements JzView {
      */
     @AfterViews
     public void init() {
-        tv_title.setText("记账");
         jzService.setIfe(this);
         initDateTime();//初始化日期和时间
 

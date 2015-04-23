@@ -2,5 +2,6 @@
 <resources>
     <declare-styleable name="MyTitle">
         <attr name="name" format="string"></attr>
+        <attr name="hasBack" format="boolean"></attr>
     </declare-styleable>
 </resources>

@@ -12,6 +12,7 @@ import com.hao.money.adapter.SelectHistoryAdapter;
 import com.hao.money.service.SelectHistoryService;
 import com.hao.money.service.SelectHistoryView;
 import com.hao.money.util.Util;
+import com.hao.money.view.MyTitle;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -28,6 +29,8 @@ import org.androidannotations.annotations.ViewById;
 public class SelectHistoryActivity extends Activity implements SelectHistoryView {
     @ViewById
     ListView lv_list;
+    @ViewById
+    MyTitle mt_title;
     @Extra
     boolean type;
     @Bean
@@ -38,7 +41,7 @@ public class SelectHistoryActivity extends Activity implements SelectHistoryView
      */
     @AfterViews
     public void init() {
-        Util.setHead(this, "请选择历史");
+        mt_title.back(this);
         service.setIfe(this);
         service.findData(type, this);//获取历史数据
 

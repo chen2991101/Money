@@ -1,12 +1,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white">
 
-    <include
-        android:id="@+id/il_head"
-        layout="@layout/include_head" />
+    <com.hao.money.view.MyTitle
+        app:name="记账"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></com.hao.money.view.MyTitle>
 
     <LinearLayout
         android:layout_marginTop="20dp"

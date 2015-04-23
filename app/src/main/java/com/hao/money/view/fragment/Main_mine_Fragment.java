@@ -20,6 +20,8 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.Calendar;
+
 /**
  * 首页统计的fragment
  * Created by hao on 2014/11/2.
@@ -43,7 +45,6 @@ public class Main_mine_Fragment extends BaseFragment implements MineView {
     public void init() {
         service.setIfe(this);
         service.initMoney();
-
     }
 
     @Override

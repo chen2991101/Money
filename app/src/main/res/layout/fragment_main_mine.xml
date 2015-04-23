@@ -6,8 +6,7 @@
     android:orientation="vertical">
 
     <com.hao.money.view.MyTitle
-        android:id="@+id/mt_title"
-        app:name="陈鸿浩"
+        app:name="我的"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></com.hao.money.view.MyTitle>
 
